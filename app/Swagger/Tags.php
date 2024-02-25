@@ -11,6 +11,11 @@ use OpenApi\Attributes as OA;
     description: '一般会員に関するAPI'
 )]
 
+#[OA\Tag(
+    name: 'Auth',
+    description: '認証に関するAPI'
+)]
+
 class Tags
 {
 }
