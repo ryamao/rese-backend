@@ -1,0 +1,93 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Rese",
+        "description": "Rese API",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://rese-backend.test",
+            "description": "Local server (Herd)"
+        },
+        {
+            "url": "http://localhost:8000",
+            "description": "Local server (php artisan serve)"
+        }
+    ],
+    "paths": {
+        "/api/customers/{user_id}": {
+            "get": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "会員情報取得",
+                "description": "ユーザー(一般会員)の情報を取得する",
+                "operationId": "c475e8390fa63e285c1df003e9eb3444",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/user-id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/show-customer-200"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "responses": {
+            "show-customer-200": {
+                "description": "OK",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "テストユーザー"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "unauthorized": {
+                "description": "認証エラー"
+            },
+            "forbidden": {
+                "description": "認可エラー"
+            },
+            "not-found": {
+                "description": "指定されたリソースが存在しない"
+            }
+        },
+        "parameters": {
+            "user-id": {
+                "name": "user_id",
+                "in": "path",
+                "description": "ユーザーID",
+                "required": true,
+                "example": 1
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Customer",
+            "description": "一般会員に関するAPI"
+        }
+    ]
+}
