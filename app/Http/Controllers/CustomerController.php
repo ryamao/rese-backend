@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use OpenApi\Attributes as OA;
 
 class CustomerController extends Controller
@@ -33,7 +34,8 @@ class CustomerController extends Controller
     )]
     public function show(User $user): JsonResponse
     {
-        // TODO: Policyで認可を行う
+        Gate::allowIf(fn (User $authUser) => $user->is($authUser));
+
         return response()->json(['name' => $user->name]);
     }
 }

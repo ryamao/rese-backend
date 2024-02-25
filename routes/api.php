@@ -19,5 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// TODO: auth:sanctumで認証を行う
-Route::get('/customers/{user}', [CustomerController::class, 'show']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/customers/{user}', [CustomerController::class, 'show']);
+});
