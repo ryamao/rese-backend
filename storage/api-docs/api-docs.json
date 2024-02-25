@@ -44,6 +44,30 @@
                     }
                 }
             }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "会員登録",
+                "description": "ユーザー(一般会員)を新規登録する",
+                "operationId": "c02b8d90b80799edc695e303f20d70a1",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/post-auth-register"
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/created"
+                    },
+                    "302": {
+                        "$ref": "#/components/responses/found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable-entity"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -64,6 +88,12 @@
                     }
                 }
             },
+            "created": {
+                "description": "リクエストが成功しリソースが作成された"
+            },
+            "found": {
+                "description": "リクエストが成功しリソースが見つかった"
+            },
             "unauthorized": {
                 "description": "認証エラー"
             },
@@ -72,6 +102,9 @@
             },
             "not-found": {
                 "description": "指定されたリソースが存在しない"
+            },
+            "unprocessable-entity": {
+                "description": "リクエストが正しくない"
             }
         },
         "parameters": {
@@ -82,12 +115,51 @@
                 "required": true,
                 "example": 1
             }
+        },
+        "requestBodies": {
+            "post-auth-register": {
+                "description": "ユーザー登録リクエスト",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "name": {
+                                    "description": "ユーザー名",
+                                    "type": "string",
+                                    "maxLength": 100,
+                                    "minLength": 1,
+                                    "example": "テストユーザー"
+                                },
+                                "email": {
+                                    "description": "メールアドレス",
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "test@example.com"
+                                },
+                                "password": {
+                                    "description": "パスワード",
+                                    "type": "string",
+                                    "maxLength": 100,
+                                    "minLength": 8,
+                                    "example": "password"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [
         {
             "name": "Customer",
             "description": "一般会員に関するAPI"
+        },
+        {
+            "name": "Auth",
+            "description": "認証に関するAPI"
         }
     ]
 }
