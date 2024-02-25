@@ -16,14 +16,14 @@
         }
     ],
     "paths": {
-        "/api/customers/{user_id}": {
+        "/api/customers/{user}": {
             "get": {
                 "tags": [
                     "Customer"
                 ],
                 "summary": "会員情報取得",
                 "description": "ユーザー(一般会員)の情報を取得する",
-                "operationId": "c475e8390fa63e285c1df003e9eb3444",
+                "operationId": "d8f9c68ea2839e3a29312982eab6b731",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/user-id"
@@ -76,7 +76,7 @@
         },
         "parameters": {
             "user-id": {
-                "name": "user_id",
+                "name": "user",
                 "in": "path",
                 "description": "ユーザーID",
                 "required": true,

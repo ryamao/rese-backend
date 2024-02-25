@@ -14,8 +14,10 @@
         "vite": "^5.0.0"
     },
     "lint-staged": {
+        "app/**/*.php": [
+            "vendor/bin/phpstan analyse --memory-limit=1G"
+        ],
         "*.php": [
-            "vendor/bin/phpstan analyse --memory-limit=1G",
             "vendor/bin/pint"
         ]
     }

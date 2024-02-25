@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\PathParameter(
     parameter: 'user-id',
-    name: 'user_id',
+    name: 'user',
     description: 'ユーザーID',
     required: true,
     example: 1,
