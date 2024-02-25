@@ -4,12 +4,12 @@ use App\Models\User;
 use Spectator\Spectator;
 
 describe('CustomerController', function () {
-    describe('GET /api/customers/:user_id', function () {
+    describe('GET /customers/:user_id', function () {
         test('会員情報取得成功', function () {
             $user = User::factory()->create();
 
             Spectator::using('api-docs.json');
-            $this->actingAs($user)->getJson("/api/customers/$user->id")
+            $this->actingAs($user)->getJson("/customers/$user->id")
                 ->assertValidRequest()
                 ->assertValidResponse(200);
         });
@@ -18,7 +18,7 @@ describe('CustomerController', function () {
             $user = User::factory()->create();
 
             Spectator::using('api-docs.json');
-            $this->getJson("/api/customers/$user->id")
+            $this->getJson("/customers/$user->id")
                 ->assertValidRequest()
                 ->assertValidResponse(401);
         });
@@ -28,7 +28,7 @@ describe('CustomerController', function () {
             $user2 = User::factory()->create();
 
             Spectator::using('api-docs.json');
-            $this->actingAs($user2)->getJson("/api/customers/$user1->id")
+            $this->actingAs($user2)->getJson("/customers/$user1->id")
                 ->assertValidRequest()
                 ->assertValidResponse(403);
         });
@@ -38,7 +38,7 @@ describe('CustomerController', function () {
             $nonExistentUserId = $user->id + 1;
 
             Spectator::using('api-docs.json');
-            $this->actingAs($user)->getJson("/api/customers/$nonExistentUserId")
+            $this->actingAs($user)->getJson("/customers/$nonExistentUserId")
                 ->assertValidRequest()
                 ->assertValidResponse(404);
         });
