@@ -29,7 +29,7 @@ describe('RegisteredUserController', function () {
             ->assertValidResponse(302);
     });
 
-    test('バリデーションエラー', function (array $testData) {
+    test('バリデーションエラー', function (string ...$testData) {
         Spectator::using('api-docs.json');
 
         $this->postJson('/auth/register', $testData)
