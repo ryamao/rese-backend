@@ -35,4 +35,29 @@ class Auth
     public function register(): void
     {
     }
+
+    #[OA\Post(
+        path: '/auth/login',
+        tags: ['Auth'],
+        summary: 'ログイン',
+        description: 'ユーザー(一般会員)のログイン処理を行う',
+    )]
+    #[OA\RequestBody(
+        ref: '#/components/requestBodies/post-auth-login'
+    )]
+    #[OA\Response(
+        response: 200,
+        ref: '#/components/responses/ok',
+    )]
+    #[OA\Response(
+        response: 302,
+        ref: '#/components/responses/found',
+    )]
+    #[OA\Response(
+        response: 422,
+        ref: '#/components/responses/unprocessable-entity',
+    )]
+    public function login(): void
+    {
+    }
 }
