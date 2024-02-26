@@ -17,6 +17,11 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Response(
+    response: 'no-content',
+    description: 'リクエストが成功しリソースが存在しない',
+)]
+
+#[OA\Response(
     response: 'found',
     description: 'リクエストが成功しリソースが見つかった',
 )]
@@ -34,6 +39,11 @@ use OpenApi\Attributes as OA;
 #[OA\Response(
     response: 'not-found',
     description: '指定されたリソースが存在しない',
+)]
+
+#[OA\Response(
+    response: 'conflict',
+    description: 'リクエストが競合している',
 )]
 
 #[OA\Response(

@@ -60,8 +60,8 @@
                     "201": {
                         "$ref": "#/components/responses/created"
                     },
-                    "302": {
-                        "$ref": "#/components/responses/found"
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
                     },
                     "422": {
                         "$ref": "#/components/responses/unprocessable-entity"
@@ -84,8 +84,8 @@
                     "200": {
                         "$ref": "#/components/responses/ok"
                     },
-                    "302": {
-                        "$ref": "#/components/responses/found"
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
                     },
                     "422": {
                         "$ref": "#/components/responses/unprocessable-entity"
@@ -118,6 +118,9 @@
             "created": {
                 "description": "リクエストが成功しリソースが作成された"
             },
+            "no-content": {
+                "description": "リクエストが成功しリソースが存在しない"
+            },
             "found": {
                 "description": "リクエストが成功しリソースが見つかった"
             },
@@ -129,6 +132,9 @@
             },
             "not-found": {
                 "description": "指定されたリソースが存在しない"
+            },
+            "conflict": {
+                "description": "リクエストが競合している"
             },
             "unprocessable-entity": {
                 "description": "リクエストが正しくない"

@@ -25,8 +25,8 @@ class Auth
         ref: '#/components/responses/created',
     )]
     #[OA\Response(
-        response: 302,
-        ref: '#/components/responses/found',
+        response: 204,
+        ref: '#/components/responses/no-content',
     )]
     #[OA\Response(
         response: 422,
@@ -50,8 +50,8 @@ class Auth
         ref: '#/components/responses/ok',
     )]
     #[OA\Response(
-        response: 302,
-        ref: '#/components/responses/found',
+        response: 204,
+        ref: '#/components/responses/no-content',
     )]
     #[OA\Response(
         response: 422,
