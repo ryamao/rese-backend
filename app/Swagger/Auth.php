@@ -30,7 +30,7 @@ class Auth
     )]
     #[OA\Response(
         response: 422,
-        ref: '#/components/responses/unprocessable-entity',
+        ref: '#/components/responses/post-auth-register-422',
     )]
     public function register(): void
     {
@@ -55,7 +55,7 @@ class Auth
     )]
     #[OA\Response(
         response: 422,
-        ref: '#/components/responses/unprocessable-entity',
+        ref: '#/components/responses/post-auth-login-422',
     )]
     public function login(): void
     {

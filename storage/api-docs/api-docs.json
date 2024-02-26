@@ -64,7 +64,7 @@
                         "$ref": "#/components/responses/no-content"
                     },
                     "422": {
-                        "$ref": "#/components/responses/unprocessable-entity"
+                        "$ref": "#/components/responses/post-auth-register-422"
                     }
                 }
             }
@@ -88,7 +88,7 @@
                         "$ref": "#/components/responses/no-content"
                     },
                     "422": {
-                        "$ref": "#/components/responses/unprocessable-entity"
+                        "$ref": "#/components/responses/post-auth-login-422"
                     }
                 }
             }
@@ -138,6 +138,150 @@
             },
             "unprocessable-entity": {
                 "description": "リクエストが正しくない"
+            },
+            "post-auth-register-422": {
+                "description": "バリデーションエラーまたはメールアドレスが登録済み",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "errors": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "name": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "email": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "password": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "examples": {
+                            "post-auth-register-422-required": {
+                                "summary": "名前、メールアドレス、パスワードが入力されていない場合",
+                                "value": {
+                                    "message": "名前を入力してください (and 2 more errors)",
+                                    "errors": {
+                                        "name": [
+                                            "名前を入力してください"
+                                        ],
+                                        "email": [
+                                            "メールアドレスを入力してください"
+                                        ],
+                                        "password": [
+                                            "パスワードを入力してください"
+                                        ]
+                                    }
+                                }
+                            },
+                            "post-auth-register-422-email": {
+                                "summary": "メールアドレスが正しい形式でない場合",
+                                "value": {
+                                    "message": "メールアドレスを正しい形式で入力してください",
+                                    "errors": {
+                                        "email": [
+                                            "メールアドレスを正しい形式で入力してください"
+                                        ]
+                                    }
+                                }
+                            },
+                            "post-auth-register-422-password": {
+                                "summary": "パスワードが8文字未満の場合",
+                                "value": {
+                                    "message": "パスワードは8文字以上で入力してください",
+                                    "errors": {
+                                        "password": [
+                                            "パスワードは8文字以上で入力してください"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post-auth-login-422": {
+                "description": "バリデーションエラーまたは未登録",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "errors": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "email": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "password": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "examples": {
+                            "post-auth-login-422-required": {
+                                "summary": "メールアドレス、パスワードが入力されていない場合",
+                                "value": {
+                                    "message": "メールアドレスを入力してください (and 1 more error)",
+                                    "errors": {
+                                        "email": [
+                                            "メールアドレスを入力してください"
+                                        ],
+                                        "password": [
+                                            "パスワードを入力してください"
+                                        ]
+                                    }
+                                }
+                            },
+                            "post-auth-login-422-email": {
+                                "summary": "ユーザーが登録されていない場合",
+                                "value": {
+                                    "message": "認証情報が登録されていません",
+                                    "errors": {
+                                        "email": [
+                                            "認証情報が登録されていません"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "parameters": {
