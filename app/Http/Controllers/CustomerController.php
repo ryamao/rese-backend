@@ -10,6 +10,7 @@ use OpenApi\Attributes as OA;
 class CustomerController extends Controller
 {
     #[OA\Get(
+        operationId: 'get-customer',
         path: '/customers/{user}',
         tags: ['Customer'],
         summary: '会員情報取得',

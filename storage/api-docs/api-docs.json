@@ -1,218 +1,375 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "title": "Rese",
-        "description": "Rese API",
-        "version": "0.0.1"
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Rese",
+    "description": "Rese API",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://rese-backend.test",
+      "description": "Local server (Herd)"
     },
-    "servers": [
-        {
-            "url": "http://rese-backend.test",
-            "description": "Local server (Herd)"
-        },
-        {
-            "url": "http://localhost:8000",
-            "description": "Local server (php artisan serve)"
-        }
-    ],
-    "paths": {
-        "/customers/{user}": {
-            "get": {
-                "tags": [
-                    "Customer"
-                ],
-                "summary": "会員情報取得",
-                "description": "ユーザー(一般会員)の情報を取得する",
-                "operationId": "1134bd68d8b36b6e3a5ee9bfdc3eaa3a",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/user-id"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "$ref": "#/components/responses/show-customer-200"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/not-found"
-                    }
-                }
-            }
-        },
-        "/auth/register": {
-            "post": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "会員登録",
-                "description": "ユーザー(一般会員)を新規登録する",
-                "operationId": "c02b8d90b80799edc695e303f20d70a1",
-                "requestBody": {
-                    "$ref": "#/components/requestBodies/post-auth-register"
-                },
-                "responses": {
-                    "201": {
-                        "$ref": "#/components/responses/created"
-                    },
-                    "302": {
-                        "$ref": "#/components/responses/found"
-                    },
-                    "422": {
-                        "$ref": "#/components/responses/unprocessable-entity"
-                    }
-                }
-            }
-        },
-        "/auth/login": {
-            "post": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "ログイン",
-                "description": "ユーザー(一般会員)のログイン処理を行う",
-                "operationId": "552761c30efd62d20edefac9e286daf2",
-                "requestBody": {
-                    "$ref": "#/components/requestBodies/post-auth-login"
-                },
-                "responses": {
-                    "200": {
-                        "$ref": "#/components/responses/ok"
-                    },
-                    "302": {
-                        "$ref": "#/components/responses/found"
-                    },
-                    "422": {
-                        "$ref": "#/components/responses/unprocessable-entity"
-                    }
-                }
-            }
-        }
-    },
-    "components": {
+    {
+      "url": "http://localhost:8000",
+      "description": "Local server (php artisan serve)"
+    }
+  ],
+  "paths": {
+    "/customers/{user}": {
+      "get": {
+        "tags": ["Customer"],
+        "summary": "会員情報取得",
+        "description": "ユーザー(一般会員)の情報を取得する",
+        "operationId": "get-customer",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/user-id"
+          }
+        ],
         "responses": {
-            "show-customer-200": {
-                "description": "OK",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "properties": {
-                                "name": {
-                                    "type": "string",
-                                    "example": "テストユーザー"
-                                }
-                            },
-                            "type": "object"
-                        }
-                    }
-                }
-            },
-            "ok": {
-                "description": "リクエストが成功しリソースが見つかった"
-            },
-            "created": {
-                "description": "リクエストが成功しリソースが作成された"
-            },
-            "found": {
-                "description": "リクエストが成功しリソースが見つかった"
-            },
-            "unauthorized": {
-                "description": "認証エラー"
-            },
-            "forbidden": {
-                "description": "認可エラー"
-            },
-            "not-found": {
-                "description": "指定されたリソースが存在しない"
-            },
-            "unprocessable-entity": {
-                "description": "リクエストが正しくない"
-            }
-        },
-        "parameters": {
-            "user-id": {
-                "name": "user",
-                "in": "path",
-                "description": "ユーザーID",
-                "required": true,
-                "example": 1
-            }
-        },
-        "requestBodies": {
-            "post-auth-register": {
-                "description": "ユーザー登録リクエスト",
-                "required": true,
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "properties": {
-                                "name": {
-                                    "description": "ユーザー名",
-                                    "type": "string",
-                                    "maxLength": 100,
-                                    "minLength": 1,
-                                    "example": "テストユーザー"
-                                },
-                                "email": {
-                                    "description": "メールアドレス",
-                                    "type": "string",
-                                    "format": "email",
-                                    "example": "test@example.com"
-                                },
-                                "password": {
-                                    "description": "パスワード",
-                                    "type": "string",
-                                    "maxLength": 100,
-                                    "minLength": 8,
-                                    "example": "password"
-                                }
-                            },
-                            "type": "object"
-                        }
-                    }
-                }
-            },
-            "post-auth-login": {
-                "description": "ログインリクエスト",
-                "required": true,
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "properties": {
-                                "email": {
-                                    "description": "メールアドレス",
-                                    "type": "string",
-                                    "format": "email",
-                                    "example": "test@example.com"
-                                },
-                                "password": {
-                                    "description": "パスワード",
-                                    "type": "string",
-                                    "maxLength": 100,
-                                    "minLength": 8,
-                                    "example": "password"
-                                }
-                            },
-                            "type": "object"
-                        }
-                    }
-                }
-            }
+          "200": {
+            "$ref": "#/components/responses/show-customer-200"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/not-found"
+          }
         }
+      }
     },
-    "tags": [
-        {
-            "name": "Customer",
-            "description": "一般会員に関するAPI"
-        },
-        {
-            "name": "Auth",
-            "description": "認証に関するAPI"
+    "/sanctum/csrf-cookie": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "CSRFトークン取得",
+        "description": "CSRFトークンを取得する",
+        "operationId": "get-sanctum-csrf-cookie",
+        "responses": {
+          "204": {
+            "$ref": "#/components/responses/get-sanctum-csrf-cookie-204"
+          }
         }
-    ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "会員登録",
+        "description": "ユーザー(一般会員)を新規登録する",
+        "operationId": "post-auth-register",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/post-auth-register"
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/created"
+          },
+          "204": {
+            "$ref": "#/components/responses/no-content"
+          },
+          "422": {
+            "$ref": "#/components/responses/post-auth-register-422"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "ログイン",
+        "description": "ユーザー(一般会員)のログイン処理を行う",
+        "operationId": "post-auth-login",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/post-auth-login"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ok"
+          },
+          "204": {
+            "$ref": "#/components/responses/no-content"
+          },
+          "422": {
+            "$ref": "#/components/responses/post-auth-login-422"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "show-customer-200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "テストユーザー"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "ok": {
+        "description": "リクエストが成功しリソースが見つかった"
+      },
+      "created": {
+        "description": "リクエストが成功しリソースが作成された"
+      },
+      "no-content": {
+        "description": "リクエストが成功しリソースが存在しない"
+      },
+      "found": {
+        "description": "リクエストが成功しリソースが見つかった"
+      },
+      "unauthorized": {
+        "description": "認証エラー"
+      },
+      "forbidden": {
+        "description": "認可エラー"
+      },
+      "not-found": {
+        "description": "指定されたリソースが存在しない"
+      },
+      "conflict": {
+        "description": "リクエストが競合している"
+      },
+      "unprocessable-entity": {
+        "description": "リクエストが正しくない"
+      },
+      "get-sanctum-csrf-cookie-204": {
+        "description": "CSRFトークン取得成功",
+        "headers": {
+          "Set-Cookie": {
+            "description": "CSRFトークンをCookieにセット",
+            "schema": {
+              "type": "string",
+              "example": "XSRF-TOKEN=eyJpdiI6Ij"
+            }
+          }
+        }
+      },
+      "post-auth-register-422": {
+        "description": "バリデーションエラーまたはメールアドレスが登録済み",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "name": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "email": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "password": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              },
+              "type": "object"
+            },
+            "examples": {
+              "post-auth-register-422-required": {
+                "summary": "名前、メールアドレス、パスワードが入力されていない場合",
+                "value": {
+                  "message": "名前を入力してください (and 2 more errors)",
+                  "errors": {
+                    "name": ["名前を入力してください"],
+                    "email": ["メールアドレスを入力してください"],
+                    "password": ["パスワードを入力してください"]
+                  }
+                }
+              },
+              "post-auth-register-422-email": {
+                "summary": "メールアドレスが正しい形式でない場合",
+                "value": {
+                  "message": "メールアドレスを正しい形式で入力してください",
+                  "errors": {
+                    "email": ["メールアドレスを正しい形式で入力してください"]
+                  }
+                }
+              },
+              "post-auth-register-422-password": {
+                "summary": "パスワードが8文字未満の場合",
+                "value": {
+                  "message": "パスワードは8文字以上で入力してください",
+                  "errors": {
+                    "password": ["パスワードは8文字以上で入力してください"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post-auth-login-422": {
+        "description": "バリデーションエラーまたは未登録",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "email": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "password": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              },
+              "type": "object"
+            },
+            "examples": {
+              "post-auth-login-422-required": {
+                "summary": "メールアドレス、パスワードが入力されていない場合",
+                "value": {
+                  "message": "メールアドレスを入力してください (and 1 more error)",
+                  "errors": {
+                    "email": ["メールアドレスを入力してください"],
+                    "password": ["パスワードを入力してください"]
+                  }
+                }
+              },
+              "post-auth-login-422-email": {
+                "summary": "ユーザーが登録されていない場合",
+                "value": {
+                  "message": "認証情報が登録されていません",
+                  "errors": {
+                    "email": ["認証情報が登録されていません"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "user-id": {
+        "name": "user",
+        "in": "path",
+        "description": "ユーザーID",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        }
+      }
+    },
+    "requestBodies": {
+      "post-auth-register": {
+        "description": "ユーザー登録リクエスト",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "name": {
+                  "description": "ユーザー名",
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 1,
+                  "example": "テストユーザー"
+                },
+                "email": {
+                  "description": "メールアドレス",
+                  "type": "string",
+                  "format": "email",
+                  "example": "test@example.com"
+                },
+                "password": {
+                  "description": "パスワード",
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 8,
+                  "example": "password"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "post-auth-login": {
+        "description": "ログインリクエスト",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "email": {
+                  "description": "メールアドレス",
+                  "type": "string",
+                  "format": "email",
+                  "example": "test@example.com"
+                },
+                "password": {
+                  "description": "パスワード",
+                  "type": "string",
+                  "maxLength": 100,
+                  "minLength": 8,
+                  "example": "password"
+                }
+              },
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Customer",
+      "description": "一般会員に関するAPI"
+    },
+    {
+      "name": "Auth",
+      "description": "認証に関するAPI"
+    }
+  ]
 }

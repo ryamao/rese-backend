@@ -26,7 +26,7 @@ describe('RegisteredUserController', function () {
         $this->actingAs($user)
             ->postJson('/auth/register', $requestBody)
             ->assertValidRequest()
-            ->assertValidResponse(302);
+            ->assertValidResponse(204);
     });
 
     test('バリデーションエラー', function (string ...$testData) {

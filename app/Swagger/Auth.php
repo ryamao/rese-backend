@@ -11,7 +11,23 @@ use OpenApi\Attributes as OA;
  */
 class Auth
 {
+    #[OA\Get(
+        operationId: 'get-sanctum-csrf-cookie',
+        path: '/sanctum/csrf-cookie',
+        tags: ['Auth'],
+        summary: 'CSRFトークン取得',
+        description: 'CSRFトークンを取得する',
+    )]
+    #[OA\Response(
+        response: 204,
+        ref: '#/components/responses/get-sanctum-csrf-cookie-204',
+    )]
+    public function sanctumCsrfCookie(): void
+    {
+    }
+
     #[OA\Post(
+        operationId: 'post-auth-register',
         path: '/auth/register',
         tags: ['Auth'],
         summary: '会員登録',
@@ -25,18 +41,19 @@ class Auth
         ref: '#/components/responses/created',
     )]
     #[OA\Response(
-        response: 302,
-        ref: '#/components/responses/found',
+        response: 204,
+        ref: '#/components/responses/no-content',
     )]
     #[OA\Response(
         response: 422,
-        ref: '#/components/responses/unprocessable-entity',
+        ref: '#/components/responses/post-auth-register-422',
     )]
     public function register(): void
     {
     }
 
     #[OA\Post(
+        operationId: 'post-auth-login',
         path: '/auth/login',
         tags: ['Auth'],
         summary: 'ログイン',
@@ -50,12 +67,12 @@ class Auth
         ref: '#/components/responses/ok',
     )]
     #[OA\Response(
-        response: 302,
-        ref: '#/components/responses/found',
+        response: 204,
+        ref: '#/components/responses/no-content',
     )]
     #[OA\Response(
         response: 422,
-        ref: '#/components/responses/unprocessable-entity',
+        ref: '#/components/responses/post-auth-login-422',
     )]
     public function login(): void
     {
