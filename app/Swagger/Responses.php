@@ -7,6 +7,11 @@ namespace App\Swagger;
 use OpenApi\Attributes as OA;
 
 #[OA\Response(
+    response: 'ok',
+    description: 'リクエストが成功しリソースが見つかった',
+)]
+
+#[OA\Response(
     response: 'created',
     description: 'リクエストが成功しリソースが作成された',
 )]

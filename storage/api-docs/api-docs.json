@@ -68,6 +68,30 @@
                     }
                 }
             }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "ログイン",
+                "description": "ユーザー(一般会員)のログイン処理を行う",
+                "operationId": "552761c30efd62d20edefac9e286daf2",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/post-auth-login"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/ok"
+                    },
+                    "302": {
+                        "$ref": "#/components/responses/found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable-entity"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -87,6 +111,9 @@
                         }
                     }
                 }
+            },
+            "ok": {
+                "description": "リクエストが成功しリソースが見つかった"
             },
             "created": {
                 "description": "リクエストが成功しリソースが作成された"
@@ -131,6 +158,32 @@
                                     "minLength": 1,
                                     "example": "テストユーザー"
                                 },
+                                "email": {
+                                    "description": "メールアドレス",
+                                    "type": "string",
+                                    "format": "email",
+                                    "example": "test@example.com"
+                                },
+                                "password": {
+                                    "description": "パスワード",
+                                    "type": "string",
+                                    "maxLength": 100,
+                                    "minLength": 8,
+                                    "example": "password"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "post-auth-login": {
+                "description": "ログインリクエスト",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
                                 "email": {
                                     "description": "メールアドレス",
                                     "type": "string",
