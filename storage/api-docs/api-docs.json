@@ -23,7 +23,7 @@
                 ],
                 "summary": "会員情報取得",
                 "description": "ユーザー(一般会員)の情報を取得する",
-                "operationId": "1134bd68d8b36b6e3a5ee9bfdc3eaa3a",
+                "operationId": "get-customer",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/user-id"
@@ -52,7 +52,7 @@
                 ],
                 "summary": "会員登録",
                 "description": "ユーザー(一般会員)を新規登録する",
-                "operationId": "c02b8d90b80799edc695e303f20d70a1",
+                "operationId": "post-auth-register",
                 "requestBody": {
                     "$ref": "#/components/requestBodies/post-auth-register"
                 },
@@ -76,7 +76,7 @@
                 ],
                 "summary": "ログイン",
                 "description": "ユーザー(一般会員)のログイン処理を行う",
-                "operationId": "552761c30efd62d20edefac9e286daf2",
+                "operationId": "post-auth-login",
                 "requestBody": {
                     "$ref": "#/components/requestBodies/post-auth-login"
                 },

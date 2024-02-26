@@ -12,6 +12,7 @@ use OpenApi\Attributes as OA;
 class Auth
 {
     #[OA\Post(
+        operationId: 'post-auth-register',
         path: '/auth/register',
         tags: ['Auth'],
         summary: '会員登録',
@@ -37,6 +38,7 @@ class Auth
     }
 
     #[OA\Post(
+        operationId: 'post-auth-login',
         path: '/auth/login',
         tags: ['Auth'],
         summary: 'ログイン',
