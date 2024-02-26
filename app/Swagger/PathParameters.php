@@ -11,7 +11,11 @@ use OpenApi\Attributes as OA;
     name: 'user',
     description: 'ユーザーID',
     required: true,
-    example: 1,
+    schema: new OA\Schema(
+        type: 'integer',
+        format: 'int64',
+        example: 1,
+    ),
 )]
 
 class PathParameters

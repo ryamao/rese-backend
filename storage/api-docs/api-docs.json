@@ -290,7 +290,11 @@
                 "in": "path",
                 "description": "ユーザーID",
                 "required": true,
-                "example": 1
+                "schema": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 1
+                }
             }
         },
         "requestBodies": {
