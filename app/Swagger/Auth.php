@@ -11,6 +11,21 @@ use OpenApi\Attributes as OA;
  */
 class Auth
 {
+    #[OA\Get(
+        operationId: 'get-sanctum-csrf-cookie',
+        path: '/sanctum/csrf-cookie',
+        tags: ['Auth'],
+        summary: 'CSRFトークン取得',
+        description: 'CSRFトークンを取得する',
+    )]
+    #[OA\Response(
+        response: 204,
+        ref: '#/components/responses/get-sanctum-csrf-cookie-204',
+    )]
+    public function sanctumCsrfCookie(): void
+    {
+    }
+
     #[OA\Post(
         operationId: 'post-auth-register',
         path: '/auth/register',

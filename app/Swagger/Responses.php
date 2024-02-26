@@ -52,6 +52,21 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Response(
+    response: 'get-sanctum-csrf-cookie-204',
+    description: 'CSRFトークン取得成功',
+    headers: [
+        new OA\Header(
+            header: 'Set-Cookie',
+            description: 'CSRFトークンをCookieにセット',
+            schema: new OA\Schema(
+                type: 'string',
+                example: 'XSRF-TOKEN=eyJpdiI6Ij',
+            )
+        )
+    ]
+)]
+
+#[OA\Response(
     response: 'post-auth-register-422',
     description: 'バリデーションエラーまたはメールアドレスが登録済み',
     content: new OA\JsonContent(
