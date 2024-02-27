@@ -58,6 +58,7 @@ use OpenApi\Attributes as OA;
         new OA\Header(
             header: 'Set-Cookie',
             description: 'CSRFトークンをCookieにセット',
+            required: true,
             schema: new OA\Schema(
                 type: 'string',
                 example: 'XSRF-TOKEN=eyJpdiI6Ij',
@@ -70,6 +71,7 @@ use OpenApi\Attributes as OA;
     response: 'post-auth-register-422',
     description: 'バリデーションエラーまたはメールアドレスが登録済み',
     content: new OA\JsonContent(
+        required: ['message', 'errors'],
         properties: [
             new OA\Property(
                 property: 'message',
@@ -77,32 +79,29 @@ use OpenApi\Attributes as OA;
             ),
             new OA\Property(
                 property: 'errors',
-                type: 'array',
-                items: new OA\Items(
-                    properties: [
-                        new OA\Property(
-                            property: 'name',
-                            type: 'array',
-                            items: new OA\Items(
-                                type: 'string'
-                            )
-                        ),
-                        new OA\Property(
-                            property: 'email',
-                            type: 'array',
-                            items: new OA\Items(
-                                type: 'string'
-                            )
-                        ),
-                        new OA\Property(
-                            property: 'password',
-                            type: 'array',
-                            items: new OA\Items(
-                                type: 'string'
-                            )
-                        ),
-                    ]
-                )
+                properties: [
+                    new OA\Property(
+                        property: 'name',
+                        type: 'array',
+                        items: new OA\Items(
+                            type: 'string'
+                        )
+                    ),
+                    new OA\Property(
+                        property: 'email',
+                        type: 'array',
+                        items: new OA\Items(
+                            type: 'string'
+                        )
+                    ),
+                    new OA\Property(
+                        property: 'password',
+                        type: 'array',
+                        items: new OA\Items(
+                            type: 'string'
+                        )
+                    ),
+                ]
             ),
         ],
         examples: [
@@ -146,6 +145,7 @@ use OpenApi\Attributes as OA;
     response: 'post-auth-login-422',
     description: 'バリデーションエラーまたは未登録',
     content: new OA\JsonContent(
+        required: ['message', 'errors'],
         properties: [
             new OA\Property(
                 property: 'message',
@@ -153,25 +153,22 @@ use OpenApi\Attributes as OA;
             ),
             new OA\Property(
                 property: 'errors',
-                type: 'array',
-                items: new OA\Items(
-                    properties: [
-                        new OA\Property(
-                            property: 'email',
-                            type: 'array',
-                            items: new OA\Items(
-                                type: 'string'
-                            )
-                        ),
-                        new OA\Property(
-                            property: 'password',
-                            type: 'array',
-                            items: new OA\Items(
-                                type: 'string'
-                            )
-                        ),
-                    ]
-                )
+                properties: [
+                    new OA\Property(
+                        property: 'email',
+                        type: 'array',
+                        items: new OA\Items(
+                            type: 'string'
+                        )
+                    ),
+                    new OA\Property(
+                        property: 'password',
+                        type: 'array',
+                        items: new OA\Items(
+                            type: 'string'
+                        )
+                    ),
+                ]
             ),
         ],
         examples: [
@@ -194,6 +191,43 @@ use OpenApi\Attributes as OA;
                     'errors' => [
                         'email' => ['認証情報が登録されていません'],
                     ],
+                ]
+            ),
+        ]
+    )
+)]
+
+#[OA\Response(
+    response: 'get-auth-status-200',
+    description: '認証状態取得成功',
+    content: new OA\JsonContent(
+        required: ['status'],
+        properties: [
+            new OA\Property(
+                property: 'status',
+                type: 'string',
+                enum: ['guest', 'customer']
+            ),
+            new OA\Property(
+                property: 'id',
+                type: 'integer',
+                format: 'int64'
+            ),
+        ],
+        examples: [
+            'guest' => new OA\Examples(
+                example: 'get-auth-status-200-guest',
+                summary: '未認証の状態',
+                value: [
+                    'status' => 'guest',
+                ]
+            ),
+            'customer' => new OA\Examples(
+                example: 'get-auth-status-200-customer',
+                summary: '一般会員として認証済みの状態',
+                value: [
+                    'status' => 'customer',
+                    'id' => 1,
                 ]
             ),
         ]

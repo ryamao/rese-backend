@@ -77,4 +77,19 @@ class Auth
     public function login(): void
     {
     }
+
+    #[OA\Post(
+        operationId: 'post-auth-logout',
+        path: '/auth/logout',
+        tags: ['Auth'],
+        summary: 'ログアウト',
+        description: 'ユーザー(一般会員)のログアウト処理を行う',
+    )]
+    #[OA\Response(
+        response: 204,
+        ref: '#/components/responses/no-content',
+    )]
+    public function logout(): void
+    {
+    }
 }
