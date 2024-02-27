@@ -11,6 +11,7 @@ use OpenApi\Attributes as OA;
     description: 'ユーザー登録リクエスト',
     required: true,
     content: new OA\JsonContent(
+        required: ['name', 'email', 'password'],
         properties: [
             new OA\Property(
                 property: 'name',
@@ -44,6 +45,7 @@ use OpenApi\Attributes as OA;
     description: 'ログインリクエスト',
     required: true,
     content: new OA\JsonContent(
+        required: ['email', 'password'],
         properties: [
             new OA\Property(
                 property: 'email',

@@ -11,6 +11,7 @@ use OpenApi\Attributes as OA;
     description: 'OK',
     content: [
         new OA\JsonContent(
+            required: ['name'],
             properties: [
                 new OA\Property(
                     property: 'name',
