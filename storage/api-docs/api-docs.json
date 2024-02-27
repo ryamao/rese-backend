@@ -107,6 +107,21 @@
                     }
                 }
             }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "ログアウト",
+                "description": "ユーザー(一般会員)のログアウト処理を行う",
+                "operationId": "post-auth-logout",
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
+                    }
+                }
+            }
         }
     },
     "components": {
