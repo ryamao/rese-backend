@@ -47,4 +47,25 @@ describe('AuthenticatedSessionController', function () {
                 'password is empty' => array_merge($requestBody, ['password' => '']),
             ]);
     });
+
+    describe('POST /auth/logout', function () {
+        test('ログアウト成功', function () {
+            Spectator::using('api-docs.json');
+
+            $user = User::factory()->create();
+
+            $this->actingAs($user)
+                ->postJson('/auth/logout')
+                ->assertValidRequest()
+                ->assertValidResponse(204);
+        });
+
+        test('未認証ユーザーがログアウトを行う', function () {
+            Spectator::using('api-docs.json');
+
+            $this->postJson('/auth/logout')
+                ->assertValidRequest()
+                ->assertValidResponse(204);
+        });
+    });
 });
