@@ -16,6 +16,21 @@
         }
     ],
     "paths": {
+        "/auth/status": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "認証状態取得",
+                "description": "認証状態を取得する",
+                "operationId": "get-auth-status",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-auth-status-200"
+                    }
+                }
+            }
+        },
         "/customers/{user}": {
             "get": {
                 "tags": [
@@ -325,6 +340,47 @@
                                             "認証情報が登録されていません"
                                         ]
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get-auth-status-200": {
+                "description": "認証状態取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "status"
+                            ],
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "enum": [
+                                        "guest",
+                                        "customer"
+                                    ]
+                                },
+                                "id": {
+                                    "type": "integer",
+                                    "format": "int64"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "examples": {
+                            "get-auth-status-200-guest": {
+                                "summary": "未認証の状態",
+                                "value": {
+                                    "status": "guest"
+                                }
+                            },
+                            "get-auth-status-200-customer": {
+                                "summary": "一般会員として認証済みの状態",
+                                "value": {
+                                    "status": "customer",
+                                    "id": 1
                                 }
                             }
                         }

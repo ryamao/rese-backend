@@ -197,6 +197,43 @@ use OpenApi\Attributes as OA;
     )
 )]
 
+#[OA\Response(
+    response: 'get-auth-status-200',
+    description: '認証状態取得成功',
+    content: new OA\JsonContent(
+        required: ['status'],
+        properties: [
+            new OA\Property(
+                property: 'status',
+                type: 'string',
+                enum: ['guest', 'customer']
+            ),
+            new OA\Property(
+                property: 'id',
+                type: 'integer',
+                format: 'int64'
+            ),
+        ],
+        examples: [
+            'guest' => new OA\Examples(
+                example: 'get-auth-status-200-guest',
+                summary: '未認証の状態',
+                value: [
+                    'status' => 'guest',
+                ]
+            ),
+            'customer' => new OA\Examples(
+                example: 'get-auth-status-200-customer',
+                summary: '一般会員として認証済みの状態',
+                value: [
+                    'status' => 'customer',
+                    'id' => 1,
+                ]
+            ),
+        ]
+    )
+)]
+
 class Responses
 {
 }
