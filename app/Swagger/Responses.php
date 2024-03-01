@@ -282,6 +282,49 @@ use OpenApi\Attributes as OA;
     )
 )]
 
+#[OA\Response(
+    response: 'get-genres-200',
+    description: 'ジャンル一覧取得成功',
+    content: new OA\JsonContent(
+        type: 'object',
+        required: ['genres'],
+        properties: [
+            new OA\Property(
+                property: 'genres',
+                type: 'array',
+                items: new OA\Items(
+                    type: 'object',
+                    required: ['id', 'name'],
+                    properties: [
+                        new OA\Property(
+                            property: 'id',
+                            type: 'integer',
+                            format: 'int64'
+                        ),
+                        new OA\Property(
+                            property: 'name',
+                            type: 'string'
+                        ),
+                    ]
+                )
+            ),
+        ],
+        examples: [
+            'example' => new OA\Examples(
+                example: 'get-genres-200-example',
+                summary: 'ジャンル一覧の例',
+                value: [
+                    'genres' => [
+                        ['id' => 1, 'name' => '和食'],
+                        ['id' => 2, 'name' => '中華'],
+                        ['id' => 3, 'name' => 'イタリアン'],
+                    ],
+                ]
+            ),
+        ]
+    )
+)]
+
 class Responses
 {
 }

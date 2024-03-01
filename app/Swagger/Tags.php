@@ -21,6 +21,11 @@ use OpenApi\Attributes as OA;
     description: '一般会員に関するAPI'
 )]
 
+#[OA\Tag(
+    name: 'Genre',
+    description: 'ジャンルに関するAPI'
+)]
+
 class Tags
 {
 }
