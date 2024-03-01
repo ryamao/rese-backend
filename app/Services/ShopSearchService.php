@@ -14,10 +14,13 @@ class ShopSearchService
 
     private readonly ?int $genreId;
 
+    private readonly ?string $search;
+
     public function __construct(Request $request)
     {
         $this->areaId = $this->getId($request, 'area');
         $this->genreId = $this->getId($request, 'genre');
+        $this->search = $this->getSearch($request);
     }
 
     /**
@@ -33,6 +36,9 @@ class ShopSearchService
         if ($this->genreId !== null) {
             $shops->where('genre_id', $this->genreId);
         }
+        if ($this->search !== null) {
+            $shops->where('name', 'like', "%{$this->search}%");
+        }
 
         return $shops;
     }
@@ -44,5 +50,16 @@ class ShopSearchService
         }
 
         return (int) $request->query($key);
+    }
+
+    private function getSearch(Request $request): ?string
+    {
+        $search = $request->query('search');
+
+        if (is_array($search) || is_null($search)) {
+            return null;
+        }
+
+        return addcslashes($search, '%_\\');
     }
 }
