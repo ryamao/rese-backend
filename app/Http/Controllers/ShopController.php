@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\ShopIndexResource;
+use App\Models\Shop;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use OpenApi\Attributes as OA;
 
 class ShopController extends Controller
@@ -22,8 +25,10 @@ class ShopController extends Controller
         response: 200,
         ref: '#/components/responses/get-shops-200'
     )]
-    public function index(): JsonResponse
+    public function index(Request $request): AnonymousResourceCollection
     {
-        return response()->json();
+        $shops = Shop::with(['area', 'genre'])->paginate(10);
+
+        return ShopIndexResource::collection($shops);
     }
 }

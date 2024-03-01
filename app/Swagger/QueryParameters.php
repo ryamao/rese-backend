@@ -15,7 +15,6 @@ use OpenApi\Attributes as OA;
     schema: new OA\Schema(
         type: 'integer',
         format: 'int64',
-        example: 1,
     ),
 )]
 
@@ -28,7 +27,6 @@ use OpenApi\Attributes as OA;
     schema: new OA\Schema(
         type: 'integer',
         format: 'int64',
-        example: 1,
     ),
 )]
 
@@ -40,7 +38,6 @@ use OpenApi\Attributes as OA;
     required: false,
     schema: new OA\Schema(
         type: 'string',
-        example: '屋',
     ),
 )]
 
