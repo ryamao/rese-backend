@@ -75,6 +75,21 @@
                 }
             }
         },
+        "/genres": {
+            "get": {
+                "tags": [
+                    "Genre"
+                ],
+                "summary": "ジャンル一覧取得",
+                "description": "ジャンル一覧を取得する",
+                "operationId": "get-genres",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-genres-200"
+                    }
+                }
+            }
+        },
         "/sanctum/csrf-cookie": {
             "get": {
                 "tags": [
@@ -456,6 +471,61 @@
                         }
                     }
                 }
+            },
+            "get-genres-200": {
+                "description": "ジャンル一覧取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "genres"
+                            ],
+                            "properties": {
+                                "genres": {
+                                    "type": "array",
+                                    "items": {
+                                        "required": [
+                                            "id",
+                                            "name"
+                                        ],
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "format": "int64"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "examples": {
+                            "get-genres-200-example": {
+                                "summary": "ジャンル一覧の例",
+                                "value": {
+                                    "genres": [
+                                        {
+                                            "id": 1,
+                                            "name": "和食"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "name": "中華"
+                                        },
+                                        {
+                                            "id": 3,
+                                            "name": "イタリアン"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "parameters": {
@@ -554,6 +624,10 @@
         {
             "name": "Customer",
             "description": "一般会員に関するAPI"
+        },
+        {
+            "name": "Genre",
+            "description": "ジャンルに関するAPI"
         }
     ]
 }
