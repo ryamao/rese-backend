@@ -3,6 +3,7 @@
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthenticationStatusController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\GenreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/areas', [AreaController::class, 'index']);
+Route::get('/genres', [GenreController::class, 'index']);
 
 Route::get('/auth/status', [AuthenticationStatusController::class, 'show']);
 

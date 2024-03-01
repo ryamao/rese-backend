@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Genre;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
 
@@ -20,6 +21,8 @@ class GenreController extends Controller
     )]
     public function index(): JsonResponse
     {
-        return response()->json();
+        return response()->json([
+            'genres' => Genre::select('id', 'name')->get(),
+        ]);
     }
 }
