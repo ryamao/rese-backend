@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
 
@@ -20,14 +21,8 @@ class AreaController extends Controller
     )]
     public function index(): JsonResponse
     {
-        return response()->json(
-            [
-                'areas' => [
-                    ['id' => 1, 'name' => '東京'],
-                    ['id' => 2, 'name' => '大阪'],
-                    ['id' => 3, 'name' => '福岡'],
-                ],
-            ]
-        );
+        return response()->json([
+            'areas' => Area::select('id', 'name')->get(),
+        ]);
     }
 }

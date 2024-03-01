@@ -435,7 +435,7 @@
                         },
                         "examples": {
                             "get-areas-200-example": {
-                                "summary": "エリア一覧取得例",
+                                "summary": "エリア一覧の例",
                                 "value": {
                                     "areas": [
                                         {
