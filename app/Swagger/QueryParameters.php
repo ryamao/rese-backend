@@ -41,6 +41,18 @@ use OpenApi\Attributes as OA;
     ),
 )]
 
+#[OA\QueryParameter(
+    parameter: 'page-query',
+    name: 'page',
+    in: 'query',
+    description: 'ページ番号',
+    required: false,
+    schema: new OA\Schema(
+        type: 'integer',
+        format: 'int32',
+    ),
+)]
+
 class QueryParameters
 {
 }

@@ -107,6 +107,9 @@
                     },
                     {
                         "$ref": "#/components/parameters/search-query"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page-query"
                     }
                 ],
                 "responses": {
@@ -1064,6 +1067,16 @@
                 "required": false,
                 "schema": {
                     "type": "string"
+                }
+            },
+            "page-query": {
+                "name": "page",
+                "in": "query",
+                "description": "ページ番号",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "format": "int32"
                 }
             }
         },
