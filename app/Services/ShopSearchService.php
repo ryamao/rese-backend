@@ -12,9 +12,12 @@ class ShopSearchService
 {
     private readonly ?int $areaId;
 
+    private readonly ?int $genreId;
+
     public function __construct(Request $request)
     {
-        $this->areaId = $this->getAreaId($request);
+        $this->areaId = $this->getId($request, 'area');
+        $this->genreId = $this->getId($request, 'genre');
     }
 
     /**
@@ -27,16 +30,19 @@ class ShopSearchService
         if ($this->areaId !== null) {
             $shops->where('area_id', $this->areaId);
         }
+        if ($this->genreId !== null) {
+            $shops->where('genre_id', $this->genreId);
+        }
 
         return $shops;
     }
 
-    private function getAreaId(Request $request): ?int
+    private function getId(Request $request, string $key): ?int
     {
-        if (filter_var($request->query('area'), FILTER_VALIDATE_INT) === false) {
+        if (filter_var($request->query($key), FILTER_VALIDATE_INT) === false) {
             return null;
         }
 
-        return (int) $request->query('area');
+        return (int) $request->query($key);
     }
 }
