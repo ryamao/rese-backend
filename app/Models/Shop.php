@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $detail
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property \App\Models\Area $area
- * @property \App\Models\Genre $genre
+ * @property-read \App\Models\Area $area
+ * @property-read \App\Models\Genre $genre
  */
 class Shop extends Model
 {

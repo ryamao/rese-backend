@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Swagger;
 
+use App\Types\FavoriteStatus;
 use OpenApi\Attributes as OA;
 
 #[OA\Response(
@@ -367,7 +368,7 @@ use OpenApi\Attributes as OA;
                                 new OA\Property(
                                     property: 'favorite_status',
                                     type: 'string',
-                                    enum: ['unknown', 'marked', 'unmarked'],
+                                    enum: FavoriteStatus::class,
                                 ),
                             ]
                         )

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
- * @property \Illuminate\Database\Eloquent\Collection<\App\Models\Shop> $shops
+ * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Shop> $shops
  */
 class Genre extends Model
 {

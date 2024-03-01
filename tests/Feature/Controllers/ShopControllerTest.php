@@ -5,11 +5,12 @@ declare(strict_types=1);
 use App\Models\Area;
 use App\Models\Genre;
 use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Spectator\Spectator;
 
 describe('ShopController', function () {
-    describe('GET /shops', function () {
+    describe('飲食店一覧取得', function () {
         beforeEach(function () {
             $areas = Area::factory(3)
                 ->state(new Sequence(
@@ -95,6 +96,45 @@ describe('ShopController', function () {
                 ->assertValidRequest()
                 ->assertValidResponse(200)
                 ->assertJsonCount(10, 'data');
+        });
+    });
+
+    describe('お気に入り取得', function () {
+        beforeEach(function () {
+            $user1 = User::factory()->create(['name' => 'user1']);
+            $user2 = User::factory()->create(['name' => 'user2']);
+
+            $shop = Shop::factory()->create(['name' => 'shop1']);
+            $user2->favoriteShops()->attach($shop);
+        });
+
+        test('未ログイン', function () {
+            Spectator::using('api-docs.json');
+
+            $this->getJson('/shops')
+                ->assertValidRequest()
+                ->assertValidResponse(200)
+                ->assertJsonPath('data.0.favorite_status', 'unknown');
+        });
+
+        test('お気に入り未登録', function () {
+            Spectator::using('api-docs.json');
+
+            $this->actingAs(User::firstWhere('name', 'user1'))
+                ->getJson('/shops')
+                ->assertValidRequest()
+                ->assertValidResponse(200)
+                ->assertJsonPath('data.0.favorite_status', 'unmarked');
+        });
+
+        test('お気に入り登録済み', function () {
+            Spectator::using('api-docs.json');
+
+            $this->actingAs(User::firstWhere('name', 'user2'))
+                ->getJson('/shops')
+                ->assertValidRequest()
+                ->assertValidResponse(200)
+                ->assertJsonPath('data.0.favorite_status', 'marked');
         });
     });
 });
