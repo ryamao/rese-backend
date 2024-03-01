@@ -228,8 +228,15 @@
                             },
                             "from": {
                                 "description": "現在のページの最初のレコード番号",
-                                "type": "integer",
-                                "minimum": 1
+                                "anyOf": [
+                                    {
+                                        "type": "null"
+                                    },
+                                    {
+                                        "type": "integer",
+                                        "minimum": 1
+                                    }
+                                ]
                             },
                             "last_page": {
                                 "description": "最終ページ番号",
@@ -282,8 +289,15 @@
                             },
                             "to": {
                                 "description": "現在のページの最後のレコード番号",
-                                "type": "integer",
-                                "minimum": 1
+                                "anyOf": [
+                                    {
+                                        "type": "null"
+                                    },
+                                    {
+                                        "type": "integer",
+                                        "minimum": 1
+                                    }
+                                ]
                             },
                             "total": {
                                 "description": "総件数",

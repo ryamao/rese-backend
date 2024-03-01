@@ -382,16 +382,16 @@ use OpenApi\Attributes as OA;
                 value: [
                     'meta' => [
                         'current_page' => 1,
-                        'from' => 0,
+                        'from' => null,
                         'last_page' => 1,
                         'path' => 'https://api.rese.com/shops',
                         'per_page' => 10,
-                        'to' => 0,
+                        'to' => null,
                         'total' => 0,
                     ],
                     'links' => [
                         ['url' => null, 'label' => '&laquo; Previous', 'active' => false],
-                        ['url' => 'https://api.rese.com/shops?page=1', 'label' => '1', 'active' => true],
+                        ['url' => 'https://api.rese.com/shops?page=1', 'label' => '1', 'active' => false],
                         ['url' => null, 'label' => 'Next &raquo;', 'active' => false],
                     ],
                     'data' => [],
