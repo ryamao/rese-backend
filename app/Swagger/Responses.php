@@ -71,6 +71,7 @@ use OpenApi\Attributes as OA;
     response: 'post-auth-register-422',
     description: 'バリデーションエラーまたはメールアドレスが登録済み',
     content: new OA\JsonContent(
+        type: 'object',
         required: ['message', 'errors'],
         properties: [
             new OA\Property(
@@ -79,6 +80,7 @@ use OpenApi\Attributes as OA;
             ),
             new OA\Property(
                 property: 'errors',
+                type: 'object',
                 properties: [
                     new OA\Property(
                         property: 'name',
@@ -145,6 +147,7 @@ use OpenApi\Attributes as OA;
     response: 'post-auth-login-422',
     description: 'バリデーションエラーまたは未登録',
     content: new OA\JsonContent(
+        type: 'object',
         required: ['message', 'errors'],
         properties: [
             new OA\Property(
@@ -153,6 +156,7 @@ use OpenApi\Attributes as OA;
             ),
             new OA\Property(
                 property: 'errors',
+                type: 'object',
                 properties: [
                     new OA\Property(
                         property: 'email',
@@ -201,6 +205,7 @@ use OpenApi\Attributes as OA;
     response: 'get-auth-status-200',
     description: '認証状態取得成功',
     content: new OA\JsonContent(
+        type: 'object',
         required: ['status'],
         properties: [
             new OA\Property(
@@ -228,6 +233,49 @@ use OpenApi\Attributes as OA;
                 value: [
                     'status' => 'customer',
                     'id' => 1,
+                ]
+            ),
+        ]
+    )
+)]
+
+#[OA\Response(
+    response: 'get-areas-200',
+    description: 'エリア一覧取得成功',
+    content: new OA\JsonContent(
+        type: 'object',
+        required: ['areas'],
+        properties: [
+            new OA\Property(
+                property: 'areas',
+                type: 'array',
+                items: new OA\Items(
+                    type: 'object',
+                    required: ['id', 'name'],
+                    properties: [
+                        new OA\Property(
+                            property: 'id',
+                            type: 'integer',
+                            format: 'int64'
+                        ),
+                        new OA\Property(
+                            property: 'name',
+                            type: 'string'
+                        ),
+                    ]
+                )
+            ),
+        ],
+        examples: [
+            'example' => new OA\Examples(
+                example: 'get-areas-200-example',
+                summary: 'エリア一覧の例',
+                value: [
+                    'areas' => [
+                        ['id' => 1, 'name' => '東京'],
+                        ['id' => 2, 'name' => '大阪'],
+                        ['id' => 3, 'name' => '福岡'],
+                    ],
                 ]
             ),
         ]

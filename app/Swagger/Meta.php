@@ -13,12 +13,12 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Server(
-    url: 'http://rese-backend.test',
-    description: 'Local server (Herd)',
-)]
-#[OA\Server(
     url: 'http://localhost:8000',
     description: 'Local server (php artisan serve)',
+)]
+#[OA\Server(
+    url: 'http://rese-backend.test',
+    description: 'Local server (Herd)',
 )]
 
 class Meta
