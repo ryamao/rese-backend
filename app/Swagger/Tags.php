@@ -26,6 +26,11 @@ use OpenApi\Attributes as OA;
     description: 'ジャンルに関するAPI'
 )]
 
+#[OA\Tag(
+    name: 'Shop',
+    description: '飲食店に関するAPI'
+)]
+
 class Tags
 {
 }

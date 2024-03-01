@@ -325,6 +325,148 @@ use OpenApi\Attributes as OA;
     )
 )]
 
+#[OA\Response(
+    response: 'get-shops-200',
+    description: '飲食店一覧取得成功',
+    content: new OA\JsonContent(
+        allOf: [
+            new OA\Schema(ref: '#/components/schemas/pagination'),
+            new OA\Schema(
+                type: 'object',
+                required: ['data'],
+                properties: [
+                    new OA\Property(
+                        property: 'data',
+                        type: 'array',
+                        items: new OA\Items(
+                            type: 'object',
+                            required: ['id', 'name', 'area', 'genre', 'image_url', 'favorite_status'],
+                            properties: [
+                                new OA\Property(
+                                    property: 'id',
+                                    type: 'integer',
+                                    format: 'int64'
+                                ),
+                                new OA\Property(
+                                    property: 'name',
+                                    type: 'string'
+                                ),
+                                new OA\Property(
+                                    property: 'area',
+                                    type: 'string',
+                                ),
+                                new OA\Property(
+                                    property: 'genre',
+                                    type: 'string',
+                                ),
+                                new OA\Property(
+                                    property: 'image_url',
+                                    type: 'string',
+                                    format: 'uri',
+                                ),
+                                new OA\Property(
+                                    property: 'favorite_status',
+                                    type: 'string',
+                                    enum: ['unknown', 'marked', 'unmarked'],
+                                ),
+                            ]
+                        )
+                    ),
+                ],
+            ),
+        ],
+        examples: [
+            'empty' => new OA\Examples(
+                example: 'get-shops-200-empty',
+                summary: '該当する飲食店がない場合',
+                value: [
+                    'total' => 0,
+                    'per_page' => 10,
+                    'current_page' => 1,
+                    'last_page' => 1,
+                    'first_page_url' => 'https://rese.com/shops?page=1',
+                    'last_page_url' => 'https://rese.com/shops?page=1',
+                    'next_page_url' => null,
+                    'prev_page_url' => null,
+                    'path' => 'https://rese.com/shops',
+                    'from' => 0,
+                    'to' => 0,
+                    'data' => [],
+                ]
+            ),
+            'first-page' => new OA\Examples(
+                example: 'get-shops-200-first-page',
+                summary: '1ページ目の飲食店一覧',
+                value: [
+                    'total' => 12,
+                    'per_page' => 5,
+                    'current_page' => 1,
+                    'last_page' => 3,
+                    'first_page_url' => 'https://rese.com/shops?page=1',
+                    'last_page_url' => 'https://rese.com/shops?page=3',
+                    'next_page_url' => 'https://rese.com/shops?page=2',
+                    'prev_page_url' => null,
+                    'path' => 'https://rese.com/shops',
+                    'from' => 1,
+                    'to' => 5,
+                    'data' => [
+                        ['id' => 1, 'name' => '店舗1', 'area' => '東京', 'genre' => '和食', 'image_url' => 'https://rese.com/images/1.jpg', 'favorite_status' => 'unknown'],
+                        ['id' => 2, 'name' => '店舗2', 'area' => '大阪', 'genre' => '中華', 'image_url' => 'https://rese.com/images/2.jpg', 'favorite_status' => 'marked'],
+                        ['id' => 3, 'name' => '店舗3', 'area' => '福岡', 'genre' => 'イタリアン', 'image_url' => 'https://rese.com/images/3.jpg', 'favorite_status' => 'unmarked'],
+                        ['id' => 4, 'name' => '店舗4', 'area' => '東京', 'genre' => '和食', 'image_url' => 'https://rese.com/images/4.jpg', 'favorite_status' => 'unknown'],
+                        ['id' => 5, 'name' => '店舗5', 'area' => '大阪', 'genre' => '中華', 'image_url' => 'https://rese.com/images/5.jpg', 'favorite_status' => 'marked'],
+                    ],
+                ]
+            ),
+            'middle-page' => new OA\Examples(
+                example: 'get-shops-200-middle-page',
+                summary: '2ページ目の飲食店一覧',
+                value: [
+                    'total' => 12,
+                    'per_page' => 5,
+                    'current_page' => 2,
+                    'last_page' => 3,
+                    'first_page_url' => 'https://rese.com/shops?page=1',
+                    'last_page_url' => 'https://rese.com/shops?page=3',
+                    'next_page_url' => 'https://rese.com/shops?page=3',
+                    'prev_page_url' => 'https://rese.com/shops?page=1',
+                    'path' => 'https://rese.com/shops',
+                    'from' => 6,
+                    'to' => 10,
+                    'data' => [
+                        ['id' => 6, 'name' => '店舗6', 'area' => '福岡', 'genre' => 'イタリアン', 'image_url' => 'https://rese.com/images/6.jpg', 'favorite_status' => 'unmarked'],
+                        ['id' => 7, 'name' => '店舗7', 'area' => '東京', 'genre' => '和食', 'image_url' => 'https://rese.com/images/7.jpg', 'favorite_status' => 'unknown'],
+                        ['id' => 8, 'name' => '店舗8', 'area' => '大阪', 'genre' => '中華', 'image_url' => 'https://rese.com/images/8.jpg', 'favorite_status' => 'marked'],
+                        ['id' => 9, 'name' => '店舗9', 'area' => '福岡', 'genre' => 'イタリアン', 'image_url' => 'https://rese.com/images/9.jpg', 'favorite_status' => 'unmarked'],
+                        ['id' => 10, 'name' => '店舗10', 'area' => '東京', 'genre' => '和食', 'image_url' => 'https://rese.com/images/10.jpg', 'favorite_status' => 'unknown'],
+                    ],
+                ]
+            ),
+            'last-page' => new OA\Examples(
+                example: 'get-shops-200-last-page',
+                summary: '3ページ目の飲食店一覧',
+                value: [
+                    'total' => 12,
+                    'per_page' => 5,
+                    'current_page' => 3,
+                    'last_page' => 3,
+                    'first_page_url' => 'https://rese.com/shops?page=1',
+                    'last_page_url' => 'https://rese.com/shops?page=3',
+                    'next_page_url' => null,
+                    'prev_page_url' => 'https://rese.com/shops?page=2',
+                    'path' => 'https://rese.com/shops',
+                    'from' => 11,
+                    'to' => 12,
+                    'data' => [
+                        ['id' => 11, 'name' => '店舗11', 'area' => '大阪', 'genre' => '中華', 'image_url' => 'https://rese.com/images/11.jpg', 'favorite_status' => 'marked'],
+                        ['id' => 12, 'name' => '店舗12', 'area' => '福岡', 'genre' => 'イタリアン', 'image_url' => 'https://rese.com/images/12.jpg', 'favorite_status' => 'unmarked'],
+                    ],
+                ]
+            ),
+        ]
+    ),
+)]
+
 class Responses
 {
 }
