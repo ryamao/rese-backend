@@ -37,9 +37,19 @@ class CustomerFavoriteController extends Controller
         response: 404,
         ref: '#/components/responses/not-found',
     )]
+    #[OA\Response(
+        response: 422,
+        ref: '#/components/responses/unprocessable-entity',
+    )]
     public function store(User $user, Shop $shop): Response
     {
         Gate::allowIf(fn (User $authUser) => $user->is($authUser));
+
+        if ($user->favoriteShops()->where('shop_id', $shop->id)->exists()) {
+            return response()->noContent(422);
+        }
+
+        $user->favoriteShops()->attach($shop);
 
         return response()->noContent(201);
     }

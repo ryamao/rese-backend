@@ -17,6 +17,11 @@ describe('CustomerFavoriteController', function () {
 
             $response->assertValidRequest();
             $response->assertValidResponse(201);
+
+            $this->assertDatabaseHas('favorites', [
+                'user_id' => $user->id,
+                'shop_id' => $shop->id,
+            ]);
         });
 
         test('認証されていない場合はエラー', function () {
@@ -68,6 +73,21 @@ describe('CustomerFavoriteController', function () {
 
             $response->assertValidRequest();
             $response->assertValidResponse(404);
+        });
+
+        test('既にお気に入り登録されている場合はエラー', function () {
+            $user = User::factory()->create();
+            $shop = Shop::factory()->create();
+
+            $user->favoriteShops()->attach($shop);
+
+            Spectator::using('api-docs.json');
+
+            $response = $this->actingAs($user)
+                ->postJson("/customers/{$user->id}/shops/{$shop->id}/favorite");
+
+            $response->assertValidRequest();
+            $response->assertValidResponse(422);
         });
     });
 });

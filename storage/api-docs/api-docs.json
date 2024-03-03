@@ -103,6 +103,9 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/not-found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable-entity"
                     }
                 }
             }
