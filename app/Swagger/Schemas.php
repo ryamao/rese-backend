@@ -13,7 +13,6 @@ use OpenApi\Attributes as OA;
     required: [
         'meta',
         'links',
-        'data',
     ],
     properties: [
         new OA\Property(
@@ -152,12 +151,6 @@ use OpenApi\Attributes as OA;
                     ],
                 ),
             ]
-        ),
-        new OA\Property(
-            property: 'data',
-            description: 'ページネーション結果',
-            type: 'array',
-            items: new OA\Items(),
         ),
     ]
 )]
