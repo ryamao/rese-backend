@@ -3,6 +3,7 @@
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthenticationStatusController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerFavoriteController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,5 @@ Route::get('/auth/status', [AuthenticationStatusController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/customers/{user}', [CustomerController::class, 'show']);
+    Route::post('/customers/{user}/shops/{shop}/favorite', [CustomerFavoriteController::class, 'store']);
 });

@@ -18,6 +18,18 @@ use OpenApi\Attributes as OA;
     ),
 )]
 
+#[OA\PathParameter(
+    parameter: 'shop-id',
+    name: 'shop',
+    description: '飲食店ID',
+    required: true,
+    schema: new OA\Schema(
+        type: 'integer',
+        format: 'int64',
+        example: 1,
+    ),
+)]
+
 class PathParameters
 {
 }
