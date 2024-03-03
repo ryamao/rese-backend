@@ -31,8 +31,8 @@ class ShopIndexResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'area' => $this->area->name,
-            'genre' => $this->genre->name,
+            'area' => $this->area->only('id', 'name'),
+            'genre' => $this->genre->only('id', 'name'),
             'name' => $this->name,
             'image_url' => $this->image_url,
             'favorite_status' => $favoriteStatus,
