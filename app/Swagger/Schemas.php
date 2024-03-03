@@ -13,7 +13,6 @@ use OpenApi\Attributes as OA;
     required: [
         'meta',
         'links',
-        'data',
     ],
     properties: [
         new OA\Property(
@@ -40,7 +39,7 @@ use OpenApi\Attributes as OA;
                 new OA\Property(
                     property: 'from',
                     description: '現在のページの最初のレコード番号',
-                    anyOf: [
+                    oneOf: [
                         new OA\Schema(type: 'null'),
                         new OA\Schema(type: 'integer', minimum: 1),
                     ],
@@ -66,7 +65,7 @@ use OpenApi\Attributes as OA;
                             new OA\Property(
                                 property: 'url',
                                 description: 'リンクURL',
-                                anyOf: [
+                                oneOf: [
                                     new OA\Schema(type: 'null'),
                                     new OA\Schema(type: 'string', format: 'uri'),
                                 ],
@@ -99,7 +98,7 @@ use OpenApi\Attributes as OA;
                 new OA\Property(
                     property: 'to',
                     description: '現在のページの最後のレコード番号',
-                    anyOf: [
+                    oneOf: [
                         new OA\Schema(type: 'null'),
                         new OA\Schema(type: 'integer', minimum: 1),
                     ],
@@ -138,7 +137,7 @@ use OpenApi\Attributes as OA;
                 new OA\Property(
                     property: 'prev',
                     description: '前のページのURL',
-                    anyOf: [
+                    oneOf: [
                         new OA\Schema(type: 'null'),
                         new OA\Schema(type: 'string', format: 'uri'),
                     ],
@@ -146,18 +145,12 @@ use OpenApi\Attributes as OA;
                 new OA\Property(
                     property: 'next',
                     description: '次のページのURL',
-                    anyOf: [
+                    oneOf: [
                         new OA\Schema(type: 'null'),
                         new OA\Schema(type: 'string', format: 'uri'),
                     ],
                 ),
             ]
-        ),
-        new OA\Property(
-            property: 'data',
-            description: 'ページネーション結果',
-            type: 'array',
-            items: new OA\Items(),
         ),
     ]
 )]

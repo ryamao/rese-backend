@@ -13,6 +13,7 @@ use OpenApi\Attributes as OA;
 class ShopController extends Controller
 {
     #[OA\Get(
+        operationId: 'get-shops',
         path: '/shops',
         tags: ['Shop'],
         summary: '飲食店一覧取得',

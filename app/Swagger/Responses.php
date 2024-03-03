@@ -354,11 +354,35 @@ use OpenApi\Attributes as OA;
                                 ),
                                 new OA\Property(
                                     property: 'area',
-                                    type: 'string',
+                                    type: 'object',
+                                    required: ['id', 'name'],
+                                    properties: [
+                                        new OA\Property(
+                                            property: 'id',
+                                            type: 'integer',
+                                            format: 'int64'
+                                        ),
+                                        new OA\Property(
+                                            property: 'name',
+                                            type: 'string'
+                                        ),
+                                    ],
                                 ),
                                 new OA\Property(
                                     property: 'genre',
-                                    type: 'string',
+                                    type: 'object',
+                                    required: ['id', 'name'],
+                                    properties: [
+                                        new OA\Property(
+                                            property: 'id',
+                                            type: 'integer',
+                                            format: 'int64'
+                                        ),
+                                        new OA\Property(
+                                            property: 'name',
+                                            type: 'string'
+                                        ),
+                                    ],
                                 ),
                                 new OA\Property(
                                     property: 'image_url',
@@ -419,11 +443,11 @@ use OpenApi\Attributes as OA;
                         ['url' => 'https://api.rese.com/shops?page=2', 'label' => 'Next &raquo;', 'active' => true],
                     ],
                     'data' => [
-                        ['id' => 1, 'name' => '店舗1', 'area' => '東京', 'genre' => '和食', 'image_url' => 'https://api.rese.com/images/1.jpg', 'favorite_status' => 'unknown'],
-                        ['id' => 2, 'name' => '店舗2', 'area' => '大阪', 'genre' => '中華', 'image_url' => 'https://api.rese.com/images/2.jpg', 'favorite_status' => 'marked'],
-                        ['id' => 3, 'name' => '店舗3', 'area' => '福岡', 'genre' => 'イタリアン', 'image_url' => 'https://api.rese.com/images/3.jpg', 'favorite_status' => 'unmarked'],
-                        ['id' => 4, 'name' => '店舗4', 'area' => '東京', 'genre' => '和食', 'image_url' => 'https://api.rese.com/images/4.jpg', 'favorite_status' => 'unknown'],
-                        ['id' => 5, 'name' => '店舗5', 'area' => '大阪', 'genre' => '中華', 'image_url' => 'https://api.rese.com/images/5.jpg', 'favorite_status' => 'marked'],
+                        ['id' => 1, 'name' => '店舗1', 'area' => ['id' => 1, 'name' => '東京都'], 'genre' => ['id' => 1, 'name' => '和食'], 'image_url' => 'https://api.rese.com/images/1.jpg', 'favorite_status' => 'marked'],
+                        ['id' => 2, 'name' => '店舗2', 'area' => ['id' => 2, 'name' => '大阪府'], 'genre' => ['id' => 2, 'name' => '中華'], 'image_url' => 'https://api.rese.com/images/2.jpg', 'favorite_status' => 'unmarked'],
+                        ['id' => 3, 'name' => '店舗3', 'area' => ['id' => 3, 'name' => '福岡県'], 'genre' => ['id' => 3, 'name' => 'イタリアン'], 'image_url' => 'https://api.rese.com/images/3.jpg', 'favorite_status' => 'unknown'],
+                        ['id' => 4, 'name' => '店舗4', 'area' => ['id' => 1, 'name' => '東京都'], 'genre' => ['id' => 1, 'name' => '和食'], 'image_url' => 'https://api.rese.com/images/4.jpg', 'favorite_status' => 'marked'],
+                        ['id' => 5, 'name' => '店舗5', 'area' => ['id' => 2, 'name' => '大阪府'], 'genre' => ['id' => 2, 'name' => '中華'], 'image_url' => 'https://api.rese.com/images/5.jpg', 'favorite_status' => 'unmarked'],
                     ],
                 ]
             ),
@@ -448,11 +472,11 @@ use OpenApi\Attributes as OA;
                         ['url' => 'https://api.rese.com/shops?page=3', 'label' => 'Next &raquo;', 'active' => true],
                     ],
                     'data' => [
-                        ['id' => 6, 'name' => '店舗6', 'area' => '福岡', 'genre' => 'イタリアン', 'image_url' => 'https://api.rese.com/images/6.jpg', 'favorite_status' => 'unmarked'],
-                        ['id' => 7, 'name' => '店舗7', 'area' => '東京', 'genre' => '和食', 'image_url' => 'https://api.rese.com/images/7.jpg', 'favorite_status' => 'unknown'],
-                        ['id' => 8, 'name' => '店舗8', 'area' => '大阪', 'genre' => '中華', 'image_url' => 'https://api.rese.com/images/8.jpg', 'favorite_status' => 'marked'],
-                        ['id' => 9, 'name' => '店舗9', 'area' => '福岡', 'genre' => 'イタリアン', 'image_url' => 'https://api.rese.com/images/9.jpg', 'favorite_status' => 'unmarked'],
-                        ['id' => 10, 'name' => '店舗10', 'area' => '東京', 'genre' => '和食', 'image_url' => 'https://api.rese.com/images/10.jpg', 'favorite_status' => 'unknown'],
+                        ['id' => 6, 'name' => '店舗6', 'area' => ['id' => 1, 'name' => '東京都'], 'genre' => ['id' => 1, 'name' => '和食'], 'image_url' => 'https://api.rese.com/images/6.jpg', 'favorite_status' => 'marked'],
+                        ['id' => 7, 'name' => '店舗7', 'area' => ['id' => 2, 'name' => '大阪府'], 'genre' => ['id' => 2, 'name' => '中華'], 'image_url' => 'https://api.rese.com/images/7.jpg', 'favorite_status' => 'unmarked'],
+                        ['id' => 8, 'name' => '店舗8', 'area' => ['id' => 3, 'name' => '福岡県'], 'genre' => ['id' => 3, 'name' => 'イタリアン'], 'image_url' => 'https://api.rese.com/images/8.jpg', 'favorite_status' => 'unknown'],
+                        ['id' => 9, 'name' => '店舗9', 'area' => ['id' => 1, 'name' => '東京都'], 'genre' => ['id' => 1, 'name' => '和食'], 'image_url' => 'https://api.rese.com/images/9.jpg', 'favorite_status' => 'marked'],
+                        ['id' => 10, 'name' => '店舗10', 'area' => ['id' => 2, 'name' => '大阪府'], 'genre' => ['id' => 2, 'name' => '中華'], 'image_url' => 'https://api.rese.com/images/10.jpg', 'favorite_status' => 'unmarked'],
                     ],
                 ]
             ),
@@ -477,8 +501,8 @@ use OpenApi\Attributes as OA;
                         ['url' => null, 'label' => 'Next &raquo;', 'active' => false],
                     ],
                     'data' => [
-                        ['id' => 11, 'name' => '店舗11', 'area' => '大阪', 'genre' => '中華', 'image_url' => 'https://api.rese.com/images/11.jpg', 'favorite_status' => 'marked'],
-                        ['id' => 12, 'name' => '店舗12', 'area' => '福岡', 'genre' => 'イタリアン', 'image_url' => 'https://api.rese.com/images/12.jpg', 'favorite_status' => 'unmarked'],
+                        ['id' => 11, 'name' => '店舗11', 'area' => ['id' => 1, 'name' => '東京都'], 'genre' => ['id' => 1, 'name' => '和食'], 'image_url' => 'https://api.rese.com/images/11.jpg', 'favorite_status' => 'marked'],
+                        ['id' => 12, 'name' => '店舗12', 'area' => ['id' => 2, 'name' => '大阪府'], 'genre' => ['id' => 2, 'name' => '中華'], 'image_url' => 'https://api.rese.com/images/12.jpg', 'favorite_status' => 'unmarked'],
                     ],
                 ]
             ),
