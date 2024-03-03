@@ -108,6 +108,39 @@
                         "$ref": "#/components/responses/unprocessable-entity"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "お気に入り解除",
+                "description": "ユーザー(一般会員)が飲食店のお気に入りを解除する",
+                "operationId": "delete-customer-shop-favorite",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/user-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/shop-id"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable-entity"
+                    }
+                }
             }
         },
         "/genres": {
