@@ -22,6 +22,11 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Tag(
+    name: 'Favorite',
+    description: 'お気に入りに関するAPI'
+)]
+
+#[OA\Tag(
     name: 'Genre',
     description: 'ジャンルに関するAPI'
 )]

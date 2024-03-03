@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use OpenApi\Attributes as OA;
 
 class CustomerFavoriteController extends Controller
@@ -38,6 +39,8 @@ class CustomerFavoriteController extends Controller
     )]
     public function store(User $user, Shop $shop): Response
     {
+        Gate::allowIf(fn (User $authUser) => $user->is($authUser));
+
         return response()->noContent(201);
     }
 }
