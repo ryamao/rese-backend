@@ -29,4 +29,5 @@ Route::get('/auth/status', [AuthenticationStatusController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/customers/{user}', [CustomerController::class, 'show']);
     Route::post('/customers/{user}/shops/{shop}/favorite', [CustomerFavoriteController::class, 'store']);
+    Route::delete('/customers/{user}/shops/{shop}/favorite', [CustomerFavoriteController::class, 'destroy']);
 });
