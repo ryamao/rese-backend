@@ -66,6 +66,31 @@ use OpenApi\Attributes as OA;
     )
 )]
 
+#[OA\RequestBody(
+    request: 'post-customer-shop-reservations',
+    description: '予約追加リクエスト',
+    required: true,
+    content: new OA\JsonContent(
+        required: ['reserved_at', 'number_of_guests'],
+        properties: [
+            new OA\Property(
+                property: 'reserved_at',
+                description: '予約日時',
+                type: 'string',
+                format: 'date-time',
+                example: '2021-12-31T23:59:59+09:00',
+            ),
+            new OA\Property(
+                property: 'number_of_guests',
+                description: '予約人数',
+                type: 'integer',
+                minimum: 1,
+                example: 2,
+            ),
+        ]
+    )
+)]
+
 class RequestBodies
 {
 }

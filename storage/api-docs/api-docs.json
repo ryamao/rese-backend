@@ -175,6 +175,44 @@
                 }
             }
         },
+        "/customers/{customer}/shops/{shop}/reservations": {
+            "post": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "飲食店詳細ページの予約追加",
+                "description": "セッション中の顧客が指定の飲食店で予約を追加する",
+                "operationId": "post-customer-shop-reservations",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/customer-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/shop-id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/post-customer-shop-reservations"
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/post-customer-shop-reservations-201"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable-entity"
+                    }
+                }
+            }
+        },
         "/genres": {
             "get": {
                 "tags": [
@@ -877,6 +915,29 @@
                         }
                     }
                 }
+            },
+            "post-customer-shop-reservations-201": {
+                "description": "飲食店詳細ページの予約追加成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "reservation"
+                            ],
+                            "properties": {
+                                "reservation": {
+                                    "$ref": "#/components/schemas/reservation-data"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "examples": {
+                            "example": {
+                                "$ref": "#/components/examples/post-customer-shop-reservations-201"
+                            }
+                        }
+                    }
+                }
             }
         },
         "parameters": {
@@ -884,6 +945,17 @@
                 "name": "user",
                 "in": "path",
                 "description": "ユーザーID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 1
+                }
+            },
+            "customer-id": {
+                "name": "customer",
+                "in": "path",
+                "description": "顧客ID",
                 "required": true,
                 "schema": {
                     "type": "integer",
@@ -1451,6 +1523,29 @@
                 "value": {
                     "reservations": []
                 }
+            },
+            "post-customer-shop-reservations-201": {
+                "summary": "予約追加成功",
+                "value": {
+                    "id": 1,
+                    "shop": {
+                        "id": 1,
+                        "name": "店舗1",
+                        "area": {
+                            "id": 1,
+                            "name": "東京都"
+                        },
+                        "genre": {
+                            "id": 1,
+                            "name": "和食"
+                        },
+                        "image_url": "https://api.rese.com/images/1.jpg",
+                        "detail": "サンプルテキスト",
+                        "favorite_status": "marked"
+                    },
+                    "reserved_at": "2022-01-01T19:00:00+09:00",
+                    "number_of_guests": 4
+                }
             }
         },
         "requestBodies": {
@@ -1515,6 +1610,35 @@
                                     "maxLength": 100,
                                     "minLength": 8,
                                     "example": "password"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "post-customer-shop-reservations": {
+                "description": "予約追加リクエスト",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "reserved_at",
+                                "number_of_guests"
+                            ],
+                            "properties": {
+                                "reserved_at": {
+                                    "description": "予約日時",
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2021-12-31T23:59:59+09:00"
+                                },
+                                "number_of_guests": {
+                                    "description": "予約人数",
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "example": 2
                                 }
                             },
                             "type": "object"
