@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CustomerReservationResource;
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use OpenApi\Attributes as OA;
 
 class CustomerReservationController extends Controller
@@ -40,7 +42,16 @@ class CustomerReservationController extends Controller
     )]
     public function index(User $user, Shop $shop): JsonResponse
     {
-        return response()->json('Not implemented yet')
-            ->setStatusCode(501, 'Not Implemented');
+        Gate::allowIf(fn (User $authUser) => $user->is($authUser));
+
+        $reservations = $user
+            ->reservations()
+            ->with('shop')
+            ->where('shop_id', $shop->id)
+            ->get();
+
+        return response()->json([
+            'reservations' => CustomerReservationResource::collection($reservations),
+        ]);
     }
 }
