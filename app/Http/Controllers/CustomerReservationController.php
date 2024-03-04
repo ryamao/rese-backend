@@ -26,6 +26,7 @@ class CustomerReservationController extends Controller
     public function destroy(User $customer, Reservation $reservation): Response
     {
         Gate::allowIf(fn (User $authUser) => $customer->is($authUser));
+        Gate::allowIf(fn (User $authUser) => $reservation->user->is($authUser));
 
         $reservation->delete();
 

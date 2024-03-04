@@ -44,6 +44,19 @@ describe('CustomerReservationController', function () {
             $response->assertValidResponse(403);
         });
 
+        test('別の顧客の予約の場合は403エラー', function () {
+            $otherUser = User::factory()->create();
+            $otherUserReservation = Reservation::factory()->create([
+                'user_id' => $otherUser->id,
+            ]);
+
+            $response = $this->actingAs($this->user)
+                ->deleteJson("/customers/{$this->user->id}/reservations/{$otherUserReservation->id}");
+
+            $response->assertValidRequest();
+            $response->assertValidResponse(403);
+        });
+
         test('存在しない顧客IDの場合は404エラー', function () {
             $response = $this->actingAs($this->user)
                 ->deleteJson("/customers/9999/reservations/{$this->reservation->id}");
