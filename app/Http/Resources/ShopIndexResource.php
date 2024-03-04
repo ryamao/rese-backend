@@ -35,6 +35,7 @@ class ShopIndexResource extends JsonResource
             'genre' => $this->genre->only('id', 'name'),
             'name' => $this->name,
             'image_url' => $this->image_url,
+            'detail' => $this->detail,
             'favorite_status' => $favoriteStatus,
         ];
     }
