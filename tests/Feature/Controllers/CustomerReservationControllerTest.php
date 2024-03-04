@@ -22,9 +22,7 @@ describe('CustomerReservationController', function () {
             $response->assertValidRequest();
             $response->assertValidResponse(204);
 
-            $this->assertDatabaseMissing('reservations', [
-                'id' => $this->reservation->id,
-            ]);
+            $this->assertSoftDeleted($this->reservation);
         });
 
         test('認証が必要', function () {
