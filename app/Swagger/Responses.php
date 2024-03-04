@@ -201,10 +201,6 @@ use OpenApi\Attributes as OA;
             ),
         ],
         examples: [
-            'empty' => new OA\Examples(
-                example: 'empty',
-                ref: '#/components/examples/get-shops-200-empty'
-            ),
             'first-page' => new OA\Examples(
                 example: 'first-page',
                 ref: '#/components/examples/get-shops-200-first-page'
@@ -217,8 +213,40 @@ use OpenApi\Attributes as OA;
                 example: 'last-page',
                 ref: '#/components/examples/get-shops-200-last-page'
             ),
+            'empty' => new OA\Examples(
+                example: 'empty',
+                ref: '#/components/examples/get-shops-200-empty'
+            ),
         ]
     ),
+)]
+
+#[OA\Response(
+    response: 'get-customer-shop-reservations-200',
+    description: '飲食店詳細ページの予約一覧取得成功',
+    content: [
+        new OA\JsonContent(
+            type: 'object',
+            required: ['reservations'],
+            properties: [
+                new OA\Property(
+                    property: 'reservations',
+                    type: 'array',
+                    items: new OA\Items(ref: '#/components/schemas/reservation-data')
+                ),
+            ],
+            examples: [
+                'example' => new OA\Examples(
+                    example: 'example',
+                    ref: '#/components/examples/get-customer-shop-reservations-200-example'
+                ),
+                'empty' => new OA\Examples(
+                    example: 'empty',
+                    ref: '#/components/examples/get-customer-shop-reservations-200-empty'
+                ),
+            ]
+        ),
+    ],
 )]
 
 class Responses
