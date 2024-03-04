@@ -28,7 +28,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Tag(
     name: 'Customer',
-    description: '一般会員に関するAPI'
+    description: '顧客に関するAPI'
 )]
 
 #[OA\Tag(

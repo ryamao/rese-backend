@@ -5,7 +5,7 @@ use App\Models\User;
 use Spectator\Spectator;
 
 describe('CustomerFavoriteController', function () {
-    describe('POST /customers/{user}/shops/{shop}/favorite', function () {
+    describe('POST /customers/{customer}/shops/{shop}/favorite', function () {
         test('お気に入り登録', function () {
             $user = User::factory()->create();
             $shop = Shop::factory()->create();
@@ -91,7 +91,7 @@ describe('CustomerFavoriteController', function () {
         });
     });
 
-    describe('DELETE /customers/{user}/shops/{shop}/favorite', function () {
+    describe('DELETE /customers/{customer}/shops/{shop}/favorite', function () {
         test('お気に入り解除', function () {
             $user = User::factory()->create();
             $shop = Shop::factory()->create();

@@ -4,7 +4,7 @@ use App\Models\User;
 use Spectator\Spectator;
 
 describe('CustomerController', function () {
-    describe('GET /customers/:user_id', function () {
+    describe('GET /customers/{customer}', function () {
         test('会員情報取得成功', function () {
             $user = User::factory()->create();
 

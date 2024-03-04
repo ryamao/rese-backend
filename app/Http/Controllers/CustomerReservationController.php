@@ -15,22 +15,22 @@ class CustomerReservationController extends Controller
 {
     #[OA\Get(
         operationId: 'get-customer-shop-reservations',
-        path: '/customers/{user}/shops/{shop}/reservations',
+        path: '/customers/{customer}/shops/{shop}/reservations',
         tags: ['Reservation'],
         summary: '飲食店詳細ページの予約一覧取得',
-        description: 'セッション中の会員が指定の飲食店で行っている予約を一覧取得する',
+        description: 'セッション中の顧客が指定の飲食店で行っている予約を一覧取得する',
     )]
-    #[OA\Parameter(ref: '#/components/parameters/user-id')]
+    #[OA\Parameter(ref: '#/components/parameters/customer-id')]
     #[OA\Parameter(ref: '#/components/parameters/shop-id')]
     #[OA\Response(response: 200, ref: '#/components/responses/get-customer-shop-reservations-200')]
     #[OA\Response(response: 401, ref: '#/components/responses/unauthorized')]
     #[OA\Response(response: 403, ref: '#/components/responses/forbidden')]
     #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
-    public function index(User $user, Shop $shop): JsonResponse
+    public function index(User $customer, Shop $shop): JsonResponse
     {
-        Gate::allowIf(fn (User $authUser) => $user->is($authUser));
+        Gate::allowIf(fn (User $authUser) => $customer->is($authUser));
 
-        $reservations = $user
+        $reservations = $customer
             ->reservations()
             ->with('shop')
             ->where('shop_id', $shop->id)

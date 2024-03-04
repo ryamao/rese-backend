@@ -7,18 +7,6 @@ namespace App\Swagger;
 use OpenApi\Attributes as OA;
 
 #[OA\PathParameter(
-    parameter: 'user-id',
-    name: 'user',
-    description: 'ユーザーID',
-    required: true,
-    schema: new OA\Schema(
-        type: 'integer',
-        format: 'int64',
-        example: 1,
-    ),
-)]
-
-#[OA\PathParameter(
     parameter: 'customer-id',
     name: 'customer',
     description: '顧客ID',

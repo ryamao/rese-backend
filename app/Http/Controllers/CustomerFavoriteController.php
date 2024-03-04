@@ -15,84 +15,54 @@ class CustomerFavoriteController extends Controller
 {
     #[OA\Post(
         operationId: 'post-customer-shop-favorite',
-        path: '/customers/{user}/shops/{shop}/favorite',
+        path: '/customers/{customer}/shops/{shop}/favorite',
         tags: ['Favorite'],
         summary: 'お気に入り登録',
-        description: 'ユーザー(一般会員)が飲食店をお気に入り登録する',
+        description: 'セッション中の顧客が指定の飲食店をお気に入り登録する',
     )]
-    #[OA\PathParameter(ref: '#/components/parameters/user-id')]
+    #[OA\PathParameter(ref: '#/components/parameters/customer-id')]
     #[OA\PathParameter(ref: '#/components/parameters/shop-id')]
-    #[OA\Response(
-        response: 201,
-        ref: '#/components/responses/created',
-    )]
-    #[OA\Response(
-        response: 401,
-        ref: '#/components/responses/unauthorized',
-    )]
-    #[OA\Response(
-        response: 403,
-        ref: '#/components/responses/forbidden',
-    )]
-    #[OA\Response(
-        response: 404,
-        ref: '#/components/responses/not-found',
-    )]
-    #[OA\Response(
-        response: 422,
-        ref: '#/components/responses/unprocessable-entity',
-    )]
-    public function store(User $user, Shop $shop): JsonResponse
+    #[OA\Response(response: 201, ref: '#/components/responses/created')]
+    #[OA\Response(response: 401, ref: '#/components/responses/unauthorized')]
+    #[OA\Response(response: 403, ref: '#/components/responses/forbidden')]
+    #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
+    #[OA\Response(response: 422, ref: '#/components/responses/unprocessable-entity')]
+    public function store(User $customer, Shop $shop): JsonResponse
     {
-        Gate::allowIf(fn (User $authUser) => $user->is($authUser));
+        Gate::allowIf(fn (User $authUser) => $customer->is($authUser));
 
-        if ($user->favoriteShops()->where('shop_id', $shop->id)->exists()) {
+        if ($customer->favoriteShops()->where('shop_id', $shop->id)->exists()) {
             return response()->json(null, 422);
         }
 
-        $user->favoriteShops()->attach($shop);
+        $customer->favoriteShops()->attach($shop);
 
         return response()->json(null, 201);
     }
 
     #[OA\Delete(
         operationId: 'delete-customer-shop-favorite',
-        path: '/customers/{user}/shops/{shop}/favorite',
+        path: '/customers/{customer}/shops/{shop}/favorite',
         tags: ['Favorite'],
         summary: 'お気に入り解除',
-        description: 'ユーザー(一般会員)が飲食店のお気に入りを解除する',
+        description: 'セッション中の顧客が指定の飲食店のお気に入りを解除する',
     )]
-    #[OA\PathParameter(ref: '#/components/parameters/user-id')]
+    #[OA\PathParameter(ref: '#/components/parameters/customer-id')]
     #[OA\PathParameter(ref: '#/components/parameters/shop-id')]
-    #[OA\Response(
-        response: 204,
-        ref: '#/components/responses/no-content',
-    )]
-    #[OA\Response(
-        response: 401,
-        ref: '#/components/responses/unauthorized',
-    )]
-    #[OA\Response(
-        response: 403,
-        ref: '#/components/responses/forbidden',
-    )]
-    #[OA\Response(
-        response: 404,
-        ref: '#/components/responses/not-found',
-    )]
-    #[OA\Response(
-        response: 422,
-        ref: '#/components/responses/unprocessable-entity',
-    )]
-    public function destroy(User $user, Shop $shop): Response
+    #[OA\Response(response: 204, ref: '#/components/responses/no-content')]
+    #[OA\Response(response: 401, ref: '#/components/responses/unauthorized')]
+    #[OA\Response(response: 403, ref: '#/components/responses/forbidden')]
+    #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
+    #[OA\Response(response: 422, ref: '#/components/responses/unprocessable-entity')]
+    public function destroy(User $customer, Shop $shop): Response
     {
-        Gate::allowIf(fn (User $authUser) => $user->is($authUser));
+        Gate::allowIf(fn (User $authUser) => $customer->is($authUser));
 
-        if ($user->favoriteShops()->where('shop_id', $shop->id)->doesntExist()) {
+        if ($customer->favoriteShops()->where('shop_id', $shop->id)->doesntExist()) {
             return response()->noContent(422);
         }
 
-        $user->favoriteShops()->detach($shop);
+        $customer->favoriteShops()->detach($shop);
 
         return response()->noContent(204);
     }

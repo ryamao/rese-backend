@@ -16,7 +16,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Examples(
     example: 'get-auth-status-200-customer',
-    summary: '一般会員として認証済みの状態',
+    summary: '顧客として認証済みの状態',
     value: [
         'status' => 'customer',
         'id' => 1,
@@ -72,7 +72,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Examples(
     example: 'post-auth-login-422-email',
-    summary: 'ユーザーが登録されていない場合',
+    summary: '顧客が登録されていない場合',
     value: [
         'message' => '認証情報が登録されていません',
         'errors' => [
@@ -241,6 +241,51 @@ use OpenApi\Attributes as OA;
         'shop' => ['id' => 1, 'name' => '店舗1', 'area' => ['id' => 1, 'name' => '東京都'], 'genre' => ['id' => 1, 'name' => '和食'], 'image_url' => 'https://api.rese.com/images/1.jpg', 'detail' => 'サンプルテキスト', 'favorite_status' => 'marked'],
         'reserved_at' => '2022-01-01T19:00:00+09:00',
         'number_of_guests' => 4,
+    ]
+)]
+
+#[OA\Examples(
+    example: 'post-customer-shop-reservations-422-required',
+    summary: '予約日時、人数が入力されていない場合',
+    value: [
+        'message' => '予約日時を入力してください (and 1 more error)',
+        'errors' => [
+            'reserved_at' => ['予約日時を入力してください'],
+            'number_of_guests' => ['人数を入力してください'],
+        ],
+    ]
+)]
+
+#[OA\Examples(
+    example: 'post-customer-shop-reservations-422-reserved_at',
+    summary: '予約日時がRFC3339形式でない場合',
+    value: [
+        'message' => '予約日時はRFC3339形式で入力してください',
+        'errors' => [
+            'reserved_at' => ['予約日時はRFC3339形式で入力してください'],
+        ],
+    ]
+)]
+
+#[OA\Examples(
+    example: 'post-customer-shop-reservations-422-past',
+    summary: '過去の日時を指定した場合',
+    value: [
+        'message' => '過去の日時は指定できません',
+        'errors' => [
+            'reserved_at' => ['過去の日時は指定できません'],
+        ],
+    ]
+)]
+
+#[OA\Examples(
+    example: 'post-customer-shop-reservations-422-number_of_guests',
+    summary: '人数が0以下の場合',
+    value: [
+        'message' => '人数は1以上で入力してください',
+        'errors' => [
+            'number_of_guests' => ['人数は1以上で入力してください'],
+        ],
     ]
 )]
 

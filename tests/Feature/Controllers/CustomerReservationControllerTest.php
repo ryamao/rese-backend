@@ -6,7 +6,7 @@ use Illuminate\Support\Carbon;
 use Spectator\Spectator;
 
 describe('CustomerReservationController', function () {
-    describe('GET /customers/{user}/shops/{shop}/reservations', function () {
+    describe('GET /customers/{customer}/shops/{shop}/reservations', function () {
         beforeEach(function () {
             Spectator::using('api-docs.json');
         });
@@ -89,7 +89,7 @@ describe('CustomerReservationController', function () {
         });
     });
 
-    describe('POST /customers/{user}/shops/{shop}/reservations', function () {
+    describe('POST /customers/{customer}/shops/{shop}/reservations', function () {
         beforeEach(function () {
             Spectator::using('api-docs.json');
 

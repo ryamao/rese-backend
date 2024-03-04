@@ -28,11 +28,26 @@ Route::get('/shops', [ShopController::class, 'index']);
 Route::get('/auth/status', [AuthenticationStatusController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/customers/{user}', [CustomerController::class, 'show']);
+    Route::get(
+        '/customers/{customer}',
+        [CustomerController::class, 'show']
+    );
 
-    Route::post('/customers/{user}/shops/{shop}/favorite', [CustomerFavoriteController::class, 'store']);
-    Route::delete('/customers/{user}/shops/{shop}/favorite', [CustomerFavoriteController::class, 'destroy']);
+    Route::post(
+        '/customers/{customer}/shops/{shop}/favorite',
+        [CustomerFavoriteController::class, 'store']
+    );
+    Route::delete(
+        '/customers/{customer}/shops/{shop}/favorite',
+        [CustomerFavoriteController::class, 'destroy']
+    );
 
-    Route::get('/customers/{user}/shops/{shop}/reservations', [CustomerReservationController::class, 'index']);
-    Route::post('/customers/{customer}/shops/{shop}/reservations', [CustomerReservationController::class, 'store']);
+    Route::get(
+        '/customers/{customer}/shops/{shop}/reservations',
+        [CustomerReservationController::class, 'index']
+    );
+    Route::post(
+        '/customers/{customer}/shops/{shop}/reservations',
+        [CustomerReservationController::class, 'store']
+    );
 });
