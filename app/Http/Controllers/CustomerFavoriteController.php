@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Shop;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use OpenApi\Attributes as OA;
@@ -41,17 +42,17 @@ class CustomerFavoriteController extends Controller
         response: 422,
         ref: '#/components/responses/unprocessable-entity',
     )]
-    public function store(User $user, Shop $shop): Response
+    public function store(User $user, Shop $shop): JsonResponse
     {
         Gate::allowIf(fn (User $authUser) => $user->is($authUser));
 
         if ($user->favoriteShops()->where('shop_id', $shop->id)->exists()) {
-            return response()->noContent(422);
+            return response()->json(null, 422);
         }
 
         $user->favoriteShops()->attach($shop);
 
-        return response()->noContent(201);
+        return response()->json(null, 201);
     }
 
     #[OA\Delete(
