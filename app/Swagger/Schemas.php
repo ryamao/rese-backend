@@ -172,6 +172,42 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Schema(
+    schema: 'reservation-data',
+    description: '予約情報',
+    type: 'object',
+    required: [
+        'id',
+        'shop',
+        'reserved_at',
+        'number_of_guests',
+    ],
+    properties: [
+        new OA\Property(
+            property: 'id',
+            description: '予約ID',
+            type: 'integer',
+            format: 'int64'
+        ),
+        new OA\Property(
+            property: 'shop',
+            ref: '#/components/schemas/shop-data'
+        ),
+        new OA\Property(
+            property: 'reserved_at',
+            description: '予約日時',
+            type: 'string',
+            format: 'date-time',
+        ),
+        new OA\Property(
+            property: 'number_of_guests',
+            description: '予約人数',
+            type: 'integer',
+            minimum: 1,
+        ),
+    ]
+)]
+
+#[OA\Schema(
     schema: 'pagination',
     description: 'ページネーション',
     type: 'object',

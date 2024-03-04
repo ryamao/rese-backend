@@ -143,6 +143,38 @@
                 }
             }
         },
+        "/customers/{user}/shops/{shop}/reservations": {
+            "get": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "飲食店詳細ページの予約一覧取得",
+                "description": "セッション中の会員が指定の飲食店で行っている予約を一覧取得する",
+                "operationId": "get-customer-shop-reservations",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/user-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/shop-id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-customer-shop-reservations-200"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
         "/genres": {
             "get": {
                 "tags": [
@@ -378,6 +410,7 @@
                     "area",
                     "genre",
                     "image_url",
+                    "detail",
                     "favorite_status"
                 ],
                 "properties": {
@@ -401,6 +434,10 @@
                         "type": "string",
                         "format": "uri"
                     },
+                    "detail": {
+                        "description": "飲食店詳細",
+                        "type": "string"
+                    },
                     "favorite_status": {
                         "description": "お気に入りステータス",
                         "type": "string",
@@ -409,6 +446,36 @@
                             "marked",
                             "unmarked"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "reservation-data": {
+                "description": "予約情報",
+                "required": [
+                    "id",
+                    "shop",
+                    "reserved_at",
+                    "number_of_guests"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "予約ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "shop": {
+                        "$ref": "#/components/schemas/shop-data"
+                    },
+                    "reserved_at": {
+                        "description": "予約日時",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "number_of_guests": {
+                        "description": "予約人数",
+                        "type": "integer",
+                        "minimum": 1
                     }
                 },
                 "type": "object"
@@ -766,9 +833,6 @@
                             ]
                         },
                         "examples": {
-                            "empty": {
-                                "$ref": "#/components/examples/get-shops-200-empty"
-                            },
                             "first-page": {
                                 "$ref": "#/components/examples/get-shops-200-first-page"
                             },
@@ -777,6 +841,38 @@
                             },
                             "last-page": {
                                 "$ref": "#/components/examples/get-shops-200-last-page"
+                            },
+                            "empty": {
+                                "$ref": "#/components/examples/get-shops-200-empty"
+                            }
+                        }
+                    }
+                }
+            },
+            "get-customer-shop-reservations-200": {
+                "description": "飲食店詳細ページの予約一覧取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "reservations"
+                            ],
+                            "properties": {
+                                "reservations": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/reservation-data"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "examples": {
+                            "example": {
+                                "$ref": "#/components/examples/get-customer-shop-reservations-200-example"
+                            },
+                            "empty": {
+                                "$ref": "#/components/examples/get-customer-shop-reservations-200-empty"
                             }
                         }
                     }
@@ -962,38 +1058,6 @@
                     ]
                 }
             },
-            "get-shops-200-empty": {
-                "summary": "該当する飲食店がない場合",
-                "value": {
-                    "meta": {
-                        "current_page": 1,
-                        "from": null,
-                        "last_page": 1,
-                        "path": "https://api.rese.com/shops",
-                        "per_page": 10,
-                        "to": null,
-                        "total": 0
-                    },
-                    "links": [
-                        {
-                            "url": null,
-                            "label": "&laquo; Previous",
-                            "active": false
-                        },
-                        {
-                            "url": "https://api.rese.com/shops?page=1",
-                            "label": "1",
-                            "active": false
-                        },
-                        {
-                            "url": null,
-                            "label": "Next &raquo;",
-                            "active": false
-                        }
-                    ],
-                    "data": []
-                }
-            },
             "get-shops-200-first-page": {
                 "summary": "1ページ目の飲食店一覧",
                 "value": {
@@ -1046,6 +1110,7 @@
                                 "name": "和食"
                             },
                             "image_url": "https://api.rese.com/images/1.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "marked"
                         },
                         {
@@ -1060,6 +1125,7 @@
                                 "name": "中華"
                             },
                             "image_url": "https://api.rese.com/images/2.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "unmarked"
                         },
                         {
@@ -1074,6 +1140,7 @@
                                 "name": "イタリアン"
                             },
                             "image_url": "https://api.rese.com/images/3.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "unknown"
                         },
                         {
@@ -1088,6 +1155,7 @@
                                 "name": "和食"
                             },
                             "image_url": "https://api.rese.com/images/4.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "marked"
                         },
                         {
@@ -1102,6 +1170,7 @@
                                 "name": "中華"
                             },
                             "image_url": "https://api.rese.com/images/5.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "unmarked"
                         }
                     ]
@@ -1159,6 +1228,7 @@
                                 "name": "和食"
                             },
                             "image_url": "https://api.rese.com/images/6.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "marked"
                         },
                         {
@@ -1173,6 +1243,7 @@
                                 "name": "中華"
                             },
                             "image_url": "https://api.rese.com/images/7.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "unmarked"
                         },
                         {
@@ -1187,6 +1258,7 @@
                                 "name": "イタリアン"
                             },
                             "image_url": "https://api.rese.com/images/8.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "unknown"
                         },
                         {
@@ -1201,6 +1273,7 @@
                                 "name": "和食"
                             },
                             "image_url": "https://api.rese.com/images/9.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "marked"
                         },
                         {
@@ -1215,6 +1288,7 @@
                                 "name": "中華"
                             },
                             "image_url": "https://api.rese.com/images/10.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "unmarked"
                         }
                     ]
@@ -1272,6 +1346,7 @@
                                 "name": "和食"
                             },
                             "image_url": "https://api.rese.com/images/11.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "marked"
                         },
                         {
@@ -1286,9 +1361,95 @@
                                 "name": "中華"
                             },
                             "image_url": "https://api.rese.com/images/12.jpg",
+                            "detail": "サンプルテキスト",
                             "favorite_status": "unmarked"
                         }
                     ]
+                }
+            },
+            "get-shops-200-empty": {
+                "summary": "該当する飲食店がない場合",
+                "value": {
+                    "meta": {
+                        "current_page": 1,
+                        "from": null,
+                        "last_page": 1,
+                        "path": "https://api.rese.com/shops",
+                        "per_page": 10,
+                        "to": null,
+                        "total": 0
+                    },
+                    "links": [
+                        {
+                            "url": null,
+                            "label": "&laquo; Previous",
+                            "active": false
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=1",
+                            "label": "1",
+                            "active": false
+                        },
+                        {
+                            "url": null,
+                            "label": "Next &raquo;",
+                            "active": false
+                        }
+                    ],
+                    "data": []
+                }
+            },
+            "get-customer-shop-reservations-200-example": {
+                "summary": "予約一覧の例",
+                "value": {
+                    "reservations": [
+                        {
+                            "id": 1,
+                            "shop": {
+                                "id": 1,
+                                "name": "店舗1",
+                                "area": {
+                                    "id": 1,
+                                    "name": "東京都"
+                                },
+                                "genre": {
+                                    "id": 1,
+                                    "name": "和食"
+                                },
+                                "image_url": "https://api.rese.com/images/1.jpg",
+                                "detail": "サンプルテキスト",
+                                "favorite_status": "unmarked"
+                            },
+                            "reserved_at": "2021-12-31T18:00:00+09:00",
+                            "number_of_guests": 2
+                        },
+                        {
+                            "id": 2,
+                            "shop": {
+                                "id": 2,
+                                "name": "店舗2",
+                                "area": {
+                                    "id": 2,
+                                    "name": "大阪府"
+                                },
+                                "genre": {
+                                    "id": 2,
+                                    "name": "中華"
+                                },
+                                "image_url": "https://api.rese.com/images/2.jpg",
+                                "detail": "サンプルテキスト",
+                                "favorite_status": "marked"
+                            },
+                            "reserved_at": "2022-01-01T19:00:00+09:00",
+                            "number_of_guests": 4
+                        }
+                    ]
+                }
+            },
+            "get-customer-shop-reservations-200-empty": {
+                "summary": "該当する予約がない場合",
+                "value": {
+                    "reservations": []
                 }
             }
         },
@@ -1365,12 +1526,20 @@
     },
     "tags": [
         {
+            "name": "Auth",
+            "description": "認証に関するAPI"
+        },
+        {
             "name": "Area",
             "description": "エリアに関するAPI"
         },
         {
-            "name": "Auth",
-            "description": "認証に関するAPI"
+            "name": "Genre",
+            "description": "ジャンルに関するAPI"
+        },
+        {
+            "name": "Shop",
+            "description": "飲食店に関するAPI"
         },
         {
             "name": "Customer",
@@ -1381,12 +1550,8 @@
             "description": "お気に入りに関するAPI"
         },
         {
-            "name": "Genre",
-            "description": "ジャンルに関するAPI"
-        },
-        {
-            "name": "Shop",
-            "description": "飲食店に関するAPI"
+            "name": "Reservation",
+            "description": "予約に関するAPI"
         }
     ]
 }

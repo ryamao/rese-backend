@@ -7,13 +7,23 @@ namespace App\Swagger;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(
+    name: 'Auth',
+    description: '認証に関するAPI'
+)]
+
+#[OA\Tag(
     name: 'Area',
     description: 'エリアに関するAPI'
 )]
 
 #[OA\Tag(
-    name: 'Auth',
-    description: '認証に関するAPI'
+    name: 'Genre',
+    description: 'ジャンルに関するAPI'
+)]
+
+#[OA\Tag(
+    name: 'Shop',
+    description: '飲食店に関するAPI'
 )]
 
 #[OA\Tag(
@@ -27,13 +37,8 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Tag(
-    name: 'Genre',
-    description: 'ジャンルに関するAPI'
-)]
-
-#[OA\Tag(
-    name: 'Shop',
-    description: '飲食店に関するAPI'
+    name: 'Reservation',
+    description: '予約に関するAPI'
 )]
 
 class Tags
