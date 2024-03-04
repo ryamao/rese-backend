@@ -59,10 +59,7 @@ use OpenApi\Attributes as OA;
             header: 'Set-Cookie',
             description: 'CSRFトークンをCookieにセット',
             required: true,
-            schema: new OA\Schema(
-                type: 'string',
-                example: 'XSRF-TOKEN=eyJpdiI6Ij',
-            )
+            schema: new OA\Schema(type: 'string', example: 'XSRF-TOKEN=eyJpdiI6Ij')
         ),
     ]
 )]
@@ -247,6 +244,24 @@ use OpenApi\Attributes as OA;
             ]
         ),
     ],
+)]
+
+#[OA\Response(
+    response: 'post-customer-shop-reservations-201',
+    description: '飲食店詳細ページの予約追加成功',
+    content: new OA\JsonContent(
+        type: 'object',
+        required: ['reservation'],
+        properties: [
+            new OA\Property(property: 'reservation', ref: '#/components/schemas/reservation-data'),
+        ],
+        examples: [
+            'example' => new OA\Examples(
+                example: 'example',
+                ref: '#/components/examples/post-customer-shop-reservations-201'
+            ),
+        ]
+    )
 )]
 
 class Responses

@@ -233,6 +233,17 @@ use OpenApi\Attributes as OA;
     ]
 )]
 
+#[OA\Examples(
+    example: 'post-customer-shop-reservations-201',
+    summary: '予約追加成功',
+    value: [
+        'id' => 1,
+        'shop' => ['id' => 1, 'name' => '店舗1', 'area' => ['id' => 1, 'name' => '東京都'], 'genre' => ['id' => 1, 'name' => '和食'], 'image_url' => 'https://api.rese.com/images/1.jpg', 'detail' => 'サンプルテキスト', 'favorite_status' => 'marked'],
+        'reserved_at' => '2022-01-01T19:00:00+09:00',
+        'number_of_guests' => 4,
+    ]
+)]
+
 class Examples
 {
 }
