@@ -18,6 +18,7 @@ return new class extends Migration
             $table->dateTime('reserved_at');
             $table->unsignedInteger('number_of_guests');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

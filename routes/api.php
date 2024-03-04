@@ -3,8 +3,9 @@
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthenticationStatusController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\CustomerFavoriteController;
 use App\Http\Controllers\CustomerReservationController;
+use App\Http\Controllers\CustomerShopFavoriteController;
+use App\Http\Controllers\CustomerShopReservationController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -28,11 +29,31 @@ Route::get('/shops', [ShopController::class, 'index']);
 Route::get('/auth/status', [AuthenticationStatusController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/customers/{user}', [CustomerController::class, 'show']);
+    Route::get(
+        '/customers/{customer}',
+        [CustomerController::class, 'show']
+    );
 
-    Route::post('/customers/{user}/shops/{shop}/favorite', [CustomerFavoriteController::class, 'store']);
-    Route::delete('/customers/{user}/shops/{shop}/favorite', [CustomerFavoriteController::class, 'destroy']);
+    Route::post(
+        '/customers/{customer}/shops/{shop}/favorite',
+        [CustomerShopFavoriteController::class, 'store']
+    );
+    Route::delete(
+        '/customers/{customer}/shops/{shop}/favorite',
+        [CustomerShopFavoriteController::class, 'destroy']
+    );
 
-    Route::get('/customers/{user}/shops/{shop}/reservations', [CustomerReservationController::class, 'index']);
-    Route::post('/customers/{customer}/shops/{shop}/reservations', [CustomerReservationController::class, 'store']);
+    Route::get(
+        '/customers/{customer}/shops/{shop}/reservations',
+        [CustomerShopReservationController::class, 'index']
+    );
+    Route::post(
+        '/customers/{customer}/shops/{shop}/reservations',
+        [CustomerShopReservationController::class, 'store']
+    );
+
+    Route::delete(
+        '/customers/{customer}/reservations/{reservation}',
+        [CustomerReservationController::class, 'destroy']
+    );
 });

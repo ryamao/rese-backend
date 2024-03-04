@@ -8,14 +8,14 @@ use OpenApi\Attributes as OA;
 
 #[OA\RequestBody(
     request: 'post-auth-register',
-    description: 'ユーザー登録リクエスト',
+    description: '顧客登録リクエスト',
     required: true,
     content: new OA\JsonContent(
         required: ['name', 'email', 'password'],
         properties: [
             new OA\Property(
                 property: 'name',
-                description: 'ユーザー名',
+                description: '顧客名',
                 type: 'string',
                 minLength: 1,
                 maxLength: 100,

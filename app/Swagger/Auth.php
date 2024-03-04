@@ -30,8 +30,8 @@ class Auth
         operationId: 'post-auth-register',
         path: '/auth/register',
         tags: ['Auth'],
-        summary: '会員登録',
-        description: 'ユーザー(一般会員)を新規登録する',
+        summary: '顧客登録',
+        description: '顧客を新規登録する',
     )]
     #[OA\RequestBody(
         ref: '#/components/requestBodies/post-auth-register'
@@ -57,7 +57,7 @@ class Auth
         path: '/auth/login',
         tags: ['Auth'],
         summary: 'ログイン',
-        description: 'ユーザー(一般会員)のログイン処理を行う',
+        description: '顧客のログイン処理を行う',
     )]
     #[OA\RequestBody(
         ref: '#/components/requestBodies/post-auth-login'
@@ -83,7 +83,7 @@ class Auth
         path: '/auth/logout',
         tags: ['Auth'],
         summary: 'ログアウト',
-        description: 'ユーザー(一般会員)のログアウト処理を行う',
+        description: '顧客のログアウト処理を行う',
     )]
     #[OA\Response(
         response: 204,

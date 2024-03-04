@@ -46,17 +46,17 @@
                 }
             }
         },
-        "/customers/{user}": {
+        "/customers/{customer}": {
             "get": {
                 "tags": [
                     "Customer"
                 ],
-                "summary": "会員情報取得",
-                "description": "ユーザー(一般会員)の情報を取得する",
+                "summary": "顧客情報取得",
+                "description": "セッション中の顧客情報を取得する",
                 "operationId": "get-customer",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/user-id"
+                        "$ref": "#/components/parameters/customer-id"
                     }
                 ],
                 "responses": {
@@ -75,17 +75,49 @@
                 }
             }
         },
-        "/customers/{user}/shops/{shop}/favorite": {
+        "/customers/{customer}/reservations/{reservation}": {
+            "delete": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "マイページでの予約取り消し機能",
+                "description": "セッション中の顧客が指定の飲食店で行っている指定の予約を取り消す",
+                "operationId": "delete-customer-reservations",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/customer-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/reservation-id"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
+        "/customers/{customer}/shops/{shop}/favorite": {
             "post": {
                 "tags": [
                     "Favorite"
                 ],
                 "summary": "お気に入り登録",
-                "description": "ユーザー(一般会員)が飲食店をお気に入り登録する",
+                "description": "セッション中の顧客が指定の飲食店をお気に入り登録する",
                 "operationId": "post-customer-shop-favorite",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/user-id"
+                        "$ref": "#/components/parameters/customer-id"
                     },
                     {
                         "$ref": "#/components/parameters/shop-id"
@@ -114,11 +146,11 @@
                     "Favorite"
                 ],
                 "summary": "お気に入り解除",
-                "description": "ユーザー(一般会員)が飲食店のお気に入りを解除する",
+                "description": "セッション中の顧客が指定の飲食店のお気に入りを解除する",
                 "operationId": "delete-customer-shop-favorite",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/user-id"
+                        "$ref": "#/components/parameters/customer-id"
                     },
                     {
                         "$ref": "#/components/parameters/shop-id"
@@ -143,17 +175,17 @@
                 }
             }
         },
-        "/customers/{user}/shops/{shop}/reservations": {
+        "/customers/{customer}/shops/{shop}/reservations": {
             "get": {
                 "tags": [
                     "Reservation"
                 ],
-                "summary": "飲食店詳細ページの予約一覧取得",
-                "description": "セッション中の会員が指定の飲食店で行っている予約を一覧取得する",
+                "summary": "飲食店詳細ページでの予約一覧取得機能",
+                "description": "セッション中の顧客が指定の飲食店で行っている予約を一覧取得する",
                 "operationId": "get-customer-shop-reservations",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/user-id"
+                        "$ref": "#/components/parameters/customer-id"
                     },
                     {
                         "$ref": "#/components/parameters/shop-id"
@@ -173,14 +205,12 @@
                         "$ref": "#/components/responses/not-found"
                     }
                 }
-            }
-        },
-        "/customers/{customer}/shops/{shop}/reservations": {
+            },
             "post": {
                 "tags": [
                     "Reservation"
                 ],
-                "summary": "飲食店詳細ページの予約追加",
+                "summary": "飲食店詳細ページでの予約追加機能",
                 "description": "セッション中の顧客が指定の飲食店で予約を追加する",
                 "operationId": "post-customer-shop-reservations",
                 "parameters": [
@@ -208,7 +238,7 @@
                         "$ref": "#/components/responses/not-found"
                     },
                     "422": {
-                        "$ref": "#/components/responses/unprocessable-entity"
+                        "$ref": "#/components/responses/post-customer-shop-reservations-422"
                     }
                 }
             }
@@ -277,8 +307,8 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "会員登録",
-                "description": "ユーザー(一般会員)を新規登録する",
+                "summary": "顧客登録",
+                "description": "顧客を新規登録する",
                 "operationId": "post-auth-register",
                 "requestBody": {
                     "$ref": "#/components/requestBodies/post-auth-register"
@@ -302,7 +332,7 @@
                     "Auth"
                 ],
                 "summary": "ログイン",
-                "description": "ユーザー(一般会員)のログイン処理を行う",
+                "description": "顧客のログイン処理を行う",
                 "operationId": "post-auth-login",
                 "requestBody": {
                     "$ref": "#/components/requestBodies/post-auth-login"
@@ -326,7 +356,7 @@
                     "Auth"
                 ],
                 "summary": "ログアウト",
-                "description": "ユーザー(一般会員)のログアウト処理を行う",
+                "description": "顧客のログアウト処理を行う",
                 "operationId": "post-auth-logout",
                 "responses": {
                     "204": {
@@ -514,6 +544,35 @@
                         "description": "予約人数",
                         "type": "integer",
                         "minimum": 1
+                    }
+                },
+                "type": "object"
+            },
+            "reservation-error": {
+                "required": [
+                    "message",
+                    "errors"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "properties": {
+                            "reserved_at": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "number_of_guests": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -938,20 +997,33 @@
                         }
                     }
                 }
+            },
+            "post-customer-shop-reservations-422": {
+                "description": "飲食店詳細ページの予約追加のバリデーションエラー",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/reservation-error"
+                        },
+                        "examples": {
+                            "required": {
+                                "$ref": "#/components/examples/post-customer-shop-reservations-422-required"
+                            },
+                            "date": {
+                                "$ref": "#/components/examples/post-customer-shop-reservations-422-reserved_at"
+                            },
+                            "past": {
+                                "$ref": "#/components/examples/post-customer-shop-reservations-422-past"
+                            },
+                            "number_of_guests": {
+                                "$ref": "#/components/examples/post-customer-shop-reservations-422-number_of_guests"
+                            }
+                        }
+                    }
+                }
             }
         },
         "parameters": {
-            "user-id": {
-                "name": "user",
-                "in": "path",
-                "description": "ユーザーID",
-                "required": true,
-                "schema": {
-                    "type": "integer",
-                    "format": "int64",
-                    "example": 1
-                }
-            },
             "customer-id": {
                 "name": "customer",
                 "in": "path",
@@ -967,6 +1039,17 @@
                 "name": "shop",
                 "in": "path",
                 "description": "飲食店ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 1
+                }
+            },
+            "reservation-id": {
+                "name": "reservation",
+                "in": "path",
+                "description": "予約ID",
                 "required": true,
                 "schema": {
                     "type": "integer",
@@ -1022,7 +1105,7 @@
                 }
             },
             "get-auth-status-200-customer": {
-                "summary": "一般会員として認証済みの状態",
+                "summary": "顧客として認証済みの状態",
                 "value": {
                     "status": "customer",
                     "id": 1
@@ -1082,7 +1165,7 @@
                 }
             },
             "post-auth-login-422-email": {
-                "summary": "ユーザーが登録されていない場合",
+                "summary": "顧客が登録されていない場合",
                 "value": {
                     "message": "認証情報が登録されていません",
                     "errors": {
@@ -1546,11 +1629,58 @@
                     "reserved_at": "2022-01-01T19:00:00+09:00",
                     "number_of_guests": 4
                 }
+            },
+            "post-customer-shop-reservations-422-required": {
+                "summary": "予約日時、人数が入力されていない場合",
+                "value": {
+                    "message": "予約日時を入力してください (and 1 more error)",
+                    "errors": {
+                        "reserved_at": [
+                            "予約日時を入力してください"
+                        ],
+                        "number_of_guests": [
+                            "人数を入力してください"
+                        ]
+                    }
+                }
+            },
+            "post-customer-shop-reservations-422-reserved_at": {
+                "summary": "予約日時がRFC3339形式でない場合",
+                "value": {
+                    "message": "予約日時はRFC3339形式で入力してください",
+                    "errors": {
+                        "reserved_at": [
+                            "予約日時はRFC3339形式で入力してください"
+                        ]
+                    }
+                }
+            },
+            "post-customer-shop-reservations-422-past": {
+                "summary": "過去の日時を指定した場合",
+                "value": {
+                    "message": "過去の日時は指定できません",
+                    "errors": {
+                        "reserved_at": [
+                            "過去の日時は指定できません"
+                        ]
+                    }
+                }
+            },
+            "post-customer-shop-reservations-422-number_of_guests": {
+                "summary": "人数が0以下の場合",
+                "value": {
+                    "message": "人数は1以上で入力してください",
+                    "errors": {
+                        "number_of_guests": [
+                            "人数は1以上で入力してください"
+                        ]
+                    }
+                }
             }
         },
         "requestBodies": {
             "post-auth-register": {
-                "description": "ユーザー登録リクエスト",
+                "description": "顧客登録リクエスト",
                 "required": true,
                 "content": {
                     "application/json": {
@@ -1562,7 +1692,7 @@
                             ],
                             "properties": {
                                 "name": {
-                                    "description": "ユーザー名",
+                                    "description": "顧客名",
                                     "type": "string",
                                     "maxLength": 100,
                                     "minLength": 1,
@@ -1667,7 +1797,7 @@
         },
         {
             "name": "Customer",
-            "description": "一般会員に関するAPI"
+            "description": "顧客に関するAPI"
         },
         {
             "name": "Favorite",
