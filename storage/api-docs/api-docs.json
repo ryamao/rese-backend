@@ -1,5 +1,5 @@
 {
-    "openapi": "3.0.0",
+    "openapi": "3.1.0",
     "info": {
         "title": "Rese",
         "description": "Rese API",
@@ -268,6 +268,151 @@
     },
     "components": {
         "schemas": {
+            "register-error": {
+                "required": [
+                    "message",
+                    "errors"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "properties": {
+                            "name": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "email": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "password": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "login-error": {
+                "required": [
+                    "message",
+                    "errors"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "properties": {
+                            "email": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "password": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "area-data": {
+                "description": "エリア情報",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "エリアID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "description": "エリア名",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "genre-data": {
+                "description": "ジャンル情報",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ジャンルID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "description": "ジャンル名",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "shop-data": {
+                "description": "飲食店情報",
+                "required": [
+                    "id",
+                    "name",
+                    "area",
+                    "genre",
+                    "image_url",
+                    "favorite_status"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "飲食店ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "description": "飲食店名",
+                        "type": "string"
+                    },
+                    "area": {
+                        "$ref": "#/components/schemas/area-data"
+                    },
+                    "genre": {
+                        "$ref": "#/components/schemas/genre-data"
+                    },
+                    "image_url": {
+                        "description": "画像URL",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "favorite_status": {
+                        "description": "お気に入りステータス",
+                        "type": "string",
+                        "enum": [
+                            "unknown",
+                            "marked",
+                            "unmarked"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
             "pagination": {
                 "description": "ページネーション",
                 "required": [
@@ -276,149 +421,135 @@
                 ],
                 "properties": {
                     "meta": {
-                        "description": "ページネーションメタ情報",
-                        "required": [
-                            "current_page",
-                            "from",
-                            "last_page",
-                            "links",
-                            "path",
-                            "per_page",
-                            "to",
-                            "total"
+                        "$ref": "#/components/schemas/pagination-meta"
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/pagination-links"
+                    }
+                },
+                "type": "object"
+            },
+            "pagination-meta": {
+                "description": "ページネーションメタ情報",
+                "required": [
+                    "current_page",
+                    "from",
+                    "last_page",
+                    "links",
+                    "path",
+                    "per_page",
+                    "to",
+                    "total"
+                ],
+                "properties": {
+                    "current_page": {
+                        "description": "現在のページ番号",
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "from": {
+                        "description": "現在のページの最初のレコード番号",
+                        "type": [
+                            "integer",
+                            "null"
                         ],
-                        "properties": {
-                            "current_page": {
-                                "description": "現在のページ番号",
-                                "type": "integer",
-                                "minimum": 1
-                            },
-                            "from": {
-                                "description": "現在のページの最初のレコード番号",
-                                "oneOf": [
-                                    {
-                                        "type": "null"
-                                    },
-                                    {
-                                        "type": "integer",
-                                        "minimum": 1
-                                    }
-                                ]
-                            },
-                            "last_page": {
-                                "description": "最終ページ番号",
-                                "type": "integer",
-                                "minimum": 1
-                            },
-                            "links": {
-                                "description": "ページネーションリンク",
-                                "type": "array",
-                                "items": {
-                                    "required": [
-                                        "url",
-                                        "label",
-                                        "active"
-                                    ],
-                                    "properties": {
-                                        "url": {
-                                            "description": "リンクURL",
-                                            "oneOf": [
-                                                {
-                                                    "type": "null"
-                                                },
-                                                {
-                                                    "type": "string",
-                                                    "format": "uri"
-                                                }
-                                            ]
-                                        },
-                                        "label": {
-                                            "description": "リンクラベル",
-                                            "type": "string"
-                                        },
-                                        "active": {
-                                            "description": "アクティブかどうか",
-                                            "type": "boolean"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            },
-                            "path": {
-                                "description": "現在のページのURL",
-                                "type": "string",
-                                "format": "uri"
-                            },
-                            "per_page": {
-                                "description": "1ページあたりの件数",
-                                "type": "integer",
-                                "minimum": 1
-                            },
-                            "to": {
-                                "description": "現在のページの最後のレコード番号",
-                                "oneOf": [
-                                    {
-                                        "type": "null"
-                                    },
-                                    {
-                                        "type": "integer",
-                                        "minimum": 1
-                                    }
-                                ]
-                            },
-                            "total": {
-                                "description": "総件数",
-                                "type": "integer",
-                                "minimum": 0
-                            }
-                        },
-                        "type": "object"
+                        "minimum": 1
+                    },
+                    "last_page": {
+                        "description": "最終ページ番号",
+                        "type": "integer",
+                        "minimum": 1
                     },
                     "links": {
                         "description": "ページネーションリンク",
-                        "required": [
-                            "first",
-                            "last",
-                            "prev",
-                            "next"
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "url",
+                                "label",
+                                "active"
+                            ],
+                            "properties": {
+                                "url": {
+                                    "description": "リンクURL",
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "format": "uri"
+                                },
+                                "label": {
+                                    "description": "リンクラベル",
+                                    "type": "string"
+                                },
+                                "active": {
+                                    "description": "アクティブかどうか",
+                                    "type": "boolean"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "path": {
+                        "description": "現在のページのURL",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "per_page": {
+                        "description": "1ページあたりの件数",
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "to": {
+                        "description": "現在のページの最後のレコード番号",
+                        "type": [
+                            "integer",
+                            "null"
                         ],
-                        "properties": {
-                            "first": {
-                                "description": "最初のページのURL",
-                                "type": "string",
-                                "format": "uri"
-                            },
-                            "last": {
-                                "description": "最後のページのURL",
-                                "type": "string",
-                                "format": "uri"
-                            },
-                            "prev": {
-                                "description": "前のページのURL",
-                                "oneOf": [
-                                    {
-                                        "type": "null"
-                                    },
-                                    {
-                                        "type": "string",
-                                        "format": "uri"
-                                    }
-                                ]
-                            },
-                            "next": {
-                                "description": "次のページのURL",
-                                "oneOf": [
-                                    {
-                                        "type": "null"
-                                    },
-                                    {
-                                        "type": "string",
-                                        "format": "uri"
-                                    }
-                                ]
-                            }
-                        },
-                        "type": "object"
+                        "minimum": 1
+                    },
+                    "total": {
+                        "description": "総件数",
+                        "type": "integer",
+                        "minimum": 0
+                    }
+                },
+                "type": "object"
+            },
+            "pagination-links": {
+                "description": "ページネーションリンク",
+                "required": [
+                    "first",
+                    "last",
+                    "prev",
+                    "next"
+                ],
+                "properties": {
+                    "first": {
+                        "description": "最初のページのURL",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "last": {
+                        "description": "最後のページのURL",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "prev": {
+                        "description": "前のページのURL",
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "uri"
+                    },
+                    "next": {
+                        "description": "次のページのURL",
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "uri"
                     }
                 },
                 "type": "object"
@@ -484,152 +615,6 @@
                     }
                 }
             },
-            "post-auth-register-422": {
-                "description": "バリデーションエラーまたはメールアドレスが登録済み",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "required": [
-                                "message",
-                                "errors"
-                            ],
-                            "properties": {
-                                "message": {
-                                    "type": "string"
-                                },
-                                "errors": {
-                                    "properties": {
-                                        "name": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "email": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "password": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            },
-                            "type": "object"
-                        },
-                        "examples": {
-                            "post-auth-register-422-required": {
-                                "summary": "名前、メールアドレス、パスワードが入力されていない場合",
-                                "value": {
-                                    "message": "名前を入力してください (and 2 more errors)",
-                                    "errors": {
-                                        "name": [
-                                            "名前を入力してください"
-                                        ],
-                                        "email": [
-                                            "メールアドレスを入力してください"
-                                        ],
-                                        "password": [
-                                            "パスワードを入力してください"
-                                        ]
-                                    }
-                                }
-                            },
-                            "post-auth-register-422-email": {
-                                "summary": "メールアドレスが正しい形式でない場合",
-                                "value": {
-                                    "message": "メールアドレスを正しい形式で入力してください",
-                                    "errors": {
-                                        "email": [
-                                            "メールアドレスを正しい形式で入力してください"
-                                        ]
-                                    }
-                                }
-                            },
-                            "post-auth-register-422-password": {
-                                "summary": "パスワードが8文字未満の場合",
-                                "value": {
-                                    "message": "パスワードは8文字以上で入力してください",
-                                    "errors": {
-                                        "password": [
-                                            "パスワードは8文字以上で入力してください"
-                                        ]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post-auth-login-422": {
-                "description": "バリデーションエラーまたは未登録",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "required": [
-                                "message",
-                                "errors"
-                            ],
-                            "properties": {
-                                "message": {
-                                    "type": "string"
-                                },
-                                "errors": {
-                                    "properties": {
-                                        "email": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "password": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            },
-                            "type": "object"
-                        },
-                        "examples": {
-                            "post-auth-login-422-required": {
-                                "summary": "メールアドレス、パスワードが入力されていない場合",
-                                "value": {
-                                    "message": "メールアドレスを入力してください (and 1 more error)",
-                                    "errors": {
-                                        "email": [
-                                            "メールアドレスを入力してください"
-                                        ],
-                                        "password": [
-                                            "パスワードを入力してください"
-                                        ]
-                                    }
-                                }
-                            },
-                            "post-auth-login-422-email": {
-                                "summary": "ユーザーが登録されていない場合",
-                                "value": {
-                                    "message": "認証情報が登録されていません",
-                                    "errors": {
-                                        "email": [
-                                            "認証情報が登録されていません"
-                                        ]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
             "get-auth-status-200": {
                 "description": "認証状態取得成功",
                 "content": {
@@ -654,18 +639,50 @@
                             "type": "object"
                         },
                         "examples": {
-                            "get-auth-status-200-guest": {
-                                "summary": "未認証の状態",
-                                "value": {
-                                    "status": "guest"
-                                }
+                            "guest": {
+                                "$ref": "#/components/examples/get-auth-status-200-guest"
                             },
-                            "get-auth-status-200-customer": {
-                                "summary": "一般会員として認証済みの状態",
-                                "value": {
-                                    "status": "customer",
-                                    "id": 1
-                                }
+                            "customer": {
+                                "$ref": "#/components/examples/get-auth-status-200-customer"
+                            }
+                        }
+                    }
+                }
+            },
+            "post-auth-register-422": {
+                "description": "バリデーションエラーまたはメールアドレスが登録済み",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/register-error"
+                        },
+                        "examples": {
+                            "required": {
+                                "$ref": "#/components/examples/post-auth-register-422-required"
+                            },
+                            "invalid-email": {
+                                "$ref": "#/components/examples/post-auth-register-422-email"
+                            },
+                            "password": {
+                                "$ref": "#/components/examples/post-auth-register-422-password"
+                            }
+                        }
+                    }
+                }
+            },
+            "post-auth-login-422": {
+                "description": "バリデーションエラーまたは未登録",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/login-error"
+                        },
+                        "examples": {
+                            "required": {
+                                "$ref": "#/components/examples/post-auth-login-422-required"
+                            },
+                            "email": {
+                                "$ref": "#/components/examples/post-auth-login-422-email"
                             }
                         }
                     }
@@ -683,44 +700,15 @@
                                 "areas": {
                                     "type": "array",
                                     "items": {
-                                        "required": [
-                                            "id",
-                                            "name"
-                                        ],
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "format": "int64"
-                                            },
-                                            "name": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
+                                        "$ref": "#/components/schemas/area-data"
                                     }
                                 }
                             },
                             "type": "object"
                         },
                         "examples": {
-                            "get-areas-200-example": {
-                                "summary": "エリア一覧の例",
-                                "value": {
-                                    "areas": [
-                                        {
-                                            "id": 1,
-                                            "name": "東京"
-                                        },
-                                        {
-                                            "id": 2,
-                                            "name": "大阪"
-                                        },
-                                        {
-                                            "id": 3,
-                                            "name": "福岡"
-                                        }
-                                    ]
-                                }
+                            "example": {
+                                "$ref": "#/components/examples/get-areas-200"
                             }
                         }
                     }
@@ -738,44 +726,15 @@
                                 "genres": {
                                     "type": "array",
                                     "items": {
-                                        "required": [
-                                            "id",
-                                            "name"
-                                        ],
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "format": "int64"
-                                            },
-                                            "name": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
+                                        "$ref": "#/components/schemas/genre-data"
                                     }
                                 }
                             },
                             "type": "object"
                         },
                         "examples": {
-                            "get-genres-200-example": {
-                                "summary": "ジャンル一覧の例",
-                                "value": {
-                                    "genres": [
-                                        {
-                                            "id": 1,
-                                            "name": "和食"
-                                        },
-                                        {
-                                            "id": 2,
-                                            "name": "中華"
-                                        },
-                                        {
-                                            "id": 3,
-                                            "name": "イタリアン"
-                                        }
-                                    ]
-                                }
+                            "example": {
+                                "$ref": "#/components/examples/get-genres-200"
                             }
                         }
                     }
@@ -798,68 +757,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "required": [
-                                                    "id",
-                                                    "name",
-                                                    "area",
-                                                    "genre",
-                                                    "image_url",
-                                                    "favorite_status"
-                                                ],
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "format": "int64"
-                                                    },
-                                                    "name": {
-                                                        "type": "string"
-                                                    },
-                                                    "area": {
-                                                        "required": [
-                                                            "id",
-                                                            "name"
-                                                        ],
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "format": "int64"
-                                                            },
-                                                            "name": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "type": "object"
-                                                    },
-                                                    "genre": {
-                                                        "required": [
-                                                            "id",
-                                                            "name"
-                                                        ],
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "format": "int64"
-                                                            },
-                                                            "name": {
-                                                                "type": "string"
-                                                            }
-                                                        },
-                                                        "type": "object"
-                                                    },
-                                                    "image_url": {
-                                                        "type": "string",
-                                                        "format": "uri"
-                                                    },
-                                                    "favorite_status": {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "unknown",
-                                                            "marked",
-                                                            "unmarked"
-                                                        ]
-                                                    }
-                                                },
-                                                "type": "object"
+                                                "$ref": "#/components/schemas/shop-data"
                                             }
                                         }
                                     },
@@ -868,334 +766,17 @@
                             ]
                         },
                         "examples": {
-                            "get-shops-200-empty": {
-                                "summary": "該当する飲食店がない場合",
-                                "value": {
-                                    "meta": {
-                                        "current_page": 1,
-                                        "from": null,
-                                        "last_page": 1,
-                                        "path": "https://api.rese.com/shops",
-                                        "per_page": 10,
-                                        "to": null,
-                                        "total": 0
-                                    },
-                                    "links": [
-                                        {
-                                            "url": null,
-                                            "label": "&laquo; Previous",
-                                            "active": false
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=1",
-                                            "label": "1",
-                                            "active": false
-                                        },
-                                        {
-                                            "url": null,
-                                            "label": "Next &raquo;",
-                                            "active": false
-                                        }
-                                    ],
-                                    "data": []
-                                }
+                            "empty": {
+                                "$ref": "#/components/examples/get-shops-200-empty"
                             },
-                            "get-shops-200-first-page": {
-                                "summary": "1ページ目の飲食店一覧",
-                                "value": {
-                                    "meta": {
-                                        "current_page": 1,
-                                        "from": 1,
-                                        "last_page": 3,
-                                        "path": "https://api.rese.com/shops",
-                                        "per_page": 5,
-                                        "to": 5,
-                                        "total": 12
-                                    },
-                                    "links": [
-                                        {
-                                            "url": null,
-                                            "label": "&laquo; Previous",
-                                            "active": false
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=1",
-                                            "label": "1",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=2",
-                                            "label": "2",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=3",
-                                            "label": "3",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=2",
-                                            "label": "Next &raquo;",
-                                            "active": true
-                                        }
-                                    ],
-                                    "data": [
-                                        {
-                                            "id": 1,
-                                            "name": "店舗1",
-                                            "area": {
-                                                "id": 1,
-                                                "name": "東京都"
-                                            },
-                                            "genre": {
-                                                "id": 1,
-                                                "name": "和食"
-                                            },
-                                            "image_url": "https://api.rese.com/images/1.jpg",
-                                            "favorite_status": "marked"
-                                        },
-                                        {
-                                            "id": 2,
-                                            "name": "店舗2",
-                                            "area": {
-                                                "id": 2,
-                                                "name": "大阪府"
-                                            },
-                                            "genre": {
-                                                "id": 2,
-                                                "name": "中華"
-                                            },
-                                            "image_url": "https://api.rese.com/images/2.jpg",
-                                            "favorite_status": "unmarked"
-                                        },
-                                        {
-                                            "id": 3,
-                                            "name": "店舗3",
-                                            "area": {
-                                                "id": 3,
-                                                "name": "福岡県"
-                                            },
-                                            "genre": {
-                                                "id": 3,
-                                                "name": "イタリアン"
-                                            },
-                                            "image_url": "https://api.rese.com/images/3.jpg",
-                                            "favorite_status": "unknown"
-                                        },
-                                        {
-                                            "id": 4,
-                                            "name": "店舗4",
-                                            "area": {
-                                                "id": 1,
-                                                "name": "東京都"
-                                            },
-                                            "genre": {
-                                                "id": 1,
-                                                "name": "和食"
-                                            },
-                                            "image_url": "https://api.rese.com/images/4.jpg",
-                                            "favorite_status": "marked"
-                                        },
-                                        {
-                                            "id": 5,
-                                            "name": "店舗5",
-                                            "area": {
-                                                "id": 2,
-                                                "name": "大阪府"
-                                            },
-                                            "genre": {
-                                                "id": 2,
-                                                "name": "中華"
-                                            },
-                                            "image_url": "https://api.rese.com/images/5.jpg",
-                                            "favorite_status": "unmarked"
-                                        }
-                                    ]
-                                }
+                            "first-page": {
+                                "$ref": "#/components/examples/get-shops-200-first-page"
                             },
-                            "get-shops-200-middle-page": {
-                                "summary": "2ページ目の飲食店一覧",
-                                "value": {
-                                    "meta": {
-                                        "current_page": 2,
-                                        "from": 6,
-                                        "last_page": 3,
-                                        "path": "https://api.rese.com/shops",
-                                        "per_page": 5,
-                                        "to": 10,
-                                        "total": 12
-                                    },
-                                    "links": [
-                                        {
-                                            "url": "https://api.rese.com/shops?page=1",
-                                            "label": "&laquo; Previous",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=1",
-                                            "label": "1",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=2",
-                                            "label": "2",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=3",
-                                            "label": "3",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=3",
-                                            "label": "Next &raquo;",
-                                            "active": true
-                                        }
-                                    ],
-                                    "data": [
-                                        {
-                                            "id": 6,
-                                            "name": "店舗6",
-                                            "area": {
-                                                "id": 1,
-                                                "name": "東京都"
-                                            },
-                                            "genre": {
-                                                "id": 1,
-                                                "name": "和食"
-                                            },
-                                            "image_url": "https://api.rese.com/images/6.jpg",
-                                            "favorite_status": "marked"
-                                        },
-                                        {
-                                            "id": 7,
-                                            "name": "店舗7",
-                                            "area": {
-                                                "id": 2,
-                                                "name": "大阪府"
-                                            },
-                                            "genre": {
-                                                "id": 2,
-                                                "name": "中華"
-                                            },
-                                            "image_url": "https://api.rese.com/images/7.jpg",
-                                            "favorite_status": "unmarked"
-                                        },
-                                        {
-                                            "id": 8,
-                                            "name": "店舗8",
-                                            "area": {
-                                                "id": 3,
-                                                "name": "福岡県"
-                                            },
-                                            "genre": {
-                                                "id": 3,
-                                                "name": "イタリアン"
-                                            },
-                                            "image_url": "https://api.rese.com/images/8.jpg",
-                                            "favorite_status": "unknown"
-                                        },
-                                        {
-                                            "id": 9,
-                                            "name": "店舗9",
-                                            "area": {
-                                                "id": 1,
-                                                "name": "東京都"
-                                            },
-                                            "genre": {
-                                                "id": 1,
-                                                "name": "和食"
-                                            },
-                                            "image_url": "https://api.rese.com/images/9.jpg",
-                                            "favorite_status": "marked"
-                                        },
-                                        {
-                                            "id": 10,
-                                            "name": "店舗10",
-                                            "area": {
-                                                "id": 2,
-                                                "name": "大阪府"
-                                            },
-                                            "genre": {
-                                                "id": 2,
-                                                "name": "中華"
-                                            },
-                                            "image_url": "https://api.rese.com/images/10.jpg",
-                                            "favorite_status": "unmarked"
-                                        }
-                                    ]
-                                }
+                            "middle-page": {
+                                "$ref": "#/components/examples/get-shops-200-middle-page"
                             },
-                            "get-shops-200-last-page": {
-                                "summary": "3ページ目の飲食店一覧",
-                                "value": {
-                                    "meta": {
-                                        "current_page": 3,
-                                        "from": 11,
-                                        "last_page": 3,
-                                        "path": "https://api.rese.com/shops",
-                                        "per_page": 5,
-                                        "to": 12,
-                                        "total": 12
-                                    },
-                                    "links": [
-                                        {
-                                            "url": "https://api.rese.com/shops?page=2",
-                                            "label": "&laquo; Previous",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=1",
-                                            "label": "1",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=2",
-                                            "label": "2",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": "https://api.rese.com/shops?page=3",
-                                            "label": "3",
-                                            "active": true
-                                        },
-                                        {
-                                            "url": null,
-                                            "label": "Next &raquo;",
-                                            "active": false
-                                        }
-                                    ],
-                                    "data": [
-                                        {
-                                            "id": 11,
-                                            "name": "店舗11",
-                                            "area": {
-                                                "id": 1,
-                                                "name": "東京都"
-                                            },
-                                            "genre": {
-                                                "id": 1,
-                                                "name": "和食"
-                                            },
-                                            "image_url": "https://api.rese.com/images/11.jpg",
-                                            "favorite_status": "marked"
-                                        },
-                                        {
-                                            "id": 12,
-                                            "name": "店舗12",
-                                            "area": {
-                                                "id": 2,
-                                                "name": "大阪府"
-                                            },
-                                            "genre": {
-                                                "id": 2,
-                                                "name": "中華"
-                                            },
-                                            "image_url": "https://api.rese.com/images/12.jpg",
-                                            "favorite_status": "unmarked"
-                                        }
-                                    ]
-                                }
+                            "last-page": {
+                                "$ref": "#/components/examples/get-shops-200-last-page"
                             }
                         }
                     }
@@ -1262,6 +843,452 @@
                 "schema": {
                     "type": "integer",
                     "format": "int32"
+                }
+            }
+        },
+        "examples": {
+            "get-auth-status-200-guest": {
+                "summary": "未認証の状態",
+                "value": {
+                    "status": "guest"
+                }
+            },
+            "get-auth-status-200-customer": {
+                "summary": "一般会員として認証済みの状態",
+                "value": {
+                    "status": "customer",
+                    "id": 1
+                }
+            },
+            "post-auth-register-422-required": {
+                "summary": "名前、メールアドレス、パスワードが入力されていない場合",
+                "value": {
+                    "message": "名前を入力してください (and 2 more errors)",
+                    "errors": {
+                        "name": [
+                            "名前を入力してください"
+                        ],
+                        "email": [
+                            "メールアドレスを入力してください"
+                        ],
+                        "password": [
+                            "パスワードを入力してください"
+                        ]
+                    }
+                }
+            },
+            "post-auth-register-422-email": {
+                "summary": "メールアドレスが正しい形式でない場合",
+                "value": {
+                    "message": "メールアドレスを正しい形式で入力してください",
+                    "errors": {
+                        "email": [
+                            "メールアドレスを正しい形式で入力してください"
+                        ]
+                    }
+                }
+            },
+            "post-auth-register-422-password": {
+                "summary": "パスワードが8文字未満の場合",
+                "value": {
+                    "message": "パスワードは8文字以上で入力してください",
+                    "errors": {
+                        "password": [
+                            "パスワードは8文字以上で入力してください"
+                        ]
+                    }
+                }
+            },
+            "post-auth-login-422-required": {
+                "summary": "メールアドレス、パスワードが入力されていない場合",
+                "value": {
+                    "message": "メールアドレスを入力してください (and 1 more error)",
+                    "errors": {
+                        "email": [
+                            "メールアドレスを入力してください"
+                        ],
+                        "password": [
+                            "パスワードを入力してください"
+                        ]
+                    }
+                }
+            },
+            "post-auth-login-422-email": {
+                "summary": "ユーザーが登録されていない場合",
+                "value": {
+                    "message": "認証情報が登録されていません",
+                    "errors": {
+                        "email": [
+                            "認証情報が登録されていません"
+                        ]
+                    }
+                }
+            },
+            "get-areas-200": {
+                "summary": "エリア一覧の例",
+                "value": {
+                    "areas": [
+                        {
+                            "id": 1,
+                            "name": "東京"
+                        },
+                        {
+                            "id": 2,
+                            "name": "大阪"
+                        },
+                        {
+                            "id": 3,
+                            "name": "福岡"
+                        }
+                    ]
+                }
+            },
+            "get-genres-200": {
+                "summary": "ジャンル一覧の例",
+                "value": {
+                    "genres": [
+                        {
+                            "id": 1,
+                            "name": "和食"
+                        },
+                        {
+                            "id": 2,
+                            "name": "中華"
+                        },
+                        {
+                            "id": 3,
+                            "name": "イタリアン"
+                        }
+                    ]
+                }
+            },
+            "get-shops-200-empty": {
+                "summary": "該当する飲食店がない場合",
+                "value": {
+                    "meta": {
+                        "current_page": 1,
+                        "from": null,
+                        "last_page": 1,
+                        "path": "https://api.rese.com/shops",
+                        "per_page": 10,
+                        "to": null,
+                        "total": 0
+                    },
+                    "links": [
+                        {
+                            "url": null,
+                            "label": "&laquo; Previous",
+                            "active": false
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=1",
+                            "label": "1",
+                            "active": false
+                        },
+                        {
+                            "url": null,
+                            "label": "Next &raquo;",
+                            "active": false
+                        }
+                    ],
+                    "data": []
+                }
+            },
+            "get-shops-200-first-page": {
+                "summary": "1ページ目の飲食店一覧",
+                "value": {
+                    "meta": {
+                        "current_page": 1,
+                        "from": 1,
+                        "last_page": 3,
+                        "path": "https://api.rese.com/shops",
+                        "per_page": 5,
+                        "to": 5,
+                        "total": 12
+                    },
+                    "links": [
+                        {
+                            "url": null,
+                            "label": "&laquo; Previous",
+                            "active": false
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=1",
+                            "label": "1",
+                            "active": true
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=2",
+                            "label": "2",
+                            "active": true
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=3",
+                            "label": "3",
+                            "active": true
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=2",
+                            "label": "Next &raquo;",
+                            "active": true
+                        }
+                    ],
+                    "data": [
+                        {
+                            "id": 1,
+                            "name": "店舗1",
+                            "area": {
+                                "id": 1,
+                                "name": "東京都"
+                            },
+                            "genre": {
+                                "id": 1,
+                                "name": "和食"
+                            },
+                            "image_url": "https://api.rese.com/images/1.jpg",
+                            "favorite_status": "marked"
+                        },
+                        {
+                            "id": 2,
+                            "name": "店舗2",
+                            "area": {
+                                "id": 2,
+                                "name": "大阪府"
+                            },
+                            "genre": {
+                                "id": 2,
+                                "name": "中華"
+                            },
+                            "image_url": "https://api.rese.com/images/2.jpg",
+                            "favorite_status": "unmarked"
+                        },
+                        {
+                            "id": 3,
+                            "name": "店舗3",
+                            "area": {
+                                "id": 3,
+                                "name": "福岡県"
+                            },
+                            "genre": {
+                                "id": 3,
+                                "name": "イタリアン"
+                            },
+                            "image_url": "https://api.rese.com/images/3.jpg",
+                            "favorite_status": "unknown"
+                        },
+                        {
+                            "id": 4,
+                            "name": "店舗4",
+                            "area": {
+                                "id": 1,
+                                "name": "東京都"
+                            },
+                            "genre": {
+                                "id": 1,
+                                "name": "和食"
+                            },
+                            "image_url": "https://api.rese.com/images/4.jpg",
+                            "favorite_status": "marked"
+                        },
+                        {
+                            "id": 5,
+                            "name": "店舗5",
+                            "area": {
+                                "id": 2,
+                                "name": "大阪府"
+                            },
+                            "genre": {
+                                "id": 2,
+                                "name": "中華"
+                            },
+                            "image_url": "https://api.rese.com/images/5.jpg",
+                            "favorite_status": "unmarked"
+                        }
+                    ]
+                }
+            },
+            "get-shops-200-middle-page": {
+                "summary": "2ページ目の飲食店一覧",
+                "value": {
+                    "meta": {
+                        "current_page": 2,
+                        "from": 6,
+                        "last_page": 3,
+                        "path": "https://api.rese.com/shops",
+                        "per_page": 5,
+                        "to": 10,
+                        "total": 12
+                    },
+                    "links": [
+                        {
+                            "url": "https://api.rese.com/shops?page=1",
+                            "label": "&laquo; Previous",
+                            "active": true
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=1",
+                            "label": "1",
+                            "active": true
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=2",
+                            "label": "2",
+                            "active": true
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=3",
+                            "label": "3",
+                            "active": true
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=3",
+                            "label": "Next &raquo;",
+                            "active": true
+                        }
+                    ],
+                    "data": [
+                        {
+                            "id": 6,
+                            "name": "店舗6",
+                            "area": {
+                                "id": 1,
+                                "name": "東京都"
+                            },
+                            "genre": {
+                                "id": 1,
+                                "name": "和食"
+                            },
+                            "image_url": "https://api.rese.com/images/6.jpg",
+                            "favorite_status": "marked"
+                        },
+                        {
+                            "id": 7,
+                            "name": "店舗7",
+                            "area": {
+                                "id": 2,
+                                "name": "大阪府"
+                            },
+                            "genre": {
+                                "id": 2,
+                                "name": "中華"
+                            },
+                            "image_url": "https://api.rese.com/images/7.jpg",
+                            "favorite_status": "unmarked"
+                        },
+                        {
+                            "id": 8,
+                            "name": "店舗8",
+                            "area": {
+                                "id": 3,
+                                "name": "福岡県"
+                            },
+                            "genre": {
+                                "id": 3,
+                                "name": "イタリアン"
+                            },
+                            "image_url": "https://api.rese.com/images/8.jpg",
+                            "favorite_status": "unknown"
+                        },
+                        {
+                            "id": 9,
+                            "name": "店舗9",
+                            "area": {
+                                "id": 1,
+                                "name": "東京都"
+                            },
+                            "genre": {
+                                "id": 1,
+                                "name": "和食"
+                            },
+                            "image_url": "https://api.rese.com/images/9.jpg",
+                            "favorite_status": "marked"
+                        },
+                        {
+                            "id": 10,
+                            "name": "店舗10",
+                            "area": {
+                                "id": 2,
+                                "name": "大阪府"
+                            },
+                            "genre": {
+                                "id": 2,
+                                "name": "中華"
+                            },
+                            "image_url": "https://api.rese.com/images/10.jpg",
+                            "favorite_status": "unmarked"
+                        }
+                    ]
+                }
+            },
+            "get-shops-200-last-page": {
+                "summary": "3ページ目の飲食店一覧",
+                "value": {
+                    "meta": {
+                        "current_page": 3,
+                        "from": 11,
+                        "last_page": 3,
+                        "path": "https://api.rese.com/shops",
+                        "per_page": 5,
+                        "to": 12,
+                        "total": 12
+                    },
+                    "links": [
+                        {
+                            "url": "https://api.rese.com/shops?page=2",
+                            "label": "&laquo; Previous",
+                            "active": true
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=1",
+                            "label": "1",
+                            "active": true
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=2",
+                            "label": "2",
+                            "active": true
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=3",
+                            "label": "3",
+                            "active": true
+                        },
+                        {
+                            "url": null,
+                            "label": "Next &raquo;",
+                            "active": false
+                        }
+                    ],
+                    "data": [
+                        {
+                            "id": 11,
+                            "name": "店舗11",
+                            "area": {
+                                "id": 1,
+                                "name": "東京都"
+                            },
+                            "genre": {
+                                "id": 1,
+                                "name": "和食"
+                            },
+                            "image_url": "https://api.rese.com/images/11.jpg",
+                            "favorite_status": "marked"
+                        },
+                        {
+                            "id": 12,
+                            "name": "店舗12",
+                            "area": {
+                                "id": 2,
+                                "name": "大阪府"
+                            },
+                            "genre": {
+                                "id": 2,
+                                "name": "中華"
+                            },
+                            "image_url": "https://api.rese.com/images/12.jpg",
+                            "favorite_status": "unmarked"
+                        }
+                    ]
                 }
             }
         },
