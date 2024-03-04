@@ -36,7 +36,7 @@ describe('CustomerFavoriteController', function () {
             $response->assertValidResponse(401);
         });
 
-        test('別のユーザーの場合はエラー', function () {
+        test('別の顧客の場合はエラー', function () {
             $user = User::factory()->create();
             $anotherUser = User::factory()->create();
             $shop = Shop::factory()->create();
@@ -50,7 +50,7 @@ describe('CustomerFavoriteController', function () {
             $response->assertValidResponse(403);
         });
 
-        test('存在しないユーザーの場合はエラー', function () {
+        test('存在しない顧客の場合はエラー', function () {
             $user = User::factory()->create();
             $shop = Shop::factory()->create();
 
@@ -124,7 +124,7 @@ describe('CustomerFavoriteController', function () {
             $response->assertValidResponse(401);
         });
 
-        test('別のユーザーの場合はエラー', function () {
+        test('別の顧客の場合はエラー', function () {
             $user = User::factory()->create();
             $shop = Shop::factory()->create();
             $user->favoriteShops()->attach($shop);
@@ -139,7 +139,7 @@ describe('CustomerFavoriteController', function () {
             $response->assertValidResponse(403);
         });
 
-        test('存在しないユーザーの場合はエラー', function () {
+        test('存在しない顧客の場合はエラー', function () {
             $user = User::factory()->create();
             $shop = Shop::factory()->create();
             $user->favoriteShops()->attach($shop);

@@ -148,7 +148,7 @@
                 "tags": [
                     "Reservation"
                 ],
-                "summary": "飲食店詳細ページの予約一覧取得",
+                "summary": "飲食店詳細ページでの予約一覧取得機能",
                 "description": "セッション中の顧客が指定の飲食店で行っている予約を一覧取得する",
                 "operationId": "get-customer-shop-reservations",
                 "parameters": [
@@ -178,7 +178,7 @@
                 "tags": [
                     "Reservation"
                 ],
-                "summary": "飲食店詳細ページの予約追加",
+                "summary": "飲食店詳細ページでの予約追加機能",
                 "description": "セッション中の顧客が指定の飲食店で予約を追加する",
                 "operationId": "post-customer-shop-reservations",
                 "parameters": [
@@ -211,20 +211,17 @@
                 }
             }
         },
-        "/customers/{customer}/shops/{shop}/reservations/{reservation}": {
+        "/customers/{customer}/reservations/{reservation}": {
             "delete": {
                 "tags": [
                     "Reservation"
                 ],
-                "summary": "飲食店詳細ページの予約削除",
-                "description": "セッション中の顧客が指定の飲食店で行っている指定の予約を削除する",
-                "operationId": "delete-customer-shop-reservations",
+                "summary": "マイページでの予約取り消し機能",
+                "description": "セッション中の顧客が指定の飲食店で行っている指定の予約を取り消す",
+                "operationId": "delete-customer-reservations",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/customer-id"
-                    },
-                    {
-                        "$ref": "#/components/parameters/shop-id"
                     },
                     {
                         "$ref": "#/components/parameters/reservation-id"

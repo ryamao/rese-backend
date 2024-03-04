@@ -5,7 +5,7 @@ use Spectator\Spectator;
 
 describe('CustomerController', function () {
     describe('GET /customers/{customer}', function () {
-        test('会員情報取得成功', function () {
+        test('顧客情報取得成功', function () {
             $user = User::factory()->create();
 
             Spectator::using('api-docs.json');
@@ -33,7 +33,7 @@ describe('CustomerController', function () {
                 ->assertValidResponse(403);
         });
 
-        test('ユーザーが存在しない', function () {
+        test('顧客が存在しない', function () {
             $user = User::factory()->create();
             $nonExistentUserId = $user->id + 1;
 
