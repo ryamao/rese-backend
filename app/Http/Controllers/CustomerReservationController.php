@@ -17,7 +17,7 @@ class CustomerReservationController extends Controller
         operationId: 'get-customer-shop-reservations',
         path: '/customers/{customer}/shops/{shop}/reservations',
         tags: ['Reservation'],
-        summary: '飲食店詳細ページの予約一覧取得',
+        summary: '飲食店詳細ページでの予約一覧取得機能',
         description: 'セッション中の顧客が指定の飲食店で行っている予約を一覧取得する',
     )]
     #[OA\Parameter(ref: '#/components/parameters/customer-id')]
@@ -45,7 +45,7 @@ class CustomerReservationController extends Controller
         operationId: 'post-customer-shop-reservations',
         path: '/customers/{customer}/shops/{shop}/reservations',
         tags: ['Reservation'],
-        summary: '飲食店詳細ページの予約追加',
+        summary: '飲食店詳細ページでの予約追加機能',
         description: 'セッション中の顧客が指定の飲食店で予約を追加する',
     )]
     #[OA\Parameter(ref: '#/components/parameters/customer-id')]
@@ -68,5 +68,24 @@ class CustomerReservationController extends Controller
         return response()->json([
             'reservation' => new CustomerReservationResource($reservation),
         ], 201);
+    }
+
+    #[OA\Delete(
+        operationId: 'delete-customer-shop-reservations',
+        path: '/customers/{customer}/shops/{shop}/reservations/{reservation}',
+        tags: ['Reservation'],
+        summary: 'マイページでの予約取り消し機能',
+        description: 'セッション中の顧客が指定の飲食店で行っている指定の予約を取り消す',
+    )]
+    #[OA\Parameter(ref: '#/components/parameters/customer-id')]
+    #[OA\Parameter(ref: '#/components/parameters/shop-id')]
+    #[OA\Parameter(ref: '#/components/parameters/reservation-id')]
+    #[OA\Response(response: 204, ref: '#/components/responses/no-content')]
+    #[OA\Response(response: 401, ref: '#/components/responses/unauthorized')]
+    #[OA\Response(response: 403, ref: '#/components/responses/forbidden')]
+    #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
+    public function destroy(User $customer, Shop $shop, Reservation $reservation): JsonResponse
+    {
+        throw new \Exception('Not implemented');
     }
 }

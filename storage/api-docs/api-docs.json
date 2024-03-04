@@ -211,6 +211,41 @@
                 }
             }
         },
+        "/customers/{customer}/shops/{shop}/reservations/{reservation}": {
+            "delete": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "飲食店詳細ページの予約削除",
+                "description": "セッション中の顧客が指定の飲食店で行っている指定の予約を削除する",
+                "operationId": "delete-customer-shop-reservations",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/customer-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/shop-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/reservation-id"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
         "/genres": {
             "get": {
                 "tags": [
@@ -1007,6 +1042,17 @@
                 "name": "shop",
                 "in": "path",
                 "description": "飲食店ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 1
+                }
+            },
+            "reservation-id": {
+                "name": "reservation",
+                "in": "path",
+                "description": "予約ID",
                 "required": true,
                 "schema": {
                     "type": "integer",

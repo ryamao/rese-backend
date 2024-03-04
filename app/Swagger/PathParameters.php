@@ -30,6 +30,18 @@ use OpenApi\Attributes as OA;
     ),
 )]
 
+#[OA\PathParameter(
+    parameter: 'reservation-id',
+    name: 'reservation',
+    description: '予約ID',
+    required: true,
+    schema: new OA\Schema(
+        type: 'integer',
+        format: 'int64',
+        example: 1,
+    ),
+)]
+
 class PathParameters
 {
 }
