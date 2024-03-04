@@ -75,6 +75,38 @@
                 }
             }
         },
+        "/customers/{customer}/reservations/{reservation}": {
+            "delete": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "マイページでの予約取り消し機能",
+                "description": "セッション中の顧客が指定の飲食店で行っている指定の予約を取り消す",
+                "operationId": "delete-customer-reservations",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/customer-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/reservation-id"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
         "/customers/{customer}/shops/{shop}/favorite": {
             "post": {
                 "tags": [
@@ -207,38 +239,6 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/post-customer-shop-reservations-422"
-                    }
-                }
-            }
-        },
-        "/customers/{customer}/reservations/{reservation}": {
-            "delete": {
-                "tags": [
-                    "Reservation"
-                ],
-                "summary": "マイページでの予約取り消し機能",
-                "description": "セッション中の顧客が指定の飲食店で行っている指定の予約を取り消す",
-                "operationId": "delete-customer-reservations",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/customer-id"
-                    },
-                    {
-                        "$ref": "#/components/parameters/reservation-id"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "$ref": "#/components/responses/no-content"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/not-found"
                     }
                 }
             }

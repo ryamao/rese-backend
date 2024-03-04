@@ -3,8 +3,9 @@
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthenticationStatusController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\CustomerFavoriteController;
 use App\Http\Controllers\CustomerReservationController;
+use App\Http\Controllers\CustomerShopFavoriteController;
+use App\Http\Controllers\CustomerShopReservationController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -35,21 +36,22 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post(
         '/customers/{customer}/shops/{shop}/favorite',
-        [CustomerFavoriteController::class, 'store']
+        [CustomerShopFavoriteController::class, 'store']
     );
     Route::delete(
         '/customers/{customer}/shops/{shop}/favorite',
-        [CustomerFavoriteController::class, 'destroy']
+        [CustomerShopFavoriteController::class, 'destroy']
     );
 
     Route::get(
         '/customers/{customer}/shops/{shop}/reservations',
-        [CustomerReservationController::class, 'index']
+        [CustomerShopReservationController::class, 'index']
     );
     Route::post(
         '/customers/{customer}/shops/{shop}/reservations',
-        [CustomerReservationController::class, 'store']
+        [CustomerShopReservationController::class, 'store']
     );
+
     Route::delete(
         '/customers/{customer}/reservations/{reservation}',
         [CustomerReservationController::class, 'destroy']
