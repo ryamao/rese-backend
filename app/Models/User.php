@@ -17,6 +17,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Shop> $favoriteShops
+ * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Reservation> $reservations
+ * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Shop> $reservedShops
  */
 class User extends Authenticatable
 {
@@ -53,11 +55,21 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Shop>
-     */
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Shop> */
     public function favoriteShops(): BelongsToMany
     {
         return $this->belongsToMany(Shop::class, 'favorites');
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Reservation> */
+    public function reservations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Shop> */
+    public function reservedShops(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Shop::class, 'reservations');
     }
 }
