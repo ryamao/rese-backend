@@ -34,4 +34,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/customers/{user}/shops/{shop}/favorite', [CustomerFavoriteController::class, 'destroy']);
 
     Route::get('/customers/{user}/shops/{shop}/reservations', [CustomerReservationController::class, 'index']);
+    Route::post('/customers/{customer}/shops/{shop}/reservations', [CustomerReservationController::class, 'store']);
 });

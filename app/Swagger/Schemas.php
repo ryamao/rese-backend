@@ -208,6 +208,38 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Schema(
+    schema: 'reservation-error',
+    type: 'object',
+    required: ['message', 'errors'],
+    properties: [
+        new OA\Property(
+            property: 'message',
+            type: 'string'
+        ),
+        new OA\Property(
+            property: 'errors',
+            type: 'object',
+            properties: [
+                new OA\Property(
+                    property: 'reserved_at',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string'
+                    )
+                ),
+                new OA\Property(
+                    property: 'number_of_guests',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string'
+                    )
+                ),
+            ]
+        ),
+    ],
+)]
+
+#[OA\Schema(
     schema: 'pagination',
     description: 'ページネーション',
     type: 'object',

@@ -173,17 +173,19 @@
                         "$ref": "#/components/responses/not-found"
                     }
                 }
-            },
+            }
+        },
+        "/customers/{customer}/shops/{shop}/reservations": {
             "post": {
                 "tags": [
                     "Reservation"
                 ],
                 "summary": "飲食店詳細ページの予約追加",
-                "description": "セッション中の会員が指定の飲食店で予約を追加する",
+                "description": "セッション中の顧客が指定の飲食店で予約を追加する",
                 "operationId": "post-customer-shop-reservations",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/user-id"
+                        "$ref": "#/components/parameters/customer-id"
                     },
                     {
                         "$ref": "#/components/parameters/shop-id"
@@ -950,6 +952,17 @@
                     "example": 1
                 }
             },
+            "customer-id": {
+                "name": "customer",
+                "in": "path",
+                "description": "顧客ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 1
+                }
+            },
             "shop-id": {
                 "name": "shop",
                 "in": "path",
@@ -1528,7 +1541,7 @@
                         },
                         "image_url": "https://api.rese.com/images/1.jpg",
                         "detail": "サンプルテキスト",
-                        "favorite_status": "unmarked"
+                        "favorite_status": "marked"
                     },
                     "reserved_at": "2022-01-01T19:00:00+09:00",
                     "number_of_guests": 4
