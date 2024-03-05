@@ -974,7 +974,15 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "$ref": "#/components/schemas/shop-data"
+                            "required": [
+                                "data"
+                            ],
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/components/schemas/shop-data"
+                                }
+                            },
+                            "type": "object"
                         },
                         "examples": {
                             "example": {
@@ -1595,19 +1603,21 @@
             "get-shop-200": {
                 "summary": "飲食店情報の例",
                 "value": {
-                    "id": 1,
-                    "name": "店舗1",
-                    "area": {
+                    "data": {
                         "id": 1,
-                        "name": "東京都"
-                    },
-                    "genre": {
-                        "id": 1,
-                        "name": "和食"
-                    },
-                    "image_url": "https://api.rese.com/images/1.jpg",
-                    "detail": "サンプルテキスト",
-                    "favorite_status": "marked"
+                        "name": "店舗1",
+                        "area": {
+                            "id": 1,
+                            "name": "東京都"
+                        },
+                        "genre": {
+                            "id": 1,
+                            "name": "和食"
+                        },
+                        "image_url": "https://api.rese.com/images/1.jpg",
+                        "detail": "サンプルテキスト",
+                        "favorite_status": "marked"
+                    }
                 }
             },
             "get-customer-shop-reservations-200-example": {
