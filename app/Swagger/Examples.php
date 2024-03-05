@@ -215,6 +215,20 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Examples(
+    example: 'get-shop-200',
+    summary: '飲食店情報の例',
+    value: [
+        'id' => 1,
+        'name' => '店舗1',
+        'area' => ['id' => 1, 'name' => '東京都'],
+        'genre' => ['id' => 1, 'name' => '和食'],
+        'image_url' => 'https://api.rese.com/images/1.jpg',
+        'detail' => 'サンプルテキスト',
+        'favorite_status' => 'marked',
+    ]
+)]
+
+#[OA\Examples(
     example: 'get-customer-shop-reservations-200-example',
     summary: '予約一覧の例',
     value: [

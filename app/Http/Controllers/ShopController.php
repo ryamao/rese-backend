@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ShopIndexResource;
+use App\Models\Shop;
 use App\Services\ShopSearchService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use OpenApi\Attributes as OA;
@@ -34,5 +36,26 @@ class ShopController extends Controller
         $shops = $service->search()->paginate(10);
 
         return ShopIndexResource::collection($shops);
+    }
+
+    #[OA\Get(
+        operationId: 'get-shop',
+        path: '/shops/{shop}',
+        tags: ['Shop'],
+        summary: '飲食店情報取得',
+        description: '飲食店情報を個別に取得する',
+    )]
+    #[OA\Parameter(ref: '#/components/parameters/shop-id')]
+    #[OA\Response(
+        response: 200,
+        ref: '#/components/responses/get-shop-200'
+    )]
+    #[OA\Response(
+        response: 404,
+        ref: '#/components/responses/not-found'
+    )]
+    public function show(Shop $shop): JsonResponse
+    {
+        throw new \Exception('未実装');
     }
 }
