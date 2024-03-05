@@ -19,7 +19,7 @@ class CustomerShopReservationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'shop' => new ShopIndexResource($this->shop),
+            'shop' => ShopResource::make($this->shop),
             'reserved_at' => $this->reserved_at->toRfc3339String(),
             'number_of_guests' => $this->number_of_guests,
         ];

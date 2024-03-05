@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ShopIndexResource;
+use App\Http\Resources\ShopResource;
 use App\Models\Shop;
 use App\Services\ShopSearchService;
 use Illuminate\Http\JsonResponse;
@@ -25,17 +25,14 @@ class ShopController extends Controller
     #[OA\QueryParameter(ref: '#/components/parameters/genre-query')]
     #[OA\QueryParameter(ref: '#/components/parameters/search-query')]
     #[OA\QueryParameter(ref: '#/components/parameters/page-query')]
-    #[OA\Response(
-        response: 200,
-        ref: '#/components/responses/get-shops-200'
-    )]
+    #[OA\Response(response: 200, ref: '#/components/responses/get-shops-200')]
     public function index(Request $request): AnonymousResourceCollection
     {
         $service = new ShopSearchService($request);
 
         $shops = $service->search()->paginate(10);
 
-        return ShopIndexResource::collection($shops);
+        return ShopResource::collection($shops);
     }
 
     #[OA\Get(
@@ -46,16 +43,10 @@ class ShopController extends Controller
         description: '飲食店情報を個別に取得する',
     )]
     #[OA\Parameter(ref: '#/components/parameters/shop-id')]
-    #[OA\Response(
-        response: 200,
-        ref: '#/components/responses/get-shop-200'
-    )]
-    #[OA\Response(
-        response: 404,
-        ref: '#/components/responses/not-found'
-    )]
+    #[OA\Response(response: 200, ref: '#/components/responses/get-shop-200')]
+    #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
     public function show(Shop $shop): JsonResponse
     {
-        return ShopIndexResource::make($shop)->response();
+        return ShopResource::make($shop)->response();
     }
 }
