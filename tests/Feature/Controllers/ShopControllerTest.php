@@ -10,13 +10,11 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 use Spectator\Spectator;
 
 describe('ShopController', function () {
-    beforeEach(function () {
-        Spectator::using('api-docs.json');
-    });
-
     describe('GET /shops', function () {
         describe('飲食店一覧取得', function () {
             beforeEach(function () {
+                Spectator::using('api-docs.json');
+
                 $areas = Area::factory(3)
                     ->state(new Sequence(
                         fn (Sequence $sequence) => ['name' => "エリア{$sequence->index}"],
@@ -126,6 +124,8 @@ describe('ShopController', function () {
 
     describe('GET /shop/{shop}', function () {
         beforeEach(function () {
+            Spectator::using('api-docs.json');
+
             $this->shop = Shop::factory()->create();
         });
 

@@ -218,13 +218,15 @@ use OpenApi\Attributes as OA;
     example: 'get-shop-200',
     summary: '飲食店情報の例',
     value: [
-        'id' => 1,
-        'name' => '店舗1',
-        'area' => ['id' => 1, 'name' => '東京都'],
-        'genre' => ['id' => 1, 'name' => '和食'],
-        'image_url' => 'https://api.rese.com/images/1.jpg',
-        'detail' => 'サンプルテキスト',
-        'favorite_status' => 'marked',
+        'data' => [
+            'id' => 1,
+            'name' => '店舗1',
+            'area' => ['id' => 1, 'name' => '東京都'],
+            'genre' => ['id' => 1, 'name' => '和食'],
+            'image_url' => 'https://api.rese.com/images/1.jpg',
+            'detail' => 'サンプルテキスト',
+            'favorite_status' => 'marked',
+        ],
     ]
 )]
 

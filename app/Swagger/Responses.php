@@ -222,7 +222,14 @@ use OpenApi\Attributes as OA;
     response: 'get-shop-200',
     description: '飲食店情報取得成功',
     content: new OA\JsonContent(
-        ref: '#/components/schemas/shop-data',
+        type: 'object',
+        required: ['data'],
+        properties: [
+            new OA\Property(
+                property: 'data',
+                ref: '#/components/schemas/shop-data'
+            ),
+        ],
         examples: [
             'example' => new OA\Examples(
                 example: 'example',
