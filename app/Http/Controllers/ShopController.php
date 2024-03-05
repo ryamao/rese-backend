@@ -56,6 +56,6 @@ class ShopController extends Controller
     )]
     public function show(Shop $shop): JsonResponse
     {
-        throw new \Exception('未実装');
+        return ShopIndexResource::make($shop)->response();
     }
 }

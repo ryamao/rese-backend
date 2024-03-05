@@ -25,6 +25,7 @@ Route::get('/areas', [AreaController::class, 'index']);
 Route::get('/genres', [GenreController::class, 'index']);
 
 Route::get('/shops', [ShopController::class, 'index']);
+Route::get('/shops/{shop}', [ShopController::class, 'show']);
 
 Route::get('/auth/status', [AuthenticationStatusController::class, 'show']);
 
