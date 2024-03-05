@@ -219,6 +219,20 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Response(
+    response: 'get-shop-200',
+    description: '飲食店情報取得成功',
+    content: new OA\JsonContent(
+        ref: '#/components/schemas/shop-data',
+        examples: [
+            'example' => new OA\Examples(
+                example: 'example',
+                ref: '#/components/examples/get-shop-200'
+            ),
+        ]
+    )
+)]
+
+#[OA\Response(
     response: 'get-customer-shop-reservations-200',
     description: '飲食店詳細ページの予約一覧取得成功',
     content: [
