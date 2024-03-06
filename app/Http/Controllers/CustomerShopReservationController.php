@@ -8,6 +8,7 @@ use App\Models\Reservation;
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Gate;
 use OpenApi\Attributes as OA;
 
@@ -61,7 +62,7 @@ class CustomerShopReservationController extends Controller
         $reservation = Reservation::create([
             'user_id' => $customer->id,
             'shop_id' => $shop->id,
-            'reserved_at' => $request->input('reserved_at'),
+            'reserved_at' => Carbon::make($request->input('reserved_at'))?->timezone('UTC'),
             'number_of_guests' => $request->input('number_of_guests'),
         ]);
 

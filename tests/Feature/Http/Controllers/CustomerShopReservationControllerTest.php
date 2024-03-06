@@ -12,14 +12,16 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
         });
 
         test('取得成功', function () {
+            $datetime1 = new Carbon('2022-03-04 18:00:00');
+            $datetime2 = new Carbon('2022-03-05 19:00:00');
             $user = User::factory()->create();
             $shop = Shop::factory()->create();
             $user->reservedShops()->attach($shop, [
-                'reserved_at' => new Carbon('2022-03-04 18:00:00', 'Asia/Tokyo'),
+                'reserved_at' => $datetime1,
                 'number_of_guests' => 2,
             ]);
             $user->reservedShops()->attach($shop, [
-                'reserved_at' => new Carbon('2022-03-05 19:00:00', 'Asia/Tokyo'),
+                'reserved_at' => $datetime2,
                 'number_of_guests' => 4,
             ]);
 
@@ -30,6 +32,16 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
             $response->assertValidResponse(200);
 
             $response->assertJsonCount(2, 'reservations');
+            $response->assertJsonPath(
+                'reservations.0.reserved_at',
+                $datetime1->toRfc3339String()
+            );
+            $response->assertJsonPath('reservations.0.number_of_guests', 2);
+            $response->assertJsonPath(
+                'reservations.1.reserved_at',
+                $datetime2->toRfc3339String()
+            );
+            $response->assertJsonPath('reservations.1.number_of_guests', 4);
         });
 
         test('リレーションがない場合は空のコレクションが返る', function () {
@@ -111,17 +123,23 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
             $response->assertValidRequest();
             $response->assertValidResponse(201);
 
+            $response->assertJsonPath(
+                'reservation.reserved_at',
+                $reservedAt->timezone('UTC')->toRfc3339String()
+            );
+            $response->assertJsonPath('reservation.number_of_guests', 2);
+
             $this->assertDatabaseHas('reservations', [
                 'user_id' => $this->user->id,
                 'shop_id' => $this->shop->id,
-                'reserved_at' => $reservedAt,
+                'reserved_at' => $reservedAt->timezone('UTC'),
                 'number_of_guests' => 2,
             ]);
         });
 
         test('同じ店舗に追加可能', function () {
             $this->user->reservedShops()->attach($this->shop, [
-                'reserved_at' => new Carbon('2022-03-04 18:00:00', 'Asia/Tokyo'),
+                'reserved_at' => new Carbon('2022-03-04 18:00:00'),
                 'number_of_guests' => 2,
             ]);
 
@@ -135,10 +153,16 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
             $response->assertValidRequest();
             $response->assertValidResponse(201);
 
+            $response->assertJsonPath(
+                'reservation.reserved_at',
+                $reservedAt->timezone('UTC')->toRfc3339String()
+            );
+            $response->assertJsonPath('reservation.number_of_guests', 4);
+
             $this->assertDatabaseHas('reservations', [
                 'user_id' => $this->user->id,
                 'shop_id' => $this->shop->id,
-                'reserved_at' => $reservedAt,
+                'reserved_at' => $reservedAt->timezone('UTC'),
                 'number_of_guests' => 4,
             ]);
         });
