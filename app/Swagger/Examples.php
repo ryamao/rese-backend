@@ -231,6 +231,31 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Examples(
+    example: 'get-customer-favorites-200',
+    summary: 'お気に入り一覧の例',
+    value: [
+        'meta' => [
+            'current_page' => 1,
+            'from' => 1,
+            'last_page' => 1,
+            'path' => 'https://api.rese.com/customers/1/favorites',
+            'per_page' => 5,
+            'to' => 2,
+            'total' => 2,
+        ],
+        'links' => [
+            ['url' => null, 'label' => '&laquo; Previous', 'active' => false],
+            ['url' => 'https://api.rese.com/shops?page=1', 'label' => '1', 'active' => false],
+            ['url' => null, 'label' => 'Next &raquo;', 'active' => false],
+        ],
+        'data' => [
+            ['id' => 1, 'name' => '店舗1', 'area' => ['id' => 1, 'name' => '東京都'], 'genre' => ['id' => 1, 'name' => '和食'], 'image_url' => 'https://api.rese.com/images/1.jpg', 'detail' => 'サンプルテキスト', 'favorite_status' => 'marked'],
+            ['id' => 2, 'name' => '店舗2', 'area' => ['id' => 2, 'name' => '大阪府'], 'genre' => ['id' => 2, 'name' => '中華'], 'image_url' => 'https://api.rese.com/images/2.jpg', 'detail' => 'サンプルテキスト', 'favorite_status' => 'marked'],
+        ],
+    ]
+)]
+
+#[OA\Examples(
     example: 'get-customer-shop-reservations-200-example',
     summary: '予約一覧の例',
     value: [

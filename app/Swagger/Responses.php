@@ -240,6 +240,33 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Response(
+    response: 'get-customer-favorites-200',
+    description: 'マイページのお気に入り一覧取得成功',
+    content: new OA\JsonContent(
+        allOf: [
+            new OA\Schema(ref: '#/components/schemas/pagination'),
+            new OA\Schema(
+                type: 'object',
+                required: ['data'],
+                properties: [
+                    new OA\Property(
+                        property: 'data',
+                        type: 'array',
+                        items: new OA\Items(ref: '#/components/schemas/shop-data')
+                    ),
+                ],
+            ),
+        ],
+        examples: [
+            'example' => new OA\Examples(
+                example: 'example',
+                ref: '#/components/examples/get-customer-favorites-200'
+            ),
+        ]
+    )
+)]
+
+#[OA\Response(
     response: 'get-customer-shop-reservations-200',
     description: '飲食店詳細ページの予約一覧取得成功',
     content: [
