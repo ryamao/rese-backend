@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin \App\Models\Reservation
  */
-class CustomerShopReservationResource extends JsonResource
+class ReservationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

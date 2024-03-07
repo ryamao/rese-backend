@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +26,15 @@ class CustomerReservationController extends Controller
     #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
     public function index(User $customer): JsonResponse
     {
-        throw new \Exception('未実装');
+        Gate::allowIf(fn (User $authUser) => $authUser->is($customer));
+
+        $reservations = $customer->reservations()
+            ->with('shop')
+            ->whereDate('reserved_at', '>=', today())
+            ->orderBy('reserved_at')
+            ->get();
+
+        return ReservationResource::collection($reservations)->response();
     }
 
     #[OA\Delete(

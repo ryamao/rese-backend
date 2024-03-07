@@ -51,16 +51,20 @@ Route::middleware('auth:sanctum')->group(function () {
     );
 
     Route::get(
+        '/customers/{customer}/reservations',
+        [CustomerReservationController::class, 'index']
+    );
+    Route::delete(
+        '/customers/{customer}/reservations/{reservation}',
+        [CustomerReservationController::class, 'destroy']
+    );
+
+    Route::get(
         '/customers/{customer}/shops/{shop}/reservations',
         [CustomerShopReservationController::class, 'index']
     );
     Route::post(
         '/customers/{customer}/shops/{shop}/reservations',
         [CustomerShopReservationController::class, 'store']
-    );
-
-    Route::delete(
-        '/customers/{customer}/reservations/{reservation}',
-        [CustomerReservationController::class, 'destroy']
     );
 });
