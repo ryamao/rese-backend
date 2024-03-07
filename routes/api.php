@@ -3,6 +3,7 @@
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthenticationStatusController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerFavoriteController;
 use App\Http\Controllers\CustomerReservationController;
 use App\Http\Controllers\CustomerShopFavoriteController;
 use App\Http\Controllers\CustomerShopReservationController;
@@ -33,6 +34,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get(
         '/customers/{customer}',
         [CustomerController::class, 'show']
+    );
+
+    Route::get(
+        '/customers/{customer}/favorites',
+        [CustomerFavoriteController::class, 'index']
     );
 
     Route::post(

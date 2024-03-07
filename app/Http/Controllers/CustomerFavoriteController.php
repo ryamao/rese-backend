@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ShopResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use OpenApi\Attributes as OA;
 
 class CustomerFavoriteController extends Controller
@@ -24,6 +26,10 @@ class CustomerFavoriteController extends Controller
     #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
     public function index(User $customer): JsonResponse
     {
-        throw new \Exception('Not implemented');
+        Gate::allowIf(fn (User $authUser) => $authUser->is($customer));
+
+        $shops = $customer->favoriteShops()->paginate(5);
+
+        return ShopResource::collection($shops)->response();
     }
 }
