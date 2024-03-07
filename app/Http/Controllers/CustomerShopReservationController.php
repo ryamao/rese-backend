@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerReservationStoreRequest;
-use App\Http\Resources\CustomerShopReservationResource;
+use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use App\Models\Shop;
 use App\Models\User;
@@ -40,7 +40,7 @@ class CustomerShopReservationController extends Controller
             ->get();
 
         return response()->json([
-            'reservations' => CustomerShopReservationResource::collection($reservations),
+            'reservations' => ReservationResource::collection($reservations),
         ]);
     }
 
@@ -69,7 +69,7 @@ class CustomerShopReservationController extends Controller
         ]);
 
         return response()->json([
-            'reservation' => new CustomerShopReservationResource($reservation),
+            'reservation' => new ReservationResource($reservation),
         ], 201);
     }
 }

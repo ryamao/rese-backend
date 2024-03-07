@@ -267,31 +267,45 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Response(
+    response: 'get-customer-reservations-200',
+    description: 'マイページの予約一覧取得成功',
+    content: new OA\JsonContent(
+        type: 'object',
+        required: ['data'],
+        properties: [
+            new OA\Property(
+                property: 'data',
+                type: 'array',
+                items: new OA\Items(ref: '#/components/schemas/reservation-data')
+            ),
+        ],
+    )
+)]
+
+#[OA\Response(
     response: 'get-customer-shop-reservations-200',
     description: '飲食店詳細ページの予約一覧取得成功',
-    content: [
-        new OA\JsonContent(
-            type: 'object',
-            required: ['reservations'],
-            properties: [
-                new OA\Property(
-                    property: 'reservations',
-                    type: 'array',
-                    items: new OA\Items(ref: '#/components/schemas/reservation-data')
-                ),
-            ],
-            examples: [
-                'example' => new OA\Examples(
-                    example: 'example',
-                    ref: '#/components/examples/get-customer-shop-reservations-200-example'
-                ),
-                'empty' => new OA\Examples(
-                    example: 'empty',
-                    ref: '#/components/examples/get-customer-shop-reservations-200-empty'
-                ),
-            ]
-        ),
-    ],
+    content: new OA\JsonContent(
+        type: 'object',
+        required: ['reservations'],
+        properties: [
+            new OA\Property(
+                property: 'reservations',
+                type: 'array',
+                items: new OA\Items(ref: '#/components/schemas/reservation-data')
+            ),
+        ],
+        examples: [
+            'example' => new OA\Examples(
+                example: 'example',
+                ref: '#/components/examples/get-customer-shop-reservations-200-example'
+            ),
+            'empty' => new OA\Examples(
+                example: 'empty',
+                ref: '#/components/examples/get-customer-shop-reservations-200-empty'
+            ),
+        ]
+    ),
 )]
 
 #[OA\Response(
