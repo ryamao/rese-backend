@@ -9,6 +9,12 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
     describe('GET /customers/{customer}/shops/{shop}/reservations', function () {
         beforeEach(function () {
             Spectator::using('api-docs.json');
+
+            Carbon::setTestNow(new Carbon('2022-03-01 00:00:00'));
+        });
+
+        afterEach(function () {
+            Carbon::setTestNow();
         });
 
         test('取得成功', function () {
@@ -55,6 +61,30 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
             $response->assertValidResponse(200);
 
             $response->assertJsonCount(0, 'reservations');
+        });
+
+        test('過去の日付の予約は返さない', function () {
+            $user = User::factory()->create();
+            $shop = Shop::factory()->create();
+            $datetimes = [
+                new Carbon('2022-02-28 18:00:00'),
+                new Carbon('2022-03-01 19:00:00'),
+                new Carbon('2022-03-02 20:00:00'),
+            ];
+            foreach ($datetimes as $datetime) {
+                $user->reservedShops()->attach($shop, [
+                    'reserved_at' => $datetime,
+                    'number_of_guests' => 2,
+                ]);
+            }
+
+            $response = $this->actingAs($user)
+                ->getJson("/customers/{$user->id}/shops/{$shop->id}/reservations");
+
+            $response->assertValidRequest();
+            $response->assertValidResponse(200);
+
+            $response->assertJsonCount(2, 'reservations');
         });
 
         test('認証が必要', function () {
@@ -109,6 +139,10 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
 
             $this->user = User::factory()->create();
             $this->shop = Shop::factory()->create();
+        });
+
+        afterEach(function () {
+            Carbon::setTestNow();
         });
 
         test('追加成功', function () {

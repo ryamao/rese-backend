@@ -35,6 +35,8 @@ class CustomerShopReservationController extends Controller
             ->reservations()
             ->with('shop')
             ->where('shop_id', $shop->id)
+            ->whereDate('reserved_at', '>=', today())
+            ->orderBy('reserved_at')
             ->get();
 
         return response()->json([
