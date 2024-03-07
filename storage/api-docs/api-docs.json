@@ -104,6 +104,35 @@
                 }
             }
         },
+        "/customers/{customer}/reservations": {
+            "get": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "マイページでの予約一覧取得機能",
+                "description": "セッション中の顧客が行っている予約の一覧を取得する",
+                "operationId": "get-customer-reservations",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/customer-id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-customer-reservations-200"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
         "/customers/{customer}/reservations/{reservation}": {
             "delete": {
                 "tags": [
@@ -1050,6 +1079,27 @@
                             "example": {
                                 "$ref": "#/components/examples/get-customer-favorites-200"
                             }
+                        }
+                    }
+                }
+            },
+            "get-customer-reservations-200": {
+                "description": "マイページの予約一覧取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "data"
+                            ],
+                            "properties": {
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/reservation-data"
+                                    }
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 }
