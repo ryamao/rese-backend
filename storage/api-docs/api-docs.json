@@ -75,6 +75,35 @@
                 }
             }
         },
+        "/customers/{customer}/favorites": {
+            "get": {
+                "tags": [
+                    "Favorite"
+                ],
+                "summary": "マイページでのお気に入り一覧取得機能",
+                "description": "セッション中の顧客がお気に入り登録している飲食店の一覧を取得する",
+                "operationId": "get-customer-favorites",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/customer-id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-customer-favorites-200"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
         "/customers/{customer}/reservations/{reservation}": {
             "delete": {
                 "tags": [
@@ -992,6 +1021,39 @@
                     }
                 }
             },
+            "get-customer-favorites-200": {
+                "description": "マイページのお気に入り一覧取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/pagination"
+                                },
+                                {
+                                    "required": [
+                                        "data"
+                                    ],
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/shop-data"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            ]
+                        },
+                        "examples": {
+                            "example": {
+                                "$ref": "#/components/examples/get-customer-favorites-200"
+                            }
+                        }
+                    }
+                }
+            },
             "get-customer-shop-reservations-200": {
                 "description": "飲食店詳細ページの予約一覧取得成功",
                 "content": {
@@ -1618,6 +1680,69 @@
                         "detail": "サンプルテキスト",
                         "favorite_status": "marked"
                     }
+                }
+            },
+            "get-customer-favorites-200": {
+                "summary": "お気に入り一覧の例",
+                "value": {
+                    "meta": {
+                        "current_page": 1,
+                        "from": 1,
+                        "last_page": 1,
+                        "path": "https://api.rese.com/customers/1/favorites",
+                        "per_page": 5,
+                        "to": 2,
+                        "total": 2
+                    },
+                    "links": [
+                        {
+                            "url": null,
+                            "label": "&laquo; Previous",
+                            "active": false
+                        },
+                        {
+                            "url": "https://api.rese.com/shops?page=1",
+                            "label": "1",
+                            "active": false
+                        },
+                        {
+                            "url": null,
+                            "label": "Next &raquo;",
+                            "active": false
+                        }
+                    ],
+                    "data": [
+                        {
+                            "id": 1,
+                            "name": "店舗1",
+                            "area": {
+                                "id": 1,
+                                "name": "東京都"
+                            },
+                            "genre": {
+                                "id": 1,
+                                "name": "和食"
+                            },
+                            "image_url": "https://api.rese.com/images/1.jpg",
+                            "detail": "サンプルテキスト",
+                            "favorite_status": "marked"
+                        },
+                        {
+                            "id": 2,
+                            "name": "店舗2",
+                            "area": {
+                                "id": 2,
+                                "name": "大阪府"
+                            },
+                            "genre": {
+                                "id": 2,
+                                "name": "中華"
+                            },
+                            "image_url": "https://api.rese.com/images/2.jpg",
+                            "detail": "サンプルテキスト",
+                            "favorite_status": "marked"
+                        }
+                    ]
                 }
             },
             "get-customer-shop-reservations-200-example": {
