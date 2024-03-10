@@ -20,6 +20,7 @@ class CustomerFavoriteController extends Controller
         description: 'セッション中の顧客がお気に入り登録している飲食店の一覧を取得する',
     )]
     #[OA\PathParameter(ref: '#/components/parameters/customer-id')]
+    #[OA\QueryParameter(ref: '#/components/parameters/page-query')]
     #[OA\Response(response: 200, ref: '#/components/responses/get-customer-favorites-200')]
     #[OA\Response(response: 401, ref: '#/components/responses/unauthorized')]
     #[OA\Response(response: 403, ref: '#/components/responses/forbidden')]
