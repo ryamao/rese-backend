@@ -410,6 +410,56 @@
                 }
             }
         },
+        "/auth/email/verification-notification": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "確認メール送信",
+                "description": "メールアドレス確認通知を登録メールアドレスに送信する",
+                "operationId": "post-auth-email-verification-notification",
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/auth/email/verify/{user}/{hash}": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "メールアドレス確認",
+                "description": "メールでの本人確認を行う",
+                "operationId": "get-auth-email-verify",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/user-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/hash"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "tags": [
@@ -452,6 +502,53 @@
     },
     "components": {
         "schemas": {
+            "auth-status": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/auth-status-guest"
+                    },
+                    {
+                        "$ref": "#/components/schemas/auth-status-customer"
+                    }
+                ]
+            },
+            "auth-status-guest": {
+                "required": [
+                    "status"
+                ],
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "guest"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "auth-status-customer": {
+                "required": [
+                    "status",
+                    "id",
+                    "has_verified_email"
+                ],
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "customer"
+                        ]
+                    },
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "has_verified_email": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
             "register-error": {
                 "required": [
                     "message",
@@ -868,30 +965,17 @@
                 "content": {
                     "application/json": {
                         "schema": {
-                            "required": [
-                                "status"
-                            ],
-                            "properties": {
-                                "status": {
-                                    "type": "string",
-                                    "enum": [
-                                        "guest",
-                                        "customer"
-                                    ]
-                                },
-                                "id": {
-                                    "type": "integer",
-                                    "format": "int64"
-                                }
-                            },
-                            "type": "object"
+                            "$ref": "#/components/schemas/auth-status"
                         },
                         "examples": {
                             "guest": {
                                 "$ref": "#/components/examples/get-auth-status-200-guest"
                             },
-                            "customer": {
-                                "$ref": "#/components/examples/get-auth-status-200-customer"
+                            "customer-unverified": {
+                                "$ref": "#/components/examples/get-auth-status-200-customer-unverified"
+                            },
+                            "customer-verified": {
+                                "$ref": "#/components/examples/get-auth-status-200-customer-verified"
                             }
                         }
                     }
@@ -1185,6 +1269,27 @@
             }
         },
         "parameters": {
+            "user-id": {
+                "name": "user",
+                "in": "path",
+                "description": "ユーザーID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 1
+                }
+            },
+            "hash": {
+                "name": "hash",
+                "in": "path",
+                "description": "ハッシュ値",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "example": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3"
+                }
+            },
             "customer-id": {
                 "name": "customer",
                 "in": "path",
@@ -1265,11 +1370,20 @@
                     "status": "guest"
                 }
             },
-            "get-auth-status-200-customer": {
-                "summary": "顧客として認証済みの状態",
+            "get-auth-status-200-customer-unverified": {
+                "summary": "顧客として認証済みだが、メールアドレスが未確認の状態",
                 "value": {
                     "status": "customer",
-                    "id": 1
+                    "id": 1,
+                    "has_verified_email": false
+                }
+            },
+            "get-auth-status-200-customer-verified": {
+                "summary": "顧客として認証済みで、メールアドレスも確認済みの状態",
+                "value": {
+                    "status": "customer",
+                    "id": 1,
+                    "has_verified_email": true
                 }
             },
             "post-auth-register-422-required": {

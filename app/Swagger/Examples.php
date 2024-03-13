@@ -15,11 +15,22 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Examples(
-    example: 'get-auth-status-200-customer',
-    summary: '顧客として認証済みの状態',
+    example: 'get-auth-status-200-customer-unverified',
+    summary: '顧客として認証済みだが、メールアドレスが未確認の状態',
     value: [
         'status' => 'customer',
         'id' => 1,
+        'has_verified_email' => false,
+    ]
+)]
+
+#[OA\Examples(
+    example: 'get-auth-status-200-customer-verified',
+    summary: '顧客として認証済みで、メールアドレスも確認済みの状態',
+    value: [
+        'status' => 'customer',
+        'id' => 1,
+        'has_verified_email' => true,
     ]
 )]
 

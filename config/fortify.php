@@ -4,6 +4,10 @@ use Laravel\Fortify\Features;
 
 return [
 
+    'redirects' => [
+        'email-verification' => env('SPA_URL').'/thanks',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Fortify Guard
@@ -145,6 +149,7 @@ return [
 
     'features' => [
         Features::registration(),
+        Features::emailVerification(),
     ],
 
 ];
