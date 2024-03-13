@@ -1,40 +1,49 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Notification;
 use Spectator\Spectator;
 
-describe('RegisteredUserController', function () {
+describe('POST /auth/register', function () {
     $requestBody = [
         'name' => 'テストユーザー',
         'email' => 'test@example.com',
         'password' => 'password',
     ];
 
-    test('会員登録に成功する', function () use ($requestBody) {
+    beforeEach(function () {
         Spectator::using('api-docs.json');
+        Notification::fake();
+    });
 
+    test('会員登録に成功する', function () use ($requestBody) {
         $this->postJson('/auth/register', $requestBody)
             ->assertValidRequest()
             ->assertValidResponse(201);
+
+        Notification::assertSentTo(
+            User::whereEmail($requestBody['email'])->first(),
+            Illuminate\Auth\Notifications\VerifyEmail::class
+        );
     });
 
     test('認証済みが会員登録を行う', function () use ($requestBody) {
-        Spectator::using('api-docs.json');
-
         $user = User::factory()->create();
 
         $this->actingAs($user)
             ->postJson('/auth/register', $requestBody)
             ->assertValidRequest()
             ->assertValidResponse(204);
+
+        Notification::assertNotSentTo($user, Illuminate\Auth\Notifications\VerifyEmail::class);
     });
 
     test('バリデーションエラー', function (string ...$testData) {
-        Spectator::using('api-docs.json');
-
         $this->postJson('/auth/register', $testData)
             ->assertValidRequest()
             ->assertValidResponse(422);
+
+        Notification::assertNothingSent();
     })
         ->with([
             'name is empty' => array_merge($requestBody, ['name' => '']),
@@ -48,12 +57,12 @@ describe('RegisteredUserController', function () {
         ]);
 
     test('メールアドレスが重複している', function () use ($requestBody) {
-        Spectator::using('api-docs.json');
-
         User::factory()->create(['email' => $requestBody['email']]);
 
         $this->postJson('/auth/register', $requestBody)
             ->assertValidRequest()
             ->assertValidResponse(422);
+
+        Notification::assertNothingSent();
     });
 });

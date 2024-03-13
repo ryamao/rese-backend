@@ -8,6 +8,49 @@ use App\Types\FavoriteStatus;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
+    schema: 'auth-status',
+    oneOf: [
+        new OA\Schema(ref: '#/components/schemas/auth-status-guest'),
+        new OA\Schema(ref: '#/components/schemas/auth-status-customer'),
+    ],
+)]
+
+#[OA\Schema(
+    schema: 'auth-status-guest',
+    type: 'object',
+    required: ['status'],
+    properties: [
+        new OA\Property(
+            property: 'status',
+            type: 'string',
+            enum: ['guest']
+        ),
+    ]
+)]
+
+#[OA\Schema(
+    schema: 'auth-status-customer',
+    type: 'object',
+    required: ['status', 'id', 'has_verified_email'],
+    properties: [
+        new OA\Property(
+            property: 'status',
+            type: 'string',
+            enum: ['customer']
+        ),
+        new OA\Property(
+            property: 'id',
+            type: 'integer',
+            format: 'int64',
+        ),
+        new OA\Property(
+            property: 'has_verified_email',
+            type: 'boolean',
+        ),
+    ]
+)]
+
+#[OA\Schema(
     schema: 'register-error',
     type: 'object',
     required: ['message', 'errors'],

@@ -68,28 +68,19 @@ use OpenApi\Attributes as OA;
     response: 'get-auth-status-200',
     description: '認証状態取得成功',
     content: new OA\JsonContent(
-        type: 'object',
-        required: ['status'],
-        properties: [
-            new OA\Property(
-                property: 'status',
-                type: 'string',
-                enum: ['guest', 'customer']
-            ),
-            new OA\Property(
-                property: 'id',
-                type: 'integer',
-                format: 'int64'
-            ),
-        ],
+        ref: '#/components/schemas/auth-status',
         examples: [
             'guest' => new OA\Examples(
                 example: 'guest',
                 ref: '#/components/examples/get-auth-status-200-guest'
             ),
-            'customer' => new OA\Examples(
-                example: 'customer',
-                ref: '#/components/examples/get-auth-status-200-customer'
+            'customer-unverified' => new OA\Examples(
+                example: 'customer-unverified',
+                ref: '#/components/examples/get-auth-status-200-customer-unverified'
+            ),
+            'customer-verified' => new OA\Examples(
+                example: 'customer-verified',
+                ref: '#/components/examples/get-auth-status-200-customer-verified'
             ),
         ]
     )
