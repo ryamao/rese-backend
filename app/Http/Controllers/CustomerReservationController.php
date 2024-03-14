@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerReservationStoreRequest;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Gate;
 use OpenApi\Attributes as OA;
 
@@ -35,6 +37,31 @@ class CustomerReservationController extends Controller
             ->get();
 
         return ReservationResource::collection($reservations)->response();
+    }
+
+    #[OA\Put(
+        operationId: 'put-customer-reservation',
+        path: '/customers/{customer}/reservations/{reservation}',
+        tags: ['Reservation'],
+        summary: 'マイページでの予約変更機能',
+        description: 'セッション中の顧客が行っている指定の予約を変更する',
+    )]
+    #[OA\Parameter(ref: '#/components/parameters/customer-id')]
+    #[OA\Parameter(ref: '#/components/parameters/reservation-id')]
+    #[OA\RequestBody(ref: '#/components/requestBodies/put-customer-reservation')]
+    #[OA\Response(response: 204, ref: '#/components/responses/no-content')]
+    #[OA\Response(response: 401, ref: '#/components/responses/unauthorized')]
+    #[OA\Response(response: 403, ref: '#/components/responses/forbidden')]
+    #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
+    #[OA\Response(response: 422, ref: '#/components/responses/put-customer-reservation-422')]
+    public function update(CustomerReservationStoreRequest $request, User $customer, Reservation $reservation): Response
+    {
+        $reservation->update([
+            'reserved_at' => Carbon::make($request->input('reserved_at'))?->timezone('UTC'),
+            'number_of_guests' => $request->input('number_of_guests'),
+        ]);
+
+        return response()->noContent();
     }
 
     #[OA\Delete(

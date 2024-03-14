@@ -137,6 +137,42 @@
             }
         },
         "/customers/{customer}/reservations/{reservation}": {
+            "put": {
+                "tags": [
+                    "Reservation"
+                ],
+                "summary": "マイページでの予約変更機能",
+                "description": "セッション中の顧客が行っている指定の予約を変更する",
+                "operationId": "put-customer-reservation",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/customer-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/reservation-id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/put-customer-reservation"
+                },
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/put-customer-reservation-422"
+                    }
+                }
+            },
             "delete": {
                 "tags": [
                     "Reservation"
@@ -1266,6 +1302,30 @@
                         }
                     }
                 }
+            },
+            "put-customer-reservation-422": {
+                "description": "マイページの予約変更のバリデーションエラー",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/reservation-error"
+                        },
+                        "examples": {
+                            "required": {
+                                "$ref": "#/components/examples/post-customer-shop-reservations-422-required"
+                            },
+                            "date": {
+                                "$ref": "#/components/examples/post-customer-shop-reservations-422-reserved_at"
+                            },
+                            "past": {
+                                "$ref": "#/components/examples/post-customer-shop-reservations-422-past"
+                            },
+                            "number_of_guests": {
+                                "$ref": "#/components/examples/post-customer-shop-reservations-422-number_of_guests"
+                            }
+                        }
+                    }
+                }
             }
         },
         "parameters": {
@@ -2107,6 +2167,35 @@
             },
             "post-customer-shop-reservations": {
                 "description": "予約追加リクエスト",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "reserved_at",
+                                "number_of_guests"
+                            ],
+                            "properties": {
+                                "reserved_at": {
+                                    "description": "予約日時",
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2021-12-31T23:59:59+09:00"
+                                },
+                                "number_of_guests": {
+                                    "description": "予約人数",
+                                    "type": "integer",
+                                    "minimum": 1,
+                                    "example": 2
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "put-customer-reservation": {
+                "description": "予約変更リクエスト",
                 "required": true,
                 "content": {
                     "application/json": {

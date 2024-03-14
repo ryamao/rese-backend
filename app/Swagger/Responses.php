@@ -343,6 +343,32 @@ use OpenApi\Attributes as OA;
     )
 )]
 
+#[OA\Response(
+    response: 'put-customer-reservation-422',
+    description: 'マイページの予約変更のバリデーションエラー',
+    content: new OA\JsonContent(
+        ref: '#/components/schemas/reservation-error',
+        examples: [
+            'required' => new OA\Examples(
+                example: 'required',
+                ref: '#/components/examples/post-customer-shop-reservations-422-required'
+            ),
+            'reserved_at' => new OA\Examples(
+                example: 'date',
+                ref: '#/components/examples/post-customer-shop-reservations-422-reserved_at'
+            ),
+            'past' => new OA\Examples(
+                example: 'past',
+                ref: '#/components/examples/post-customer-shop-reservations-422-past'
+            ),
+            'number_of_guests' => new OA\Examples(
+                example: 'number_of_guests',
+                ref: '#/components/examples/post-customer-shop-reservations-422-number_of_guests'
+            ),
+        ]
+    )
+)]
+
 class Responses
 {
 }

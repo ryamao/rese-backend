@@ -54,6 +54,10 @@ Route::middleware('auth:sanctum')->group(function () {
         '/customers/{customer}/reservations',
         [CustomerReservationController::class, 'index']
     );
+    Route::put(
+        '/customers/{customer}/reservations/{reservation}',
+        [CustomerReservationController::class, 'update']
+    );
     Route::delete(
         '/customers/{customer}/reservations/{reservation}',
         [CustomerReservationController::class, 'destroy']
