@@ -3,6 +3,7 @@
 use App\Models\Reservation;
 use App\Models\Shop;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Spectator\Spectator;
 
@@ -100,6 +101,101 @@ describe('GET /customers/{customer}/reservations', function () {
 
         $response->assertValidRequest();
         $response->assertValidResponse(404);
+    });
+});
+
+describe('PUT /customers/{customer}/reservations/{reservation}', function () {
+    beforeEach(function () {
+        Spectator::using('api-docs.json');
+
+        Carbon::setTestNow(new Carbon('2024-01-01 00:00:00'));
+
+        $this->user = User::factory()->create();
+        $this->reservation = Reservation::create([
+            'user_id' => $this->user->id,
+            'shop_id' => Shop::factory()->create()->id,
+            'reserved_at' => Carbon::make('2024-01-01 20:00:00')->timezone('UTC'),
+            'number_of_guests' => 1,
+        ]);
+    });
+
+    afterEach(function () {
+        Carbon::setTestNow();
+    });
+
+    test('変更成功', function () {
+        $reservedAt = Carbon::make('2024-01-01 21:00:00', 'Asia/Tokyo');
+
+        $response = $this->actingAs($this->user)
+            ->putJson("/customers/{$this->user->id}/reservations/{$this->reservation->id}", [
+                'reserved_at' => $reservedAt->toRfc3339String(),
+                'number_of_guests' => 2,
+            ]);
+
+        $response->assertValidRequest();
+        $response->assertValidResponse(204);
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $this->reservation->id,
+            'reserved_at' => $reservedAt->timezone('UTC'),
+            'number_of_guests' => 2,
+        ]);
+    });
+
+    test('認証が必要', function () {
+        $response = $this->putJson("/customers/{$this->user->id}/reservations/{$this->reservation->id}", [
+            'reserved_at' => '2024-01-01T21:00:00+09:00',
+            'number_of_guests' => 2,
+        ]);
+
+        $response->assertValidRequest();
+        $response->assertValidResponse(401);
+    });
+
+    test('別の顧客の場合は403エラー', function () {
+        $otherUser = User::factory()->create();
+
+        $response = $this->actingAs($otherUser)
+            ->putJson("/customers/{$this->user->id}/reservations/{$this->reservation->id}", [
+                'reserved_at' => new Carbon('2024-01-01 21:00:00'),
+                'number_of_guests' => 2,
+            ]);
+
+        $response->assertValidRequest();
+        $response->assertValidResponse(403);
+    });
+
+    test('存在しない顧客IDの場合は404エラー', function () {
+        $response = $this->actingAs($this->user)
+            ->putJson('/customers/9999/reservations/1', [
+                'reserved_at' => '2024-01-01T21:00:00+09:00',
+                'number_of_guests' => 2,
+            ]);
+
+        $response->assertValidRequest();
+        $response->assertValidResponse(404);
+    });
+
+    test('存在しない予約IDの場合は404エラー', function () {
+        $response = $this->actingAs($this->user)
+            ->putJson("/customers/{$this->user->id}/reservations/9999", [
+                'reserved_at' => '2024-01-01T21:00:00+09:00',
+                'number_of_guests' => 2,
+            ]);
+
+        $response->assertValidRequest();
+        $response->assertValidResponse(404);
+    });
+
+    test('予約日時が過去の場合は422エラー', function () {
+        $response = $this->actingAs($this->user)
+            ->putJson("/customers/{$this->user->id}/reservations/{$this->reservation->id}", [
+                'reserved_at' => '2023-12-31T23:59:59+00:00',
+                'number_of_guests' => 2,
+            ]);
+
+        $response->assertValidRequest();
+        $response->assertValidResponse(422);
     });
 });
 
