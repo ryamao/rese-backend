@@ -41,6 +41,11 @@ use OpenApi\Attributes as OA;
     description: '予約に関するAPI'
 )]
 
+#[OA\Tag(
+    name: 'Admin',
+    description: '管理者に関するAPI'
+)]
+
 class Tags
 {
 }

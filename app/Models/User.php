@@ -57,6 +57,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
+    /** @var string */
+    protected $guard_name = 'sanctum';
+
     /** @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\Shop> */
     public function favoriteShops(): BelongsToMany
     {

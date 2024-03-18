@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerReservationController;
 use App\Http\Controllers\CustomerShopFavoriteController;
 use App\Http\Controllers\CustomerShopReservationController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,9 @@ Route::get('/shops/{shop}', [ShopController::class, 'show']);
 Route::get('/auth/status', [AuthenticationStatusController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/owners', [OwnerController::class, 'store'])
+        ->middleware('permission:create owners');
+
     Route::get(
         '/customers/{customer}',
         [CustomerController::class, 'show']
