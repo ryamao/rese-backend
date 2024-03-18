@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Spatie\Permission\Models\Role;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -31,10 +32,13 @@ class CreateNewUser implements CreatesNewUsers
             'password' => ['required', 'string', 'min:8', 'max:100'],
         ])->validate();
 
-        return User::create([
+        $customer = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+        $customer->assignRole(Role::findOrCreate('customer'));
+
+        return $customer;
     }
 }
