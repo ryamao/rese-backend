@@ -22,10 +22,13 @@ class AuthenticationStatusController extends Controller
     public function show(): JsonResponse
     {
         if (Auth::user()) {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
             return response()->json([
-                'status' => 'customer',
-                'id' => Auth::id(),
-                'has_verified_email' => Auth::user()->hasVerifiedEmail(),
+                'status' => $user->roles()->first()?->name ?? 'customer',
+                'id' => $user->id,
+                'has_verified_email' => $user->hasVerifiedEmail(),
             ]);
         } else {
             return response()->json(['status' => 'guest']);

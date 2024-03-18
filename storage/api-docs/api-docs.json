@@ -544,7 +544,7 @@
                         "$ref": "#/components/schemas/auth-status-guest"
                     },
                     {
-                        "$ref": "#/components/schemas/auth-status-customer"
+                        "$ref": "#/components/schemas/auth-status-user"
                     }
                 ]
             },
@@ -562,7 +562,7 @@
                 },
                 "type": "object"
             },
-            "auth-status-customer": {
+            "auth-status-user": {
                 "required": [
                     "status",
                     "id",
@@ -572,6 +572,8 @@
                     "status": {
                         "type": "string",
                         "enum": [
+                            "admin",
+                            "owner",
                             "customer"
                         ]
                     },

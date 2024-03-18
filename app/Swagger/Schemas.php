@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
     schema: 'auth-status',
     oneOf: [
         new OA\Schema(ref: '#/components/schemas/auth-status-guest'),
-        new OA\Schema(ref: '#/components/schemas/auth-status-customer'),
+        new OA\Schema(ref: '#/components/schemas/auth-status-user'),
     ],
 )]
 
@@ -29,14 +29,14 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Schema(
-    schema: 'auth-status-customer',
+    schema: 'auth-status-user',
     type: 'object',
     required: ['status', 'id', 'has_verified_email'],
     properties: [
         new OA\Property(
             property: 'status',
             type: 'string',
-            enum: ['customer']
+            enum: ['admin', 'owner', 'customer']
         ),
         new OA\Property(
             property: 'id',
