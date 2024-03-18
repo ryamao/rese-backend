@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Area;
 use App\Models\Genre;
 use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -33,8 +34,12 @@ class ShopSeeder extends Seeder
             $externalImagePath = $row[4];
             $storageImagePath = $this->storeImage($externalImagePath);
             if ($storageImagePath) {
+                $owner = User::factory()->create();
+                $owner->assignRole('owner');
+
                 Shop::create([
                     'name' => $row[0],
+                    'owner_id' => $owner->id,
                     'area_id' => Area::where('name', $row[1])->firstOrFail()->id,
                     'genre_id' => Genre::where('name', $row[2])->firstOrFail()->id,
                     'detail' => $row[3],

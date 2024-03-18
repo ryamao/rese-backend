@@ -19,8 +19,10 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $createOwnersPermission = Permission::create(['name' => 'create owners']);
+        $createShopsPermission = Permission::create(['name' => 'create shops']);
+
         $adminRole = Role::create(['name' => 'admin']);
-        $adminRole->givePermissionTo($createOwnersPermission);
+        $ownerRole = Role::create(['name' => 'owner']);
 
         $admin = User::create([
             'name' => 'Administrator',
@@ -28,6 +30,10 @@ class UserSeeder extends Seeder
             'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
         ]);
         $admin->markEmailAsVerified();
+
+        $adminRole->givePermissionTo($createOwnersPermission);
+        $ownerRole->givePermissionTo($createShopsPermission);
+
         $admin->assignRole($adminRole);
     }
 }
