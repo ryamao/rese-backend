@@ -5,6 +5,8 @@ use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spectator\Spectator;
 
 describe('GET /customers/{customer}/reservations', function () {
@@ -13,7 +15,15 @@ describe('GET /customers/{customer}/reservations', function () {
 
         Date::setTestNow('2021-01-01 12:00:00');
 
+        Permission::create(['name' => 'view customer reservations']);
+        $customerRole = Role::create(['name' => 'customer']);
+        $customerRole->givePermissionTo('view customer reservations');
+
         $this->users = User::factory(3)->create();
+        $this->users->each(function (User $user) use ($customerRole) {
+            $user->assignRole($customerRole);
+        });
+
         $this->shops = Shop::factory(3)->create();
 
         Reservation::create([

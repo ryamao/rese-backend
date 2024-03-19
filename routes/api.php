@@ -61,7 +61,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get(
         '/customers/{customer}/reservations',
         [CustomerReservationController::class, 'index']
-    );
+    )
+        ->middleware('permission:view customer reservations');
     Route::put(
         '/customers/{customer}/reservations/{reservation}',
         [CustomerReservationController::class, 'update']
