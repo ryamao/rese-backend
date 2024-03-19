@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
 
         $admin = User::create([
             'name' => 'Administrator',
-            'email' => env('ADMIN_EMAIL', 'test@example.com'),
+            'email' => env('ADMIN_EMAIL', 'admin@example.com'),
             'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
         ]);
         $admin->markEmailAsVerified();
