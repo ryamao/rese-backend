@@ -87,6 +87,14 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Response(
+    response: 'post-owners-422',
+    description: 'バリデーションエラーまたはメールアドレスが登録済み',
+    content: new OA\JsonContent(
+        ref: '#/components/schemas/register-error',
+    )
+)]
+
+#[OA\Response(
     response: 'post-auth-register-422',
     description: 'バリデーションエラーまたはメールアドレスが登録済み',
     content: new OA\JsonContent(
