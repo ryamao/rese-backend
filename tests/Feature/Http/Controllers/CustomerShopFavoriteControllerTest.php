@@ -2,182 +2,149 @@
 
 use App\Models\Shop;
 use App\Models\User;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spectator\Spectator;
 
-describe('CustomerFavoriteController', function () {
-    describe('POST /customers/{customer}/shops/{shop}/favorite', function () {
-        test('お気に入り登録', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
+describe('POST /customers/{customer}/shops/{shop}/favorite', function () {
+    beforeEach(function () {
+        Spectator::using('api-docs.json');
 
-            Spectator::using('api-docs.json');
+        Permission::create(['name' => 'add to favorites']);
+        $customerRole = Role::create(['name' => 'customer']);
+        $customerRole->givePermissionTo('add to favorites');
 
-            $response = $this->actingAs($user)
-                ->postJson("/customers/{$user->id}/shops/{$shop->id}/favorite");
+        $this->user = User::factory()->create();
+        $this->user->assignRole($customerRole);
 
-            $response->assertValidRequest();
-            $response->assertValidResponse(201);
-
-            $this->assertDatabaseHas('favorites', [
-                'user_id' => $user->id,
-                'shop_id' => $shop->id,
-            ]);
-        });
-
-        test('認証されていない場合はエラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-
-            Spectator::using('api-docs.json');
-
-            $response = $this->postJson("/customers/{$user->id}/shops/{$shop->id}/favorite");
-
-            $response->assertValidRequest();
-            $response->assertValidResponse(401);
-        });
-
-        test('別の顧客の場合はエラー', function () {
-            $user = User::factory()->create();
-            $anotherUser = User::factory()->create();
-            $shop = Shop::factory()->create();
-
-            Spectator::using('api-docs.json');
-
-            $response = $this->actingAs($anotherUser)
-                ->postJson("/customers/{$user->id}/shops/{$shop->id}/favorite");
-
-            $response->assertValidRequest();
-            $response->assertValidResponse(403);
-        });
-
-        test('存在しない顧客の場合はエラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-
-            Spectator::using('api-docs.json');
-
-            $response = $this->actingAs($user)
-                ->postJson("/customers/9999/shops/{$shop->id}/favorite");
-
-            $response->assertValidRequest();
-            $response->assertValidResponse(404);
-        });
-
-        test('存在しない店舗の場合はエラー', function () {
-            $user = User::factory()->create();
-
-            Spectator::using('api-docs.json');
-
-            $response = $this->actingAs($user)
-                ->postJson("/customers/{$user->id}/shops/9999/favorite");
-
-            $response->assertValidRequest();
-            $response->assertValidResponse(404);
-        });
-
-        test('既にお気に入り登録されている場合はエラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-
-            $user->favoriteShops()->attach($shop);
-
-            Spectator::using('api-docs.json');
-
-            $response = $this->actingAs($user)
-                ->postJson("/customers/{$user->id}/shops/{$shop->id}/favorite");
-
-            $response->assertValidRequest();
-            $response->assertValidResponse(422);
-        });
+        $this->shop = Shop::factory()->create();
     });
 
-    describe('DELETE /customers/{customer}/shops/{shop}/favorite', function () {
-        test('お気に入り解除', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-            $user->favoriteShops()->attach($shop);
+    test('お気に入り登録', function () {
+        $response = $this->actingAs($this->user)
+            ->postJson("/customers/{$this->user->id}/shops/{$this->shop->id}/favorite");
 
-            Spectator::using('api-docs.json');
+        $response->assertValidRequest();
+        $response->assertValidResponse(201);
 
-            $response = $this->actingAs($user)
-                ->deleteJson("/customers/{$user->id}/shops/{$shop->id}/favorite");
+        $this->assertDatabaseHas('favorites', [
+            'user_id' => $this->user->id,
+            'shop_id' => $this->shop->id,
+        ]);
+    });
 
-            $response->assertValidRequest();
-            $response->assertValidResponse(204);
+    test('認証されていない場合はエラー', function () {
+        $response = $this->postJson("/customers/{$this->user->id}/shops/{$this->shop->id}/favorite");
 
-            $this->assertDatabaseMissing('favorites', [
-                'user_id' => $user->id,
-                'shop_id' => $shop->id,
-            ]);
-        });
+        $response->assertValidRequest();
+        $response->assertValidResponse(401);
+    });
 
-        test('認証されていない場合はエラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-            $user->favoriteShops()->attach($shop);
+    test('別の顧客の場合はエラー', function () {
+        $anotherUser = User::factory()->create();
 
-            Spectator::using('api-docs.json');
+        $response = $this->actingAs($anotherUser)
+            ->postJson("/customers/{$this->user->id}/shops/{$this->shop->id}/favorite");
 
-            $response = $this->deleteJson("/customers/{$user->id}/shops/{$shop->id}/favorite");
+        $response->assertValidRequest();
+        $response->assertValidResponse(403);
+    });
 
-            $response->assertValidRequest();
-            $response->assertValidResponse(401);
-        });
+    test('存在しない顧客の場合はエラー', function () {
+        $response = $this->actingAs($this->user)
+            ->postJson("/customers/9999/shops/{$this->shop->id}/favorite");
 
-        test('別の顧客の場合はエラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-            $user->favoriteShops()->attach($shop);
-            $anotherUser = User::factory()->create();
+        $response->assertValidRequest();
+        $response->assertValidResponse(404);
+    });
 
-            Spectator::using('api-docs.json');
+    test('存在しない店舗の場合はエラー', function () {
+        $response = $this->actingAs($this->user)
+            ->postJson("/customers/{$this->user->id}/shops/9999/favorite");
 
-            $response = $this->actingAs($anotherUser)
-                ->deleteJson("/customers/{$user->id}/shops/{$shop->id}/favorite");
+        $response->assertValidRequest();
+        $response->assertValidResponse(404);
+    });
 
-            $response->assertValidRequest();
-            $response->assertValidResponse(403);
-        });
+    test('既にお気に入り登録されている場合はエラー', function () {
+        $this->user->favoriteShops()->attach($this->shop);
 
-        test('存在しない顧客の場合はエラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-            $user->favoriteShops()->attach($shop);
+        $response = $this->actingAs($this->user)
+            ->postJson("/customers/{$this->user->id}/shops/{$this->shop->id}/favorite");
 
-            Spectator::using('api-docs.json');
+        $response->assertValidRequest();
+        $response->assertValidResponse(422);
+    });
+});
 
-            $response = $this->actingAs($user)
-                ->deleteJson("/customers/9999/shops/{$shop->id}/favorite");
+describe('DELETE /customers/{customer}/shops/{shop}/favorite', function () {
+    beforeEach(function () {
+        Spectator::using('api-docs.json');
 
-            $response->assertValidRequest();
-            $response->assertValidResponse(404);
-        });
+        Permission::create(['name' => 'remove from favorites']);
+        $customerRole = Role::create(['name' => 'customer']);
+        $customerRole->givePermissionTo('remove from favorites');
 
-        test('存在しない店舗の場合はエラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-            $user->favoriteShops()->attach($shop);
+        $this->user = User::factory()->create();
+        $this->user->assignRole($customerRole);
 
-            Spectator::using('api-docs.json');
+        $this->shop = Shop::factory()->create();
+        $this->user->favoriteShops()->attach($this->shop);
+    });
 
-            $response = $this->actingAs($user)
-                ->deleteJson("/customers/{$user->id}/shops/9999/favorite");
+    test('お気に入り解除', function () {
+        $response = $this->actingAs($this->user)
+            ->deleteJson("/customers/{$this->user->id}/shops/{$this->shop->id}/favorite");
 
-            $response->assertValidRequest();
-            $response->assertValidResponse(404);
-        });
+        $response->assertValidRequest();
+        $response->assertValidResponse(204);
 
-        test('お気に入り登録されていない場合はエラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
+        $this->assertDatabaseMissing('favorites', [
+            'user_id' => $this->user->id,
+            'shop_id' => $this->shop->id,
+        ]);
+    });
 
-            Spectator::using('api-docs.json');
+    test('認証されていない場合はエラー', function () {
+        $response = $this->deleteJson("/customers/{$this->user->id}/shops/{$this->shop->id}/favorite");
 
-            $response = $this->actingAs($user)
-                ->deleteJson("/customers/{$user->id}/shops/{$shop->id}/favorite");
+        $response->assertValidRequest();
+        $response->assertValidResponse(401);
+    });
 
-            $response->assertValidRequest();
-            $response->assertValidResponse(422);
-        });
+    test('別の顧客の場合はエラー', function () {
+        $anotherUser = User::factory()->create();
+
+        $response = $this->actingAs($anotherUser)
+            ->deleteJson("/customers/{$this->user->id}/shops/{$this->shop->id}/favorite");
+
+        $response->assertValidRequest();
+        $response->assertValidResponse(403);
+    });
+
+    test('存在しない顧客の場合はエラー', function () {
+        $response = $this->actingAs($this->user)
+            ->deleteJson("/customers/9999/shops/{$this->shop->id}/favorite");
+
+        $response->assertValidRequest();
+        $response->assertValidResponse(404);
+    });
+
+    test('存在しない店舗の場合はエラー', function () {
+        $response = $this->actingAs($this->user)
+            ->deleteJson("/customers/{$this->user->id}/shops/9999/favorite");
+
+        $response->assertValidRequest();
+        $response->assertValidResponse(404);
+    });
+
+    test('お気に入り登録されていない場合はエラー', function () {
+        $this->user->favoriteShops()->detach($this->shop);
+
+        $response = $this->actingAs($this->user)
+            ->deleteJson("/customers/{$this->user->id}/shops/{$this->shop->id}/favorite");
+
+        $response->assertValidRequest();
+        $response->assertValidResponse(422);
     });
 });

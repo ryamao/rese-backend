@@ -50,11 +50,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post(
         '/customers/{customer}/shops/{shop}/favorite',
         [CustomerShopFavoriteController::class, 'store']
-    );
+    )
+        ->middleware('permission:add to favorites');
     Route::delete(
         '/customers/{customer}/shops/{shop}/favorite',
         [CustomerShopFavoriteController::class, 'destroy']
-    );
+    )
+        ->middleware('permission:remove from favorites');
 
     Route::get(
         '/customers/{customer}/reservations',
