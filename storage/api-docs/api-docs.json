@@ -377,7 +377,7 @@
                         "$ref": "#/components/responses/forbidden"
                     },
                     "422": {
-                        "$ref": "#/components/responses/unprocessable-entity"
+                        "$ref": "#/components/responses/post-owners-422"
                     }
                 }
             }
@@ -1042,6 +1042,16 @@
                             "customer-verified": {
                                 "$ref": "#/components/examples/get-auth-status-200-customer-verified"
                             }
+                        }
+                    }
+                }
+            },
+            "post-owners-422": {
+                "description": "バリデーションエラーまたはメールアドレスが登録済み",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/register-error"
                         }
                     }
                 }
