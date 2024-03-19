@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Spatie\Permission\Models\Role;
 use Spectator\Spectator;
 
 describe('GET /auth/status', function () {
@@ -14,6 +15,23 @@ describe('GET /auth/status', function () {
             ->assertValidRequest()
             ->assertValidResponse(200)
             ->assertExactJson(['status' => 'guest']);
+    });
+
+    test('管理者', function () {
+        $admin = User::factory()->create();
+        $role = Role::create(['name' => 'admin']);
+        $admin->assignRole($role);
+
+        $this->actingAs($admin)
+            ->getJson('/auth/status')
+            ->assertValidRequest()
+            ->assertValidResponse(200)
+            ->assertJson(
+                fn (AssertableJson $json) => $json
+                    ->where('status', 'admin')
+                    ->whereType('id', 'integer')
+                    ->where('has_verified_email', true)
+            );
     });
 
     test('一般会員 (メール未確認)', function () {

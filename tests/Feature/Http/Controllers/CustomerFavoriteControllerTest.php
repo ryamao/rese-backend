@@ -2,6 +2,7 @@
 
 use App\Models\Shop;
 use App\Models\User;
+use Database\Seeders\UserSeeder;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Spectator\Spectator;
 
@@ -9,7 +10,13 @@ describe('GET /customers/{customer}/favorites', function () {
     beforeEach(function () {
         Spectator::using('api-docs.json');
 
+        $this->seed(UserSeeder::class);
+
         $this->customers = User::factory()->count(2)->create();
+        $this->customers->each(function (User $customer) {
+            $customer->assignRole('customer');
+        });
+
         $this->shops = Shop::factory()->count(15)->create();
         $this->shops->each(function (Shop $shop, int $index) {
             if ($index % 2 === 0) {
@@ -53,6 +60,7 @@ describe('GET /customers/{customer}/favorites', function () {
 
     test('お気に入りがない場合は空配列を返す', function () {
         $customer = User::factory()->create();
+        $customer->assignRole('customer');
 
         $response = $this->actingAs($customer)
             ->getJson("/customers/{$customer->id}/favorites");

@@ -7,6 +7,40 @@ namespace App\Swagger;
 use OpenApi\Attributes as OA;
 
 #[OA\RequestBody(
+    request: 'post-owners',
+    description: '店舗代表者追加リクエスト',
+    required: true,
+    content: new OA\JsonContent(
+        required: ['name', 'email', 'password'],
+        properties: [
+            new OA\Property(
+                property: 'name',
+                description: '店舗代表者名',
+                type: 'string',
+                minLength: 1,
+                maxLength: 100,
+                example: 'テストオーナー',
+            ),
+            new OA\Property(
+                property: 'email',
+                description: 'メールアドレス',
+                type: 'string',
+                format: 'email',
+                example: 'test@example.com',
+            ),
+            new OA\Property(
+                property: 'password',
+                description: 'パスワード',
+                type: 'string',
+                minLength: 8,
+                maxLength: 100,
+                example: 'password',
+            ),
+        ]
+    )
+)]
+
+#[OA\RequestBody(
     request: 'post-auth-register',
     description: '顧客登録リクエスト',
     required: true,

@@ -3,6 +3,7 @@
 use App\Models\Reservation;
 use App\Models\Shop;
 use App\Models\User;
+use Database\Seeders\UserSeeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Spectator\Spectator;
@@ -13,7 +14,13 @@ describe('GET /customers/{customer}/reservations', function () {
 
         Date::setTestNow('2021-01-01 12:00:00');
 
+        $this->seed(UserSeeder::class);
+
         $this->users = User::factory(3)->create();
+        $this->users->each(function (User $user) {
+            $user->assignRole('customer');
+        });
+
         $this->shops = Shop::factory(3)->create();
 
         Reservation::create([
@@ -110,7 +117,11 @@ describe('PUT /customers/{customer}/reservations/{reservation}', function () {
 
         Carbon::setTestNow(new Carbon('2024-01-01 00:00:00'));
 
+        $this->seed(UserSeeder::class);
+
         $this->user = User::factory()->create();
+        $this->user->assignRole('customer');
+
         $this->reservation = Reservation::create([
             'user_id' => $this->user->id,
             'shop_id' => Shop::factory()->create()->id,
@@ -203,7 +214,11 @@ describe('DELETE /customers/{customer}/reservations/{reservation}', function () 
     beforeEach(function () {
         Spectator::using('api-docs.json');
 
+        $this->seed(UserSeeder::class);
+
         $this->user = User::factory()->create();
+        $this->user->assignRole('customer');
+
         $this->reservation = Reservation::factory()->create([
             'user_id' => $this->user->id,
         ]);

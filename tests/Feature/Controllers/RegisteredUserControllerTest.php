@@ -21,10 +21,11 @@ describe('POST /auth/register', function () {
             ->assertValidRequest()
             ->assertValidResponse(201);
 
-        Notification::assertSentTo(
-            User::whereEmail($requestBody['email'])->first(),
-            Illuminate\Auth\Notifications\VerifyEmail::class
-        );
+        $customer = User::whereEmail($requestBody['email'])->first();
+
+        $this->assertTrue($customer->hasRole('customer'));
+
+        Notification::assertSentTo($customer, Illuminate\Auth\Notifications\VerifyEmail::class);
     });
 
     test('認証済みが会員登録を行う', function () use ($requestBody) {
@@ -36,6 +37,8 @@ describe('POST /auth/register', function () {
             ->assertValidResponse(204);
 
         Notification::assertNotSentTo($user, Illuminate\Auth\Notifications\VerifyEmail::class);
+
+        $this->assertDatabaseMissing('users', ['email' => $requestBody['email']]);
     });
 
     test('バリデーションエラー', function (string ...$testData) {
