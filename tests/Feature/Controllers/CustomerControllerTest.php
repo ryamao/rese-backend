@@ -1,20 +1,17 @@
 <?php
 
 use App\Models\User;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use Database\Seeders\UserSeeder;
 use Spectator\Spectator;
 
 describe('GET /customers/{customer}', function () {
     beforeEach(function () {
         Spectator::using('api-docs.json');
 
-        Permission::create(['name' => 'view customer infomation']);
-        $customerRole = Role::create(['name' => 'customer']);
-        $customerRole->givePermissionTo('view customer infomation');
+        $this->seed(UserSeeder::class);
 
         $this->user = User::factory()->create();
-        $this->user->assignRole($customerRole);
+        $this->user->assignRole('customer');
     });
 
     test('顧客情報取得成功', function () {

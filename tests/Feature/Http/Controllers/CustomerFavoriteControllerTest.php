@@ -2,22 +2,19 @@
 
 use App\Models\Shop;
 use App\Models\User;
+use Database\Seeders\UserSeeder;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Spectator\Spectator;
 
 describe('GET /customers/{customer}/favorites', function () {
     beforeEach(function () {
         Spectator::using('api-docs.json');
 
-        Permission::create(['name' => 'view customer favorites']);
-        $customerRole = Role::create(['name' => 'customer']);
-        $customerRole->givePermissionTo('view customer favorites');
+        $this->seed(UserSeeder::class);
 
         $this->customers = User::factory()->count(2)->create();
-        $this->customers->each(function (User $customer) use ($customerRole) {
-            $customer->assignRole($customerRole);
+        $this->customers->each(function (User $customer) {
+            $customer->assignRole('customer');
         });
 
         $this->shops = Shop::factory()->count(15)->create();

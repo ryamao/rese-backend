@@ -18,11 +18,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $createOwnersPermission = Permission::create(['name' => 'create owners']);
-        $createShopsPermission = Permission::create(['name' => 'create shops']);
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $adminRole = Role::create(['name' => 'admin']);
-        $ownerRole = Role::create(['name' => 'owner']);
+        $adminRole = $this->createAdminRole();
+        $this->createOwnerRole();
+        $this->createCustomerRole();
 
         $admin = User::create([
             'name' => 'Administrator',
@@ -31,9 +31,47 @@ class UserSeeder extends Seeder
         ]);
         $admin->markEmailAsVerified();
 
-        $adminRole->givePermissionTo($createOwnersPermission);
-        $ownerRole->givePermissionTo($createShopsPermission);
-
         $admin->assignRole($adminRole);
+
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+    }
+
+    private function createAdminRole(): Role
+    {
+        $permission = Permission::create(['name' => 'create owners']);
+        $role = Role::create(['name' => 'admin']);
+        $role->givePermissionTo($permission);
+
+        return $role;
+    }
+
+    private function createOwnerRole(): Role
+    {
+        $permission = Permission::create(['name' => 'create shops']);
+        $role = Role::create(['name' => 'owner']);
+        $role->givePermissionTo($permission);
+
+        return $role;
+    }
+
+    private function createCustomerRole(): Role
+    {
+        $role = Role::create(['name' => 'customer']);
+
+        $names = [
+            'view customer infomation',
+            'view customer favorites',
+            'add to favorites',
+            'remove from favorites',
+            'view customer reservations',
+            'edit customer reservations',
+        ];
+
+        foreach ($names as $name) {
+            $permission = Permission::create(['name' => $name]);
+            $role->givePermissionTo($permission);
+        }
+
+        return $role;
     }
 }
