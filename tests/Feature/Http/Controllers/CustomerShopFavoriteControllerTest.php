@@ -2,20 +2,17 @@
 
 use App\Models\Shop;
 use App\Models\User;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use Database\Seeders\UserSeeder;
 use Spectator\Spectator;
 
 describe('POST /customers/{customer}/shops/{shop}/favorite', function () {
     beforeEach(function () {
         Spectator::using('api-docs.json');
 
-        Permission::create(['name' => 'add to favorites']);
-        $customerRole = Role::create(['name' => 'customer']);
-        $customerRole->givePermissionTo('add to favorites');
+        $this->seed(UserSeeder::class);
 
         $this->user = User::factory()->create();
-        $this->user->assignRole($customerRole);
+        $this->user->assignRole('customer');
 
         $this->shop = Shop::factory()->create();
     });
@@ -81,12 +78,10 @@ describe('DELETE /customers/{customer}/shops/{shop}/favorite', function () {
     beforeEach(function () {
         Spectator::using('api-docs.json');
 
-        Permission::create(['name' => 'remove from favorites']);
-        $customerRole = Role::create(['name' => 'customer']);
-        $customerRole->givePermissionTo('remove from favorites');
+        $this->seed(UserSeeder::class);
 
         $this->user = User::factory()->create();
-        $this->user->assignRole($customerRole);
+        $this->user->assignRole('customer');
 
         $this->shop = Shop::factory()->create();
         $this->user->favoriteShops()->attach($this->shop);
