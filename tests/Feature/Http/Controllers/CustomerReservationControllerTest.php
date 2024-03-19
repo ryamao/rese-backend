@@ -214,7 +214,11 @@ describe('DELETE /customers/{customer}/reservations/{reservation}', function () 
     beforeEach(function () {
         Spectator::using('api-docs.json');
 
+        $this->seed(UserSeeder::class);
+
         $this->user = User::factory()->create();
+        $this->user->assignRole('customer');
+
         $this->reservation = Reservation::factory()->create([
             'user_id' => $this->user->id,
         ]);

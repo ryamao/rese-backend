@@ -71,7 +71,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete(
         '/customers/{customer}/reservations/{reservation}',
         [CustomerReservationController::class, 'destroy']
-    );
+    )
+        ->middleware('permission:delete customer reservations');
 
     Route::get(
         '/customers/{customer}/shops/{shop}/reservations',

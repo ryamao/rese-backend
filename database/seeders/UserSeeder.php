@@ -65,6 +65,7 @@ class UserSeeder extends Seeder
             'remove from favorites',
             'view customer reservations',
             'edit customer reservations',
+            'delete customer reservations',
         ];
 
         foreach ($names as $name) {
