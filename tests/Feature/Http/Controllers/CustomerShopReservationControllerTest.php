@@ -2,6 +2,7 @@
 
 use App\Models\Shop;
 use App\Models\User;
+use Database\Seeders\UserSeeder;
 use Illuminate\Support\Carbon;
 use Spectator\Spectator;
 
@@ -11,6 +12,13 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
             Spectator::using('api-docs.json');
 
             Carbon::setTestNow(new Carbon('2022-03-01 00:00:00'));
+
+            $this->seed(UserSeeder::class);
+
+            $this->user = User::factory()->create();
+            $this->user->assignRole('customer');
+
+            $this->shop = Shop::factory()->create();
         });
 
         afterEach(function () {
@@ -20,19 +28,17 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
         test('取得成功', function () {
             $datetime1 = new Carbon('2022-03-04 18:00:00');
             $datetime2 = new Carbon('2022-03-05 19:00:00');
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-            $user->reservedShops()->attach($shop, [
+            $this->user->reservedShops()->attach($this->shop, [
                 'reserved_at' => $datetime1,
                 'number_of_guests' => 2,
             ]);
-            $user->reservedShops()->attach($shop, [
+            $this->user->reservedShops()->attach($this->shop, [
                 'reserved_at' => $datetime2,
                 'number_of_guests' => 4,
             ]);
 
-            $response = $this->actingAs($user)
-                ->getJson("/customers/{$user->id}/shops/{$shop->id}/reservations");
+            $response = $this->actingAs($this->user)
+                ->getJson("/customers/{$this->user->id}/shops/{$this->shop->id}/reservations");
 
             $response->assertValidRequest();
             $response->assertValidResponse(200);
@@ -51,11 +57,8 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
         });
 
         test('リレーションがない場合は空のコレクションが返る', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-
-            $response = $this->actingAs($user)
-                ->getJson("/customers/{$user->id}/shops/{$shop->id}/reservations");
+            $response = $this->actingAs($this->user)
+                ->getJson("/customers/{$this->user->id}/shops/{$this->shop->id}/reservations");
 
             $response->assertValidRequest();
             $response->assertValidResponse(200);
@@ -64,22 +67,20 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
         });
 
         test('過去の日付の予約は返さない', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
             $datetimes = [
                 new Carbon('2022-02-28 18:00:00'),
                 new Carbon('2022-03-01 19:00:00'),
                 new Carbon('2022-03-02 20:00:00'),
             ];
             foreach ($datetimes as $datetime) {
-                $user->reservedShops()->attach($shop, [
+                $this->user->reservedShops()->attach($this->shop, [
                     'reserved_at' => $datetime,
                     'number_of_guests' => 2,
                 ]);
             }
 
-            $response = $this->actingAs($user)
-                ->getJson("/customers/{$user->id}/shops/{$shop->id}/reservations");
+            $response = $this->actingAs($this->user)
+                ->getJson("/customers/{$this->user->id}/shops/{$this->shop->id}/reservations");
 
             $response->assertValidRequest();
             $response->assertValidResponse(200);
@@ -88,43 +89,33 @@ describe('App.Http.Controllers.CustomerShopReservationController', function () {
         });
 
         test('認証が必要', function () {
-            $shop = Shop::factory()->create();
-
-            $response = $this->getJson("/customers/1/shops/{$shop->id}/reservations");
+            $response = $this->getJson("/customers/9999/shops/{$this->shop->id}/reservations");
 
             $response->assertValidRequest();
             $response->assertValidResponse(401);
         });
 
         test('別の顧客の場合は403エラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-            $otherUser = User::factory()->create();
+            $anotherUser = User::factory()->create();
 
-            $response = $this->actingAs($otherUser)
-                ->getJson("/customers/{$user->id}/shops/{$shop->id}/reservations");
+            $response = $this->actingAs($anotherUser)
+                ->getJson("/customers/{$this->user->id}/shops/{$this->shop->id}/reservations");
 
             $response->assertValidRequest();
             $response->assertValidResponse(403);
         });
 
         test('存在しない顧客IDの場合は404エラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-
-            $response = $this->actingAs($user)
-                ->getJson("/customers/9999/shops/{$shop->id}/reservations");
+            $response = $this->actingAs($this->user)
+                ->getJson("/customers/9999/shops/{$this->shop->id}/reservations");
 
             $response->assertValidRequest();
             $response->assertValidResponse(404);
         });
 
         test('存在しない店舗IDの場合は404エラー', function () {
-            $user = User::factory()->create();
-            $shop = Shop::factory()->create();
-
-            $response = $this->actingAs($user)
-                ->getJson("/customers/{$user->id}/shops/9999/reservations");
+            $response = $this->actingAs($this->user)
+                ->getJson("/customers/{$this->user->id}/shops/9999/reservations");
 
             $response->assertValidRequest();
             $response->assertValidResponse(404);

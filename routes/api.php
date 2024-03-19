@@ -77,7 +77,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get(
         '/customers/{customer}/shops/{shop}/reservations',
         [CustomerShopReservationController::class, 'index']
-    );
+    )
+        ->middleware('permission:view customer reservations');
     Route::post(
         '/customers/{customer}/shops/{shop}/reservations',
         [CustomerShopReservationController::class, 'store']
