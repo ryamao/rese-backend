@@ -82,5 +82,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post(
         '/customers/{customer}/shops/{shop}/reservations',
         [CustomerShopReservationController::class, 'store']
-    );
+    )
+        ->middleware('permission:create customer reservations');
 });

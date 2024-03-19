@@ -65,6 +65,7 @@ class UserSeeder extends Seeder
             'remove from favorites',
             'view customer reservations',
             'edit customer reservations',
+            'create customer reservations',
             'delete customer reservations',
         ];
 
