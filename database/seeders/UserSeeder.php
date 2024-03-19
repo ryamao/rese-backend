@@ -38,9 +38,17 @@ class UserSeeder extends Seeder
 
     private function createAdminRole(): Role
     {
-        $permission = Permission::create(['name' => 'create owners']);
         $role = Role::create(['name' => 'admin']);
-        $role->givePermissionTo($permission);
+
+        $names = [
+            'create owners',
+            'send notification email',
+        ];
+
+        foreach ($names as $name) {
+            $permission = Permission::create(['name' => $name]);
+            $role->givePermissionTo($permission);
+        }
 
         return $role;
     }

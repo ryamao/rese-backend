@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SendNotificationEmail;
+use App\Http\Requests\NotificationEmailRequest;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
 
@@ -19,8 +21,14 @@ class NotificationEmailController extends Controller
     #[OA\Response(response: 401, ref: '#/components/responses/unauthorized')]
     #[OA\Response(response: 403, ref: '#/components/responses/forbidden')]
     #[OA\Response(response: 422, ref: '#/components/responses/post-notification-email-422')]
-    public function store(): JsonResponse
+    public function store(NotificationEmailRequest $request): JsonResponse
     {
-        throw new \Exception('Not implemented');
+        /** @var array{title: string, body: string} $input */
+        $input = $request->validated();
+
+        $action = new SendNotificationEmail();
+        $action->send($input);
+
+        return response()->json('', 201);
     }
 }
