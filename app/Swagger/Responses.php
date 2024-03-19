@@ -95,6 +95,20 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Response(
+    response: 'post-notification-email-422',
+    description: 'バリデーションエラー',
+    content: new OA\JsonContent(
+        ref: '#/components/schemas/notification-email-error',
+        examples: [
+            'required' => new OA\Examples(
+                example: 'required',
+                ref: '#/components/examples/post-notification-email-422-required'
+            ),
+        ]
+    )
+)]
+
+#[OA\Response(
     response: 'post-auth-register-422',
     description: 'バリデーションエラーまたはメールアドレスが登録済み',
     content: new OA\JsonContent(

@@ -35,6 +35,18 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Examples(
+    example: 'post-notification-email-422-required',
+    summary: 'タイトル、本文が入力されていない場合',
+    value: [
+        'message' => 'タイトルを入力してください (and 1 more error)',
+        'errors' => [
+            'title' => ['タイトルを入力してください'],
+            'body' => ['本文を入力してください'],
+        ],
+    ]
+)]
+
+#[OA\Examples(
     example: 'post-auth-register-422-required',
     summary: '名前、メールアドレス、パスワードが入力されていない場合',
     value: [

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Database\Seeders\UserSeeder;
 use Illuminate\Support\Facades\Notification;
 use Spectator\Spectator;
 
@@ -14,6 +15,7 @@ describe('POST /auth/register', function () {
     beforeEach(function () {
         Spectator::using('api-docs.json');
         Notification::fake();
+        $this->seed(UserSeeder::class);
     });
 
     test('会員登録に成功する', function () use ($requestBody) {

@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
 
         $admin = User::create([
             'name' => 'Administrator',
-            'email' => env('ADMIN_EMAIL', 'test@example.com'),
+            'email' => env('ADMIN_EMAIL', 'admin@example.com'),
             'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
         ]);
         $admin->markEmailAsVerified();
@@ -38,9 +38,17 @@ class UserSeeder extends Seeder
 
     private function createAdminRole(): Role
     {
-        $permission = Permission::create(['name' => 'create owners']);
         $role = Role::create(['name' => 'admin']);
-        $role->givePermissionTo($permission);
+
+        $names = [
+            'create owners',
+            'send notification email',
+        ];
+
+        foreach ($names as $name) {
+            $permission = Permission::create(['name' => $name]);
+            $role->givePermissionTo($permission);
+        }
 
         return $role;
     }

@@ -355,6 +355,33 @@
                 }
             }
         },
+        "/notification-email": {
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "お知らせメール送信",
+                "description": "お知らせメールをすべての顧客に対して送信する",
+                "operationId": "post-notification-email",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/post-notification-email"
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/created"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/post-notification-email-422"
+                    }
+                }
+            }
+        },
         "/owners": {
             "post": {
                 "tags": [
@@ -610,6 +637,35 @@
                     },
                     "has_verified_email": {
                         "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "notification-email-error": {
+                "required": [
+                    "message",
+                    "errors"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "properties": {
+                            "title": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "body": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -1056,6 +1112,21 @@
                     }
                 }
             },
+            "post-notification-email-422": {
+                "description": "バリデーションエラー",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/notification-email-error"
+                        },
+                        "examples": {
+                            "required": {
+                                "$ref": "#/components/examples/post-notification-email-422-required"
+                            }
+                        }
+                    }
+                }
+            },
             "post-auth-register-422": {
                 "description": "バリデーションエラーまたはメールアドレスが登録済み",
                 "content": {
@@ -1483,6 +1554,20 @@
                     "status": "customer",
                     "id": 1,
                     "has_verified_email": true
+                }
+            },
+            "post-notification-email-422-required": {
+                "summary": "タイトル、本文が入力されていない場合",
+                "value": {
+                    "message": "タイトルを入力してください (and 1 more error)",
+                    "errors": {
+                        "title": [
+                            "タイトルを入力してください"
+                        ],
+                        "body": [
+                            "本文を入力してください"
+                        ]
+                    }
                 }
             },
             "post-auth-register-422-required": {
@@ -2167,6 +2252,36 @@
                                     "maxLength": 100,
                                     "minLength": 8,
                                     "example": "password"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "post-notification-email": {
+                "description": "お知らせメール送信リクエスト",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "title",
+                                "body"
+                            ],
+                            "properties": {
+                                "title": {
+                                    "description": "タイトル",
+                                    "type": "string",
+                                    "maxLength": 100,
+                                    "minLength": 1,
+                                    "example": "タイトル"
+                                },
+                                "body": {
+                                    "description": "本文",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "example": "本文"
                                 }
                             },
                             "type": "object"

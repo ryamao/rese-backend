@@ -41,6 +41,32 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\RequestBody(
+    request: 'post-notification-email',
+    description: 'お知らせメール送信リクエスト',
+    required: true,
+    content: new OA\JsonContent(
+        required: ['title', 'body'],
+        properties: [
+            new OA\Property(
+                property: 'title',
+                description: 'タイトル',
+                type: 'string',
+                minLength: 1,
+                maxLength: 100,
+                example: 'タイトル',
+            ),
+            new OA\Property(
+                property: 'body',
+                description: '本文',
+                type: 'string',
+                minLength: 1,
+                example: '本文',
+            ),
+        ]
+    )
+)]
+
+#[OA\RequestBody(
     request: 'post-auth-register',
     description: '顧客登録リクエスト',
     required: true,
