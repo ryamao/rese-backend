@@ -38,7 +38,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get(
         '/customers/{customer}',
         [CustomerController::class, 'show']
-    );
+    )
+        ->middleware('permission:view customer infomation');
 
     Route::get(
         '/customers/{customer}/favorites',
