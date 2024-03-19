@@ -44,7 +44,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get(
         '/customers/{customer}/favorites',
         [CustomerFavoriteController::class, 'index']
-    );
+    )
+        ->middleware('permission:view customer favorites');
 
     Route::post(
         '/customers/{customer}/shops/{shop}/favorite',

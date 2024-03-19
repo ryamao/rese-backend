@@ -3,13 +3,23 @@
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spectator\Spectator;
 
 describe('GET /customers/{customer}/favorites', function () {
     beforeEach(function () {
         Spectator::using('api-docs.json');
 
+        Permission::create(['name' => 'view customer favorites']);
+        $customerRole = Role::create(['name' => 'customer']);
+        $customerRole->givePermissionTo('view customer favorites');
+
         $this->customers = User::factory()->count(2)->create();
+        $this->customers->each(function (User $customer) use ($customerRole) {
+            $customer->assignRole($customerRole);
+        });
+
         $this->shops = Shop::factory()->count(15)->create();
         $this->shops->each(function (Shop $shop, int $index) {
             if ($index % 2 === 0) {
@@ -53,6 +63,7 @@ describe('GET /customers/{customer}/favorites', function () {
 
     test('お気に入りがない場合は空配列を返す', function () {
         $customer = User::factory()->create();
+        $customer->assignRole('customer');
 
         $response = $this->actingAs($customer)
             ->getJson("/customers/{$customer->id}/favorites");
