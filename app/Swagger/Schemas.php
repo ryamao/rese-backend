@@ -51,6 +51,38 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Schema(
+    schema: 'notification-email-error',
+    type: 'object',
+    required: ['message', 'errors'],
+    properties: [
+        new OA\Property(
+            property: 'message',
+            type: 'string'
+        ),
+        new OA\Property(
+            property: 'errors',
+            type: 'object',
+            properties: [
+                new OA\Property(
+                    property: 'title',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string'
+                    )
+                ),
+                new OA\Property(
+                    property: 'body',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string'
+                    )
+                ),
+            ]
+        ),
+    ],
+)]
+
+#[OA\Schema(
     schema: 'register-error',
     type: 'object',
     required: ['message', 'errors'],
