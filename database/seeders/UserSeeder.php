@@ -55,9 +55,16 @@ class UserSeeder extends Seeder
 
     private function createOwnerRole(): Role
     {
-        $permission = Permission::create(['name' => 'create shops']);
         $role = Role::create(['name' => 'owner']);
-        $role->givePermissionTo($permission);
+
+        $names = [
+            'view owner shops',
+        ];
+
+        foreach ($names as $name) {
+            $permission = Permission::create(['name' => $name]);
+            $role->givePermissionTo($permission);
+        }
 
         return $role;
     }
