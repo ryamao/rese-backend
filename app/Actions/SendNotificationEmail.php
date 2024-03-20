@@ -18,6 +18,10 @@ class SendNotificationEmail
         $body = $input['body'];
 
         $customers = User::role('customer')->get();
+        if ($customers->isEmpty()) {
+            return;
+        }
+
         $mailable = new \App\Mail\NotificationEmail($title, $body);
         Mail::to($customers)->send($mailable);
     }
