@@ -409,6 +409,35 @@
                 }
             }
         },
+        "/owners/{owner}/shops": {
+            "get": {
+                "tags": [
+                    "Owner"
+                ],
+                "summary": "店舗代表者別店舗一覧取得",
+                "description": "店舗代表者が作成した飲食店情報の一覧を取得する",
+                "operationId": "5744e66dc2a20bef65cd11ca448bd2b3",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/owner-id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-owner-shops-200"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
         "/shops": {
             "get": {
                 "tags": [
@@ -772,8 +801,8 @@
                 },
                 "type": "object"
             },
-            "shop-data": {
-                "description": "飲食店情報",
+            "customer-shop-data": {
+                "description": "顧客向け飲食店情報",
                 "required": [
                     "id",
                     "name",
@@ -820,6 +849,44 @@
                 },
                 "type": "object"
             },
+            "owner-shop-data": {
+                "description": "店舗代表者向け飲食店情報",
+                "required": [
+                    "id",
+                    "name",
+                    "area",
+                    "genre",
+                    "image_url",
+                    "detail"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "飲食店ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "description": "飲食店名",
+                        "type": "string"
+                    },
+                    "area": {
+                        "$ref": "#/components/schemas/area-data"
+                    },
+                    "genre": {
+                        "$ref": "#/components/schemas/genre-data"
+                    },
+                    "image_url": {
+                        "description": "画像URL",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "detail": {
+                        "description": "飲食店詳細",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "reservation-data": {
                 "description": "予約情報",
                 "required": [
@@ -835,7 +902,7 @@
                         "format": "int64"
                     },
                     "shop": {
-                        "$ref": "#/components/schemas/shop-data"
+                        "$ref": "#/components/schemas/customer-shop-data"
                     },
                     "reserved_at": {
                         "description": "予約日時",
@@ -1235,7 +1302,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/shop-data"
+                                                "$ref": "#/components/schemas/customer-shop-data"
                                             }
                                         }
                                     },
@@ -1270,7 +1337,7 @@
                             ],
                             "properties": {
                                 "data": {
-                                    "$ref": "#/components/schemas/shop-data"
+                                    "$ref": "#/components/schemas/customer-shop-data"
                                 }
                             },
                             "type": "object"
@@ -1300,7 +1367,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/shop-data"
+                                                "$ref": "#/components/schemas/customer-shop-data"
                                             }
                                         }
                                     },
@@ -1436,6 +1503,27 @@
                         }
                     }
                 }
+            },
+            "get-owner-shops-200": {
+                "description": "店舗代表者別店舗一覧取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "data"
+                            ],
+                            "properties": {
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/owner-shop-data"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
             }
         },
         "parameters": {
@@ -1486,6 +1574,17 @@
                 "name": "reservation",
                 "in": "path",
                 "description": "予約ID",
+                "required": true,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 1
+                }
+            },
+            "owner-id": {
+                "name": "owner",
+                "in": "path",
+                "description": "オーナーID",
                 "required": true,
                 "schema": {
                     "type": "integer",
@@ -2449,6 +2548,10 @@
         {
             "name": "Admin",
             "description": "管理者に関するAPI"
+        },
+        {
+            "name": "Owner",
+            "description": "店舗代表者に関するAPI"
         }
     ]
 }

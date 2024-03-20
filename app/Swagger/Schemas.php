@@ -194,8 +194,8 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Schema(
-    schema: 'shop-data',
-    description: '飲食店情報',
+    schema: 'customer-shop-data',
+    description: '顧客向け飲食店情報',
     type: 'object',
     required: [
         'id',
@@ -247,6 +247,52 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Schema(
+    schema: 'owner-shop-data',
+    description: '店舗代表者向け飲食店情報',
+    type: 'object',
+    required: [
+        'id',
+        'name',
+        'area',
+        'genre',
+        'image_url',
+        'detail',
+    ],
+    properties: [
+        new OA\Property(
+            property: 'id',
+            description: '飲食店ID',
+            type: 'integer',
+            format: 'int64'
+        ),
+        new OA\Property(
+            property: 'name',
+            description: '飲食店名',
+            type: 'string'
+        ),
+        new OA\Property(
+            property: 'area',
+            ref: '#/components/schemas/area-data'
+        ),
+        new OA\Property(
+            property: 'genre',
+            ref: '#/components/schemas/genre-data'
+        ),
+        new OA\Property(
+            property: 'image_url',
+            description: '画像URL',
+            type: 'string',
+            format: 'uri',
+        ),
+        new OA\Property(
+            property: 'detail',
+            description: '飲食店詳細',
+            type: 'string',
+        ),
+    ]
+)]
+
+#[OA\Schema(
     schema: 'reservation-data',
     description: '予約情報',
     type: 'object',
@@ -265,7 +311,7 @@ use OpenApi\Attributes as OA;
         ),
         new OA\Property(
             property: 'shop',
-            ref: '#/components/schemas/shop-data'
+            ref: '#/components/schemas/customer-shop-data'
         ),
         new OA\Property(
             property: 'reserved_at',

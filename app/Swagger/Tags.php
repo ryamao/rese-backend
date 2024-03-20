@@ -46,6 +46,11 @@ use OpenApi\Attributes as OA;
     description: '管理者に関するAPI'
 )]
 
+#[OA\Tag(
+    name: 'Owner',
+    description: '店舗代表者に関するAPI'
+)]
+
 class Tags
 {
 }

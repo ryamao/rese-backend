@@ -65,6 +65,18 @@ use OpenApi\Attributes as OA;
     ),
 )]
 
+#[OA\PathParameter(
+    parameter: 'owner-id',
+    name: 'owner',
+    description: 'オーナーID',
+    required: true,
+    schema: new OA\Schema(
+        type: 'integer',
+        format: 'int64',
+        example: 1,
+    ),
+)]
+
 class PathParameters
 {
 }
