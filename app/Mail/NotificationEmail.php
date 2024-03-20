@@ -36,7 +36,7 @@ class NotificationEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.notification',
+            text: 'emails.notification',
         );
     }
 
