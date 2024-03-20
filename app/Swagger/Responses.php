@@ -205,7 +205,7 @@ use OpenApi\Attributes as OA;
                     new OA\Property(
                         property: 'data',
                         type: 'array',
-                        items: new OA\Items(ref: '#/components/schemas/shop-data')
+                        items: new OA\Items(ref: '#/components/schemas/customer-shop-data')
                     ),
                 ],
             ),
@@ -240,7 +240,7 @@ use OpenApi\Attributes as OA;
         properties: [
             new OA\Property(
                 property: 'data',
-                ref: '#/components/schemas/shop-data'
+                ref: '#/components/schemas/customer-shop-data'
             ),
         ],
         examples: [
@@ -265,7 +265,7 @@ use OpenApi\Attributes as OA;
                     new OA\Property(
                         property: 'data',
                         type: 'array',
-                        items: new OA\Items(ref: '#/components/schemas/shop-data')
+                        items: new OA\Items(ref: '#/components/schemas/customer-shop-data')
                     ),
                 ],
             ),
@@ -388,6 +388,22 @@ use OpenApi\Attributes as OA;
                 ref: '#/components/examples/post-customer-shop-reservations-422-number_of_guests'
             ),
         ]
+    )
+)]
+
+#[OA\Response(
+    response: 'get-owner-shops-200',
+    description: '店舗代表者別店舗一覧取得成功',
+    content: new OA\JsonContent(
+        type: 'object',
+        required: ['data'],
+        properties: [
+            new OA\Property(
+                property: 'data',
+                type: 'array',
+                items: new OA\Items(ref: '#/components/schemas/owner-shop-data')
+            ),
+        ],
     )
 )]
 

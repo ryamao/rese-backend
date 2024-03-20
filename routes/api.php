@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerShopReservationController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\NotificationEmailController;
 use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\OwnerShopController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -88,4 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
         [CustomerShopReservationController::class, 'store']
     )
         ->middleware('permission:create customer reservations');
+
+    Route::get('/owners/{owner}/shops', [OwnerShopController::class, 'index'])
+        ->middleware('permission:view owner shops');
 });

@@ -77,4 +77,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Shop::class, 'reservations');
     }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Shop> */
+    public function ownedShops(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Shop::class, 'owner_id');
+    }
 }

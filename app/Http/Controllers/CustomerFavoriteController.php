@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ShopResource;
+use App\Http\Resources\CustomerShopResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
@@ -31,6 +31,6 @@ class CustomerFavoriteController extends Controller
 
         $shops = $customer->favoriteShops()->paginate(5);
 
-        return ShopResource::collection($shops)->response();
+        return CustomerShopResource::collection($shops)->response();
     }
 }

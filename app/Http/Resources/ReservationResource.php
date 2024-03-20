@@ -19,7 +19,7 @@ class ReservationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'shop' => ShopResource::make($this->shop),
+            'shop' => CustomerShopResource::make($this->shop),
             'reserved_at' => $this->reserved_at->timezone('UTC')->format('Y-m-d\TH:i:sP'),
             'number_of_guests' => $this->number_of_guests,
         ];

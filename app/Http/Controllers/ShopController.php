@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ShopResource;
+use App\Http\Resources\CustomerShopResource;
 use App\Models\Shop;
 use App\Services\ShopSearchService;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +32,7 @@ class ShopController extends Controller
 
         $shops = $service->search()->paginate(10);
 
-        return ShopResource::collection($shops);
+        return CustomerShopResource::collection($shops);
     }
 
     #[OA\Get(
@@ -47,6 +47,6 @@ class ShopController extends Controller
     #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
     public function show(Shop $shop): JsonResponse
     {
-        return ShopResource::make($shop)->response();
+        return CustomerShopResource::make($shop)->response();
     }
 }
