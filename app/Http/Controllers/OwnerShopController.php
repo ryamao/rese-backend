@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateNewShop;
+use App\Http\Requests\OwnerShopStoreRequest;
 use App\Http\Resources\OwnerShopResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -38,13 +40,17 @@ class OwnerShopController extends Controller
     )]
     #[OA\PathParameter(ref: '#/components/parameters/owner-id')]
     #[OA\RequestBody(ref: '#/components/requestBodies/post-owner-shops')]
-    #[OA\Response(response: 201, ref: '#/components/responses/created')]
+    #[OA\Response(response: 201, ref: '#/components/responses/post-owner-shops-201')]
     #[OA\Response(response: 401, ref: '#/components/responses/unauthorized')]
     #[OA\Response(response: 403, ref: '#/components/responses/forbidden')]
     #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
     #[OA\Response(response: 422, ref: '#/components/responses/post-owner-shops-422')]
-    public function store(User $owner): JsonResponse
+    public function store(OwnerShopStoreRequest $request, User $owner): JsonResponse
     {
-        throw new \Exception('未実装');
+        Gate::allowIf(fn (User $authUser) => $authUser->is($owner));
+
+        $shop = app(CreateNewShop::class)->create($request, $owner);
+
+        return OwnerShopResource::make($shop)->response()->setStatusCode(201);
     }
 }
