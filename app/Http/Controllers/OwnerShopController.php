@@ -11,6 +11,7 @@ use OpenApi\Attributes as OA;
 class OwnerShopController extends Controller
 {
     #[OA\Get(
+        operationId: 'get-owner-shops',
         path: '/owners/{owner}/shops',
         tags: ['Owner'],
         summary: '店舗代表者別店舗一覧取得',

@@ -416,7 +416,7 @@
                 ],
                 "summary": "店舗代表者別店舗一覧取得",
                 "description": "店舗代表者が作成した飲食店情報の一覧を取得する",
-                "operationId": "5744e66dc2a20bef65cd11ca448bd2b3",
+                "operationId": "get-owner-shops",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/owner-id"
