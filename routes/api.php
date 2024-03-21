@@ -92,4 +92,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/owners/{owner}/shops', [OwnerShopController::class, 'index'])
         ->middleware('permission:view owner shops');
+    Route::post('/owners/{owner}/shops', [OwnerShopController::class, 'store'])
+        ->middleware('permission:create shops');
 });

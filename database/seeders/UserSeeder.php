@@ -59,6 +59,7 @@ class UserSeeder extends Seeder
 
         $names = [
             'view owner shops',
+            'create shops',
         ];
 
         foreach ($names as $name) {

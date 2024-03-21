@@ -102,11 +102,11 @@ class ShopSeeder extends Seeder
 
     private function storagePath(string $path = ''): string
     {
-        return storage_path('app/public/shop_images/').$path;
+        return storage_path('app/public/dummy_shop_images/').$path;
     }
 
     private function imageUrl(string $path): string
     {
-        return env('APP_URL').Storage::url('shop_images/'.$path);
+        return env('APP_URL').Storage::url('dummy_shop_images/'.$path);
     }
 }
