@@ -407,6 +407,20 @@ use OpenApi\Attributes as OA;
     )
 )]
 
+#[OA\Response(
+    response: 'post-owner-shops-422',
+    description: '店舗代表者別店舗登録のバリデーションエラー',
+    content: new OA\JsonContent(
+        ref: '#/components/schemas/create-shop-error',
+        examples: [
+            'required' => new OA\Examples(
+                example: 'required',
+                ref: '#/components/examples/post-owner-shops-422-required'
+            ),
+        ]
+    )
+)]
+
 class Responses
 {
 }

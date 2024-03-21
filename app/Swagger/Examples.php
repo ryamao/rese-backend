@@ -353,6 +353,21 @@ use OpenApi\Attributes as OA;
     ]
 )]
 
+#[OA\Examples(
+    example: 'post-owner-shops-422-required',
+    summary: '店舗名、エリア、ジャンル、画像、詳細が入力されていない場合',
+    value: [
+        'message' => '店舗名を入力してください (and 4 more errors)',
+        'errors' => [
+            'name' => ['店舗名を入力してください'],
+            'area' => ['エリアを選択してください'],
+            'genre' => ['ジャンルを選択してください'],
+            'image' => ['画像を選択してください'],
+            'detail' => ['詳細を入力してください'],
+        ],
+    ]
+)]
+
 class Examples
 {
 }

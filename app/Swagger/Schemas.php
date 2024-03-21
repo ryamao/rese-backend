@@ -361,6 +361,59 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Schema(
+    schema: 'create-shop-error',
+    type: 'object',
+    required: ['message', 'errors'],
+    properties: [
+        new OA\Property(
+            property: 'message',
+            type: 'string'
+        ),
+        new OA\Property(
+            property: 'errors',
+            type: 'object',
+            properties: [
+                new OA\Property(
+                    property: 'name',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string'
+                    )
+                ),
+                new OA\Property(
+                    property: 'area_id',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string'
+                    )
+                ),
+                new OA\Property(
+                    property: 'genre_id',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string'
+                    )
+                ),
+                new OA\Property(
+                    property: 'image',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string'
+                    )
+                ),
+                new OA\Property(
+                    property: 'detail',
+                    type: 'array',
+                    items: new OA\Items(
+                        type: 'string'
+                    )
+                ),
+            ]
+        ),
+    ],
+)]
+
+#[OA\Schema(
     schema: 'pagination',
     description: 'ページネーション',
     type: 'object',

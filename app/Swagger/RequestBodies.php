@@ -176,6 +176,57 @@ use OpenApi\Attributes as OA;
     )
 )]
 
+#[OA\RequestBody(
+    request: 'post-owner-shops',
+    description: '店舗代表者別店舗登録リクエスト',
+    required: true,
+    content: new OA\MediaType(
+        mediaType: 'multipart/form-data',
+        schema: new OA\Schema(
+            required: ['name', 'area', 'genre', 'image', 'detail'],
+            properties: [
+                new OA\Property(
+                    property: 'name',
+                    description: '店舗名',
+                    type: 'string',
+                    minLength: 1,
+                    maxLength: 100,
+                    example: 'テスト店舗',
+                ),
+                new OA\Property(
+                    property: 'area',
+                    description: 'エリア',
+                    type: 'string',
+                    minLength: 1,
+                    maxLength: 100,
+                    example: 'テストエリア',
+                ),
+                new OA\Property(
+                    property: 'genre',
+                    description: 'ジャンル',
+                    type: 'string',
+                    minLength: 1,
+                    maxLength: 100,
+                    example: 'テストジャンル',
+                ),
+                new OA\Property(
+                    property: 'image',
+                    description: '画像',
+                    type: 'string',
+                    format: 'binary',
+                ),
+                new OA\Property(
+                    property: 'detail',
+                    description: '詳細',
+                    type: 'string',
+                    minLength: 1,
+                    example: 'テスト詳細',
+                ),
+            ]
+        ),
+    )
+)]
+
 class RequestBodies
 {
 }

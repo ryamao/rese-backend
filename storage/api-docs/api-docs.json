@@ -436,6 +436,39 @@
                         "$ref": "#/components/responses/not-found"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Owner"
+                ],
+                "summary": "店舗代表者別店舗登録",
+                "description": "店舗代表者が飲食店情報を登録する",
+                "operationId": "post-owner-shops",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/owner-id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/post-owner-shops"
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/created"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/post-owner-shops-422"
+                    }
+                }
             }
         },
         "/shops": {
@@ -935,6 +968,53 @@
                                 }
                             },
                             "number_of_guests": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "create-shop-error": {
+                "required": [
+                    "message",
+                    "errors"
+                ],
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    },
+                    "errors": {
+                        "properties": {
+                            "name": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "area_id": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "genre_id": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "image": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "detail": {
                                 "type": "array",
                                 "items": {
                                     "type": "string"
@@ -1521,6 +1601,21 @@
                                 }
                             },
                             "type": "object"
+                        }
+                    }
+                }
+            },
+            "post-owner-shops-422": {
+                "description": "店舗代表者別店舗登録のバリデーションエラー",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/create-shop-error"
+                        },
+                        "examples": {
+                            "required": {
+                                "$ref": "#/components/examples/post-owner-shops-422-required"
+                            }
                         }
                     }
                 }
@@ -2317,6 +2412,29 @@
                         ]
                     }
                 }
+            },
+            "post-owner-shops-422-required": {
+                "summary": "店舗名、エリア、ジャンル、画像、詳細が入力されていない場合",
+                "value": {
+                    "message": "店舗名を入力してください (and 4 more errors)",
+                    "errors": {
+                        "name": [
+                            "店舗名を入力してください"
+                        ],
+                        "area": [
+                            "エリアを選択してください"
+                        ],
+                        "genre": [
+                            "ジャンルを選択してください"
+                        ],
+                        "image": [
+                            "画像を選択してください"
+                        ],
+                        "detail": [
+                            "詳細を入力してください"
+                        ]
+                    }
+                }
             }
         },
         "requestBodies": {
@@ -2507,6 +2625,58 @@
                                     "type": "integer",
                                     "minimum": 1,
                                     "example": 2
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "post-owner-shops": {
+                "description": "店舗代表者別店舗登録リクエスト",
+                "required": true,
+                "content": {
+                    "multipart/form-data": {
+                        "schema": {
+                            "required": [
+                                "name",
+                                "area",
+                                "genre",
+                                "image",
+                                "detail"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "description": "店舗名",
+                                    "type": "string",
+                                    "maxLength": 100,
+                                    "minLength": 1,
+                                    "example": "テスト店舗"
+                                },
+                                "area": {
+                                    "description": "エリア",
+                                    "type": "string",
+                                    "maxLength": 100,
+                                    "minLength": 1,
+                                    "example": "テストエリア"
+                                },
+                                "genre": {
+                                    "description": "ジャンル",
+                                    "type": "string",
+                                    "maxLength": 100,
+                                    "minLength": 1,
+                                    "example": "テストジャンル"
+                                },
+                                "image": {
+                                    "description": "画像",
+                                    "type": "string",
+                                    "format": "binary"
+                                },
+                                "detail": {
+                                    "description": "詳細",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "example": "テスト詳細"
                                 }
                             },
                             "type": "object"
