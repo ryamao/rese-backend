@@ -454,7 +454,7 @@
                 },
                 "responses": {
                     "201": {
-                        "$ref": "#/components/responses/created"
+                        "$ref": "#/components/responses/post-owner-shops-201"
                     },
                     "401": {
                         "$ref": "#/components/responses/unauthorized"
@@ -1605,6 +1605,24 @@
                     }
                 }
             },
+            "post-owner-shops-201": {
+                "description": "店舗代表者別店舗登録成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "data"
+                            ],
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/components/schemas/owner-shop-data"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
             "post-owner-shops-422": {
                 "description": "店舗代表者別店舗登録のバリデーションエラー",
                 "content": {
@@ -2636,13 +2654,12 @@
                 "description": "店舗代表者別店舗登録リクエスト",
                 "required": true,
                 "content": {
-                    "multipart/form-data": {
+                    "application/json": {
                         "schema": {
                             "required": [
                                 "name",
                                 "area",
                                 "genre",
-                                "image",
                                 "detail"
                             ],
                             "properties": {
@@ -2669,8 +2686,7 @@
                                 },
                                 "image": {
                                     "description": "画像",
-                                    "type": "string",
-                                    "format": "binary"
+                                    "type": "file"
                                 },
                                 "detail": {
                                     "description": "詳細",
