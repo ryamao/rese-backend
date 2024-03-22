@@ -180,45 +180,112 @@ use OpenApi\Attributes as OA;
     request: 'post-owner-shops',
     description: '店舗代表者別店舗登録リクエスト',
     required: true,
-    content: new OA\JsonContent(
-        required: ['name', 'area', 'genre', 'detail'],
-        properties: [
-            new OA\Property(
-                property: 'name',
-                description: '店舗名',
-                type: 'string',
-                minLength: 1,
-                maxLength: 100,
-                example: 'テスト店舗',
-            ),
-            new OA\Property(
-                property: 'area',
-                description: 'エリア',
-                type: 'string',
-                minLength: 1,
-                maxLength: 100,
-                example: 'テストエリア',
-            ),
-            new OA\Property(
-                property: 'genre',
-                description: 'ジャンル',
-                type: 'string',
-                minLength: 1,
-                maxLength: 100,
-                example: 'テストジャンル',
-            ),
-            new OA\Property(
-                property: 'image',
-                description: '画像',
-                type: 'file',
-            ),
-            new OA\Property(
-                property: 'detail',
-                description: '詳細',
-                type: 'string',
-                minLength: 1,
-                example: 'テスト詳細',
-            ),
+    content: new OA\MediaType(
+        mediaType: 'multipart/form-data',
+        schema: new OA\Schema(
+            type: 'object',
+            required: ['name', 'area', 'genre', 'image', 'detail'],
+            properties: [
+                new OA\Property(
+                    property: 'name',
+                    description: '店舗名',
+                    type: 'string',
+                    minLength: 1,
+                    maxLength: 100,
+                    example: 'テスト店舗',
+                ),
+                new OA\Property(
+                    property: 'area',
+                    description: 'エリア',
+                    type: 'string',
+                    minLength: 1,
+                    maxLength: 100,
+                    example: 'テストエリア',
+                ),
+                new OA\Property(
+                    property: 'genre',
+                    description: 'ジャンル',
+                    type: 'string',
+                    minLength: 1,
+                    maxLength: 100,
+                    example: 'テストジャンル',
+                ),
+                new OA\Property(
+                    property: 'image',
+                    description: '画像',
+                    type: 'string',
+                    format: 'binary',
+                ),
+                new OA\Property(
+                    property: 'detail',
+                    description: '詳細',
+                    type: 'string',
+                    minLength: 1,
+                    example: 'テスト詳細',
+                ),
+            ]
+        ),
+        encoding: [
+            'image' => [
+                'contentType' => 'image/*',
+            ],
+        ]
+    )
+)]
+
+#[OA\RequestBody(
+    request: 'put-owner-shop',
+    description: '店舗代表者別店舗更新リクエスト',
+    required: true,
+    content: new OA\MediaType(
+        mediaType: 'multipart/form-data',
+        schema: new OA\Schema(
+            type: 'object',
+            required: ['name', 'area', 'genre', 'detail'],
+            properties: [
+                new OA\Property(
+                    property: 'name',
+                    description: '店舗名',
+                    type: 'string',
+                    minLength: 1,
+                    maxLength: 100,
+                    example: 'テスト店舗',
+                ),
+                new OA\Property(
+                    property: 'area',
+                    description: 'エリア',
+                    type: 'string',
+                    minLength: 1,
+                    maxLength: 100,
+                    example: 'テストエリア',
+                ),
+                new OA\Property(
+                    property: 'genre',
+                    description: 'ジャンル',
+                    type: 'string',
+                    minLength: 1,
+                    maxLength: 100,
+                    example: 'テストジャンル',
+                ),
+                new OA\Property(
+                    property: 'image',
+                    description: '画像',
+                    type: 'string',
+                    format: 'binary',
+                ),
+                new OA\Property(
+                    property: 'detail',
+                    description: '詳細',
+                    type: 'string',
+                    minLength: 1,
+                    example: 'テスト詳細',
+                ),
+            ]
+        ),
+        encoding: [
+            'image' => [
+                'contentType' => 'image/*',
+            ],
         ]
     )
 )]

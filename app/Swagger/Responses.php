@@ -433,6 +433,14 @@ use OpenApi\Attributes as OA;
     )
 )]
 
+#[OA\Response(
+    response: 'put-owner-shop-422',
+    description: '店舗代表者別店舗更新のバリデーションエラー',
+    content: new OA\JsonContent(
+        ref: '#/components/schemas/create-shop-error'
+    )
+)]
+
 class Responses
 {
 }
