@@ -471,6 +471,44 @@
                 }
             }
         },
+        "/owners/{owner}/shops/{shop}": {
+            "put": {
+                "tags": [
+                    "Owner"
+                ],
+                "summary": "店舗代表者別店舗更新",
+                "description": "店舗代表者が飲食店情報を更新する",
+                "operationId": "put-owner-shop",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/owner-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/shop-id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/put-owner-shop"
+                },
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/no-content"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/put-owner-shop-422"
+                    }
+                }
+            }
+        },
         "/shops": {
             "get": {
                 "tags": [
@@ -1637,6 +1675,16 @@
                         }
                     }
                 }
+            },
+            "put-owner-shop-422": {
+                "description": "店舗代表者別店舗更新のバリデーションエラー",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/create-shop-error"
+                        }
+                    }
+                }
             }
         },
         "parameters": {
@@ -2654,7 +2702,64 @@
                 "description": "店舗代表者別店舗登録リクエスト",
                 "required": true,
                 "content": {
-                    "application/json": {
+                    "multipart/form-data": {
+                        "schema": {
+                            "required": [
+                                "name",
+                                "area",
+                                "genre",
+                                "image",
+                                "detail"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "description": "店舗名",
+                                    "type": "string",
+                                    "maxLength": 100,
+                                    "minLength": 1,
+                                    "example": "テスト店舗"
+                                },
+                                "area": {
+                                    "description": "エリア",
+                                    "type": "string",
+                                    "maxLength": 100,
+                                    "minLength": 1,
+                                    "example": "テストエリア"
+                                },
+                                "genre": {
+                                    "description": "ジャンル",
+                                    "type": "string",
+                                    "maxLength": 100,
+                                    "minLength": 1,
+                                    "example": "テストジャンル"
+                                },
+                                "image": {
+                                    "description": "画像",
+                                    "type": "string",
+                                    "format": "binary"
+                                },
+                                "detail": {
+                                    "description": "詳細",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "example": "テスト詳細"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "encoding": {
+                            "image": {
+                                "contentType": "image/*"
+                            }
+                        }
+                    }
+                }
+            },
+            "put-owner-shop": {
+                "description": "店舗代表者別店舗更新リクエスト",
+                "required": true,
+                "content": {
+                    "multipart/form-data": {
                         "schema": {
                             "required": [
                                 "name",
@@ -2686,7 +2791,8 @@
                                 },
                                 "image": {
                                     "description": "画像",
-                                    "type": "file"
+                                    "type": "string",
+                                    "format": "binary"
                                 },
                                 "detail": {
                                     "description": "詳細",
@@ -2696,6 +2802,11 @@
                                 }
                             },
                             "type": "object"
+                        },
+                        "encoding": {
+                            "image": {
+                                "contentType": "image/*"
+                            }
                         }
                     }
                 }
