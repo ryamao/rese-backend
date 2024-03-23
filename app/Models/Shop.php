@@ -16,37 +16,36 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\User $owner
  * @property-read \App\Models\Area $area
  * @property-read \App\Models\Genre $genre
+ * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Reservation> $reservations
  */
 class Shop extends Model
 {
     use HasFactory;
 
-    /**
-     * @var array<int, string>
-     */
+    /** @var array<int, string> */
     protected $fillable = ['owner_id', 'area_id', 'genre_id', 'name', 'image_url', 'detail'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, self>
-     */
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, self> */
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Area, self>
-     */
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Area, self> */
     public function area(): BelongsTo
     {
         return $this->belongsTo(Area::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Genre, self>
-     */
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Genre, self> */
     public function genre(): BelongsTo
     {
         return $this->belongsTo(Genre::class);
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Reservation> */
+    public function reservations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Reservation::class);
     }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\NotificationEmailController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\OwnerShopController;
+use App\Http\Controllers\OwnerShopReservationController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -96,4 +97,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:create shops');
     Route::put('/owners/{owner}/shops/{shop}', [OwnerShopController::class, 'update'])
         ->middleware('permission:edit shops');
+
+    Route::get('/owners/{owner}/shops/{shop}/reservations', [OwnerShopReservationController::class, 'index'])
+        ->middleware('permission:view reservations for owners');
 });

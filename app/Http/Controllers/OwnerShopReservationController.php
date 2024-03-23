@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReservationForOwnersResource;
+use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use OpenApi\Attributes as OA;
 
 class OwnerShopReservationController extends Controller
@@ -21,8 +25,15 @@ class OwnerShopReservationController extends Controller
     #[OA\Response(response: 401, ref: '#/components/responses/unauthorized')]
     #[OA\Response(response: 403, ref: '#/components/responses/forbidden')]
     #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
-    public function index(): JsonResponse
+    public function index(User $owner, Shop $shop): JsonResponse
     {
-        throw new \Exception('Not implemented');
+        Gate::allowIf(fn (User $authUser) => $authUser->is($owner) && $authUser->is($shop->owner));
+
+        $reservations = $shop->reservations()
+            ->with('user')
+            ->orderBy('reserved_at')
+            ->paginate();
+
+        return ReservationForOwnersResource::collection($reservations)->response();
     }
 }
