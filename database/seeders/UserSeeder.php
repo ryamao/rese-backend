@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($names as $name) {
-            $permission = Permission::create(['name' => $name]);
+            $permission = Permission::findOrCreate($name);
             $role->givePermissionTo($permission);
         }
 
@@ -58,14 +58,17 @@ class UserSeeder extends Seeder
         $role = Role::create(['name' => 'owner']);
 
         $names = [
-            'view owner shops',
+            'view shops for owners',
             'create shops',
             'edit shops',
             'view reservations for owners',
+            'edit reservations',
+            'create reservations',
+            'delete reservations',
         ];
 
         foreach ($names as $name) {
-            $permission = Permission::create(['name' => $name]);
+            $permission = Permission::findOrCreate($name);
             $role->givePermissionTo($permission);
         }
 
@@ -78,17 +81,17 @@ class UserSeeder extends Seeder
 
         $names = [
             'view customer infomation',
-            'view customer favorites',
+            'view favorites for customers',
             'add to favorites',
             'remove from favorites',
-            'view customer reservations',
-            'edit customer reservations',
-            'create customer reservations',
-            'delete customer reservations',
+            'view reservations for customers',
+            'edit reservations',
+            'create reservations',
+            'delete reservations',
         ];
 
         foreach ($names as $name) {
-            $permission = Permission::create(['name' => $name]);
+            $permission = Permission::findOrCreate($name);
             $role->givePermissionTo($permission);
         }
 

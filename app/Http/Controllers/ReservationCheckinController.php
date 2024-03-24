@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use OpenApi\Attributes as OA;
 
 class ReservationCheckinController extends Controller
@@ -22,7 +25,11 @@ class ReservationCheckinController extends Controller
     #[OA\Response(response: '404', ref: '#/components/responses/not-found')]
     public function signedUrl(Reservation $reservation): JsonResponse
     {
-        throw new \Exception('Not implemented');
+        Gate::allowIf(fn (User $authUser) => $authUser->is($reservation->user));
+
+        return response()->json([
+            'url' => URL::signedRoute('reservation.checkin', ['reservation' => $reservation]),
+        ]);
     }
 
     #[OA\Post(
