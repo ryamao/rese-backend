@@ -24,4 +24,23 @@ class ReservationCheckinController extends Controller
     {
         throw new \Exception('Not implemented');
     }
+
+    #[OA\Post(
+        operationId: 'post-reservation-checkin',
+        path: '/reservations/{reservation}/checkin',
+        tags: ['Reservations'],
+        summary: '入店確認',
+        description: '入店確認を行う',
+    )]
+    #[OA\PathParameter(ref: '#/components/parameters/reservation-id')]
+    #[OA\QueryParameter(ref: '#/components/parameters/signature-query')]
+    #[OA\QueryParameter(ref: '#/components/parameters/expires-query')]
+    #[OA\Response(response: '201', ref: '#/components/responses/created')]
+    #[OA\Response(response: '401', ref: '#/components/responses/unauthorized')]
+    #[OA\Response(response: '403', ref: '#/components/responses/forbidden')]
+    #[OA\Response(response: '404', ref: '#/components/responses/not-found')]
+    public function checkin(Reservation $reservation): JsonResponse
+    {
+        throw new \Exception('Not implemented');
+    }
 }

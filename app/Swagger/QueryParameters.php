@@ -53,6 +53,29 @@ use OpenApi\Attributes as OA;
     ),
 )]
 
+#[OA\QueryParameter(
+    parameter: 'signature-query',
+    name: 'signature',
+    in: 'query',
+    description: '署名',
+    required: true,
+    schema: new OA\Schema(
+        type: 'string',
+    ),
+)]
+
+#[OA\QueryParameter(
+    parameter: 'expires-query',
+    name: 'expires',
+    in: 'query',
+    description: '有効期限',
+    required: true,
+    schema: new OA\Schema(
+        type: 'integer',
+        format: 'int64',
+    ),
+)]
+
 class QueryParameters
 {
 }
