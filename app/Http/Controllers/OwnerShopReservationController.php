@@ -32,7 +32,7 @@ class OwnerShopReservationController extends Controller
         $reservations = $shop->reservations()
             ->with('user')
             ->orderBy('reserved_at')
-            ->paginate();
+            ->paginate(10);
 
         return ReservationForOwnersResource::collection($reservations)->response();
     }
