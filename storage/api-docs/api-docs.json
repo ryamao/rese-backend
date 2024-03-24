@@ -509,6 +509,41 @@
                 }
             }
         },
+        "/owners/{owner}/shops/{shop}/reservations": {
+            "get": {
+                "tags": [
+                    "Owner"
+                ],
+                "summary": "店舗代表者向け飲食店別予約一覧取得",
+                "description": "店舗代表者と飲食店を指定して予約一覧を取得する",
+                "operationId": "get-owner-shop-reservations",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/owner-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/shop-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page-query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-owner-shop-reservations-200"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
         "/shops": {
             "get": {
                 "tags": [
@@ -1034,13 +1069,13 @@
                                     "type": "string"
                                 }
                             },
-                            "area_id": {
+                            "area": {
                                 "type": "array",
                                 "items": {
                                     "type": "string"
                                 }
                             },
-                            "genre_id": {
+                            "genre": {
                                 "type": "array",
                                 "items": {
                                     "type": "string"
@@ -1060,6 +1095,37 @@
                             }
                         },
                         "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "reservation-for-owner": {
+                "description": "店舗代表者向け飲食店別予約情報",
+                "required": [
+                    "id",
+                    "customer_name",
+                    "reserved_at",
+                    "number_of_guests"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "予約ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "customer_name": {
+                        "description": "顧客名",
+                        "type": "string"
+                    },
+                    "reserved_at": {
+                        "description": "予約日時",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "number_of_guests": {
+                        "description": "予約人数",
+                        "type": "integer",
+                        "minimum": 1
                     }
                 },
                 "type": "object"
@@ -1682,6 +1748,34 @@
                     "application/json": {
                         "schema": {
                             "$ref": "#/components/schemas/create-shop-error"
+                        }
+                    }
+                }
+            },
+            "get-owner-shop-reservations-200": {
+                "description": "店舗代表者向け飲食店別予約一覧取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/pagination"
+                                },
+                                {
+                                    "required": [
+                                        "data"
+                                    ],
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/reservation-for-owner"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            ]
                         }
                     }
                 }

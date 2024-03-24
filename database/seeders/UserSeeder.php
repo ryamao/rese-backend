@@ -61,6 +61,7 @@ class UserSeeder extends Seeder
             'view owner shops',
             'create shops',
             'edit shops',
+            'view reservations for owners',
         ];
 
         foreach ($names as $name) {

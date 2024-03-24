@@ -381,14 +381,14 @@ use OpenApi\Attributes as OA;
                     )
                 ),
                 new OA\Property(
-                    property: 'area_id',
+                    property: 'area',
                     type: 'array',
                     items: new OA\Items(
                         type: 'string'
                     )
                 ),
                 new OA\Property(
-                    property: 'genre_id',
+                    property: 'genre',
                     type: 'array',
                     items: new OA\Items(
                         type: 'string'
@@ -411,6 +411,43 @@ use OpenApi\Attributes as OA;
             ]
         ),
     ],
+)]
+
+#[OA\Schema(
+    schema: 'reservation-for-owner',
+    description: '店舗代表者向け飲食店別予約情報',
+    type: 'object',
+    required: [
+        'id',
+        'customer_name',
+        'reserved_at',
+        'number_of_guests',
+    ],
+    properties: [
+        new OA\Property(
+            property: 'id',
+            description: '予約ID',
+            type: 'integer',
+            format: 'int64'
+        ),
+        new OA\Property(
+            property: 'customer_name',
+            description: '顧客名',
+            type: 'string',
+        ),
+        new OA\Property(
+            property: 'reserved_at',
+            description: '予約日時',
+            type: 'string',
+            format: 'date-time',
+        ),
+        new OA\Property(
+            property: 'number_of_guests',
+            description: '予約人数',
+            type: 'integer',
+            minimum: 1,
+        ),
+    ]
 )]
 
 #[OA\Schema(

@@ -441,6 +441,27 @@ use OpenApi\Attributes as OA;
     )
 )]
 
+#[OA\Response(
+    response: 'get-owner-shop-reservations-200',
+    description: '店舗代表者向け飲食店別予約一覧取得成功',
+    content: new OA\JsonContent(
+        allOf: [
+            new OA\Schema(ref: '#/components/schemas/pagination'),
+            new OA\Schema(
+                type: 'object',
+                required: ['data'],
+                properties: [
+                    new OA\Property(
+                        property: 'data',
+                        type: 'array',
+                        items: new OA\Items(ref: '#/components/schemas/reservation-for-owner')
+                    ),
+                ],
+            ),
+        ],
+    ),
+)]
+
 class Responses
 {
 }
