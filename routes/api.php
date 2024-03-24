@@ -12,6 +12,7 @@ use App\Http\Controllers\NotificationEmailController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\OwnerShopController;
 use App\Http\Controllers\OwnerShopReservationController;
+use App\Http\Controllers\ReservationCheckinController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,7 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
         '/customers/{customer}/favorites',
         [CustomerFavoriteController::class, 'index']
     )
-        ->middleware('permission:view customer favorites');
+        ->middleware('permission:view favorites for customers');
 
     Route::post(
         '/customers/{customer}/shops/{shop}/favorite',
@@ -68,31 +69,31 @@ Route::middleware('auth:sanctum')->group(function () {
         '/customers/{customer}/reservations',
         [CustomerReservationController::class, 'index']
     )
-        ->middleware('permission:view customer reservations');
+        ->middleware('permission:view reservations for customers');
     Route::put(
         '/customers/{customer}/reservations/{reservation}',
         [CustomerReservationController::class, 'update']
     )
-        ->middleware('permission:edit customer reservations');
+        ->middleware('permission:edit reservations');
     Route::delete(
         '/customers/{customer}/reservations/{reservation}',
         [CustomerReservationController::class, 'destroy']
     )
-        ->middleware('permission:delete customer reservations');
+        ->middleware('permission:delete reservations');
 
     Route::get(
         '/customers/{customer}/shops/{shop}/reservations',
         [CustomerShopReservationController::class, 'index']
     )
-        ->middleware('permission:view customer reservations');
+        ->middleware('permission:view reservations for customers');
     Route::post(
         '/customers/{customer}/shops/{shop}/reservations',
         [CustomerShopReservationController::class, 'store']
     )
-        ->middleware('permission:create customer reservations');
+        ->middleware('permission:create reservations');
 
     Route::get('/owners/{owner}/shops', [OwnerShopController::class, 'index'])
-        ->middleware('permission:view owner shops');
+        ->middleware('permission:view shops for owners');
     Route::post('/owners/{owner}/shops', [OwnerShopController::class, 'store'])
         ->middleware('permission:create shops');
     Route::put('/owners/{owner}/shops/{shop}', [OwnerShopController::class, 'update'])
@@ -100,4 +101,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/owners/{owner}/shops/{shop}/reservations', [OwnerShopReservationController::class, 'index'])
         ->middleware('permission:view reservations for owners');
+
+    Route::get('/reservations/{reservation}/signed-url', [ReservationCheckinController::class, 'signedUrl'])
+        ->middleware('permission:view reservations for customers');
+    Route::post('/reservations/{reservation}/checkin', [ReservationCheckinController::class, 'checkin'])
+        ->middleware('permission:view reservations for owners')
+        ->middleware('signed')
+        ->name('reservation.checkin');
 });

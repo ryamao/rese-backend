@@ -544,6 +544,73 @@
                 }
             }
         },
+        "/reservations/{reservation}/signed-url": {
+            "get": {
+                "tags": [
+                    "Reservations"
+                ],
+                "summary": "入店確認URL取得",
+                "description": "入店確認用の署名付きURLを取得する",
+                "operationId": "get-reservation-signed-url",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/reservation-id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-reservation-signed-url-200"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
+        "/reservations/{reservation}/checkin": {
+            "post": {
+                "tags": [
+                    "Reservations"
+                ],
+                "summary": "入店確認",
+                "description": "入店確認を行う",
+                "operationId": "post-reservation-checkin",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/reservation-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/signature-query"
+                    },
+                    {
+                        "$ref": "#/components/parameters/expires-query"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/created"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/conflict"
+                    }
+                }
+            }
+        },
         "/shops": {
             "get": {
                 "tags": [
@@ -1779,6 +1846,31 @@
                         }
                     }
                 }
+            },
+            "get-reservation-signed-url-200": {
+                "description": "入店確認URL取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "url"
+                            ],
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "format": "uri"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "examples": {
+                            "example": {
+                                "summary": "入店確認URL取得成功",
+                                "value": "https://api.web-no-benkyo.com/reservations/1/checkin?signature=eyJpdiI6Ij"
+                            }
+                        }
+                    }
+                }
             }
         },
         "parameters": {
@@ -1884,6 +1976,25 @@
                 "schema": {
                     "type": "integer",
                     "format": "int32"
+                }
+            },
+            "signature-query": {
+                "name": "signature",
+                "in": "query",
+                "description": "署名",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "expires-query": {
+                "name": "expires",
+                "in": "query",
+                "description": "有効期限",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "format": "int64"
                 }
             }
         },

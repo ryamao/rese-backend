@@ -462,6 +462,25 @@ use OpenApi\Attributes as OA;
     ),
 )]
 
+#[OA\Response(
+    response: 'get-reservation-signed-url-200',
+    description: '入店確認URL取得成功',
+    content: new OA\JsonContent(
+        type: 'object',
+        required: ['url'],
+        properties: [
+            new OA\Property(property: 'url', type: 'string', format: 'uri'),
+        ],
+        examples: [
+            'example' => new OA\Examples(
+                example: 'example',
+                summary: '入店確認URL取得成功',
+                value: 'https://api.web-no-benkyo.com/reservations/1/checkin?signature=eyJpdiI6Ij',
+            ),
+        ]
+    ),
+)]
+
 class Responses
 {
 }

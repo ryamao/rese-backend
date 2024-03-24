@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('shop_id')->constrained()->cascadeOnDelete();
             $table->dateTime('reserved_at');
             $table->unsignedInteger('number_of_guests');
+            $table->boolean('is_checked_in')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

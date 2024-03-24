@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $shop_id
  * @property \Illuminate\Support\Carbon $reserved_at
  * @property int $number_of_guests
+ * @property bool $is_checked_in
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * @property-read \App\Models\User $user
@@ -27,11 +28,13 @@ class Reservation extends Model
         'shop_id',
         'reserved_at',
         'number_of_guests',
+        'is_checked_in',
     ];
 
     /** @var array<string, string> */
     protected $casts = [
         'reserved_at' => 'datetime',
+        'is_checked_in' => 'boolean',
     ];
 
     /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User, self> */
