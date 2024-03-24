@@ -106,5 +106,6 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:view reservations for customers');
     Route::post('/reservations/{reservation}/checkin', [ReservationCheckinController::class, 'checkin'])
         ->middleware('permission:view reservations for owners')
+        ->middleware('signed')
         ->name('reservation.checkin');
 });

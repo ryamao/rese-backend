@@ -69,7 +69,7 @@ use OpenApi\Attributes as OA;
     name: 'expires',
     in: 'query',
     description: '有効期限',
-    required: true,
+    required: false,
     schema: new OA\Schema(
         type: 'integer',
         format: 'int64',

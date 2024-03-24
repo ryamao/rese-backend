@@ -604,6 +604,9 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/not-found"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/conflict"
                     }
                 }
             }
@@ -1988,7 +1991,7 @@
                 "name": "expires",
                 "in": "query",
                 "description": "有効期限",
-                "required": true,
+                "required": false,
                 "schema": {
                     "type": "integer",
                     "format": "int64"

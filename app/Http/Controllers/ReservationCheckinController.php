@@ -46,8 +46,17 @@ class ReservationCheckinController extends Controller
     #[OA\Response(response: '401', ref: '#/components/responses/unauthorized')]
     #[OA\Response(response: '403', ref: '#/components/responses/forbidden')]
     #[OA\Response(response: '404', ref: '#/components/responses/not-found')]
+    #[OA\Response(response: '409', ref: '#/components/responses/conflict')]
     public function checkin(Reservation $reservation): JsonResponse
     {
-        throw new \Exception('Not implemented');
+        Gate::allowIf(fn (User $authUser) => $authUser->is($reservation->shop->owner));
+
+        if ($reservation->is_checked_in) {
+            return response()->json('', 409);
+        }
+
+        $reservation->update(['is_checked_in' => true]);
+
+        return response()->json('', 201);
     }
 }
