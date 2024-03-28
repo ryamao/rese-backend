@@ -301,6 +301,7 @@ use OpenApi\Attributes as OA;
         'shop',
         'reserved_at',
         'number_of_guests',
+        'is_checked_in',
     ],
     properties: [
         new OA\Property(
@@ -324,6 +325,11 @@ use OpenApi\Attributes as OA;
             description: '予約人数',
             type: 'integer',
             minimum: 1,
+        ),
+        new OA\Property(
+            property: 'is_checked_in',
+            description: 'チェックイン済みかどうか',
+            type: 'boolean',
         ),
     ]
 )]
@@ -422,6 +428,7 @@ use OpenApi\Attributes as OA;
         'customer_name',
         'reserved_at',
         'number_of_guests',
+        'is_checked_in',
     ],
     properties: [
         new OA\Property(
@@ -446,6 +453,11 @@ use OpenApi\Attributes as OA;
             description: '予約人数',
             type: 'integer',
             minimum: 1,
+        ),
+        new OA\Property(
+            property: 'is_checked_in',
+            description: 'チェックイン済みかどうか',
+            type: 'boolean',
         ),
     ]
 )]

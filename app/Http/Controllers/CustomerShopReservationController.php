@@ -66,10 +66,11 @@ class CustomerShopReservationController extends Controller
             'shop_id' => $shop->id,
             'reserved_at' => Carbon::make($request->input('reserved_at'))?->timezone('UTC'),
             'number_of_guests' => $request->input('number_of_guests'),
+            'is_checked_in' => false,
         ]);
 
         return response()->json([
-            'reservation' => new ReservationResource($reservation),
+            'reservation' => ReservationResource::make($reservation),
         ], 201);
     }
 }

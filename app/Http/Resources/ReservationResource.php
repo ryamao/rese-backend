@@ -22,6 +22,7 @@ class ReservationResource extends JsonResource
             'shop' => CustomerShopResource::make($this->shop),
             'reserved_at' => $this->reserved_at->timezone('UTC')->format('Y-m-d\TH:i:sP'),
             'number_of_guests' => $this->number_of_guests,
+            'is_checked_in' => $this->is_checked_in,
         ];
     }
 }

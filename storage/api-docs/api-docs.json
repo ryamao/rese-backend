@@ -1066,7 +1066,8 @@
                     "id",
                     "shop",
                     "reserved_at",
-                    "number_of_guests"
+                    "number_of_guests",
+                    "is_checked_in"
                 ],
                 "properties": {
                     "id": {
@@ -1086,6 +1087,10 @@
                         "description": "予約人数",
                         "type": "integer",
                         "minimum": 1
+                    },
+                    "is_checked_in": {
+                        "description": "チェックイン済みかどうか",
+                        "type": "boolean"
                     }
                 },
                 "type": "object"
@@ -1172,7 +1177,8 @@
                     "id",
                     "customer_name",
                     "reserved_at",
-                    "number_of_guests"
+                    "number_of_guests",
+                    "is_checked_in"
                 ],
                 "properties": {
                     "id": {
@@ -1193,6 +1199,10 @@
                         "description": "予約人数",
                         "type": "integer",
                         "minimum": 1
+                    },
+                    "is_checked_in": {
+                        "description": "チェックイン済みかどうか",
+                        "type": "boolean"
                     }
                 },
                 "type": "object"
