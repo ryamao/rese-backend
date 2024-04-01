@@ -23,6 +23,11 @@ class ReservationResource extends JsonResource
             'reserved_at' => $this->reserved_at->timezone('UTC')->format('Y-m-d\TH:i:sP'),
             'number_of_guests' => $this->number_of_guests,
             'is_checked_in' => $this->is_checked_in,
+            'billing' => $this->billing ? [
+                'amount' => $this->billing->amount,
+                'description' => $this->billing->description,
+                'is_paid' => $this->billing->is_paid,
+            ] : null,
         ];
     }
 }

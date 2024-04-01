@@ -331,6 +331,29 @@ use OpenApi\Attributes as OA;
             description: 'チェックイン済みかどうか',
             type: 'boolean',
         ),
+        new OA\Property(
+            property: 'billing',
+            description: '請求情報',
+            type: 'object',
+            properties: [
+                new OA\Property(
+                    property: 'amount',
+                    description: '請求金額',
+                    type: 'integer',
+                    minimum: 1,
+                ),
+                new OA\Property(
+                    property: 'description',
+                    description: '請求内容',
+                    type: 'string',
+                ),
+                new OA\Property(
+                    property: 'is_paid',
+                    description: '支払い済みかどうか',
+                    type: 'boolean',
+                ),
+            ],
+        ),
     ]
 )]
 
@@ -458,6 +481,29 @@ use OpenApi\Attributes as OA;
             property: 'is_checked_in',
             description: 'チェックイン済みかどうか',
             type: 'boolean',
+        ),
+        new OA\Property(
+            property: 'billing',
+            description: '請求情報',
+            type: 'object',
+            properties: [
+                new OA\Property(
+                    property: 'amount',
+                    description: '請求金額',
+                    type: 'integer',
+                    minimum: 1,
+                ),
+                new OA\Property(
+                    property: 'description',
+                    description: '請求内容',
+                    type: 'string',
+                ),
+                new OA\Property(
+                    property: 'is_paid',
+                    description: '支払い済みかどうか',
+                    type: 'boolean',
+                ),
+            ],
         ),
     ]
 )]

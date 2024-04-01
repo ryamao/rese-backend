@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon $updated_at
  * @property-read \App\Models\User $user
  * @property-read \App\Models\Shop $shop
+ * @property-read \App\Models\Billing|null $billing
  */
 class Reservation extends Model
 {
@@ -47,5 +48,11 @@ class Reservation extends Model
     public function shop(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Shop::class);
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\HasOne<\App\Models\Billing> */
+    public function billing(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Billing::class);
     }
 }
