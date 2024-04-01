@@ -9,6 +9,7 @@
         "darkaonline/l5-swagger": "^8.5",
         "doctrine/dbal": "^3.5.1",
         "guzzlehttp/guzzle": "^7.2",
+        "laravel/cashier": "^13.17",
         "laravel/fortify": "^1.20",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",

@@ -481,6 +481,25 @@ use OpenApi\Attributes as OA;
     ),
 )]
 
+#[OA\Response(
+    response: 'get-create-intent-200',
+    description: '決済インテント取得成功',
+    content: new OA\JsonContent(
+        type: 'object',
+        required: ['client_secret'],
+        properties: [
+            new OA\Property(property: 'client_secret', type: 'string'),
+        ],
+        examples: [
+            'example' => new OA\Examples(
+                example: 'example',
+                summary: '決済インテント取得成功',
+                value: 'pi_1J4J1v2eZvKYlo2C5J4J1v2eZvKYlo2C',
+            ),
+        ]
+    ),
+)]
+
 class Responses
 {
 }

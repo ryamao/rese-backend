@@ -46,6 +46,69 @@
                 }
             }
         },
+        "/reservations/{reservation}/billing": {
+            "post": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "請求金額登録",
+                "description": "予約に対して請求金額を登録する",
+                "operationId": "post-reservation-billing",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/reservation-id"
+                    }
+                ],
+                "requestBody": {
+                    "description": "請求金額",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "amount",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "description": "請求金額",
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "example": 3000
+                                    },
+                                    "description": {
+                                        "description": "請求内容",
+                                        "type": "string",
+                                        "example": "サンプルテキスト"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/created"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable-entity"
+                    }
+                }
+            }
+        },
         "/customers/{customer}": {
             "get": {
                 "tags": [
@@ -540,6 +603,66 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
+        "/reservations/{reservation}/payment": {
+            "post": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "決済",
+                "description": "予約に対して決済を行う",
+                "operationId": "post-reservation-payment",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/reservation-id"
+                    }
+                ],
+                "requestBody": {
+                    "description": "決済情報",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "confirmation_token_id"
+                                ],
+                                "properties": {
+                                    "confirmation_token_id": {
+                                        "description": "確認トークンID",
+                                        "type": "string",
+                                        "example": "pi_1J3J1v2eZvKYlo2C5J9z1J3J"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "決済成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable-entity"
                     }
                 }
             }
@@ -1091,6 +1214,28 @@
                     "is_checked_in": {
                         "description": "チェックイン済みかどうか",
                         "type": "boolean"
+                    },
+                    "billing": {
+                        "description": "請求情報",
+                        "properties": {
+                            "amount": {
+                                "description": "請求金額",
+                                "type": "integer",
+                                "minimum": 1
+                            },
+                            "description": {
+                                "description": "請求内容",
+                                "type": "string"
+                            },
+                            "is_paid": {
+                                "description": "支払い済みかどうか",
+                                "type": "boolean"
+                            }
+                        },
+                        "type": [
+                            "object",
+                            "null"
+                        ]
                     }
                 },
                 "type": "object"
@@ -1203,6 +1348,28 @@
                     "is_checked_in": {
                         "description": "チェックイン済みかどうか",
                         "type": "boolean"
+                    },
+                    "billing": {
+                        "description": "請求情報",
+                        "properties": {
+                            "amount": {
+                                "description": "請求金額",
+                                "type": "integer",
+                                "minimum": 1
+                            },
+                            "description": {
+                                "description": "請求内容",
+                                "type": "string"
+                            },
+                            "is_paid": {
+                                "description": "支払い済みかどうか",
+                                "type": "boolean"
+                            }
+                        },
+                        "type": [
+                            "object",
+                            "null"
+                        ]
                     }
                 },
                 "type": "object"
@@ -1877,6 +2044,30 @@
                             "example": {
                                 "summary": "入店確認URL取得成功",
                                 "value": "https://api.web-no-benkyo.com/reservations/1/checkin?signature=eyJpdiI6Ij"
+                            }
+                        }
+                    }
+                }
+            },
+            "get-create-intent-200": {
+                "description": "決済インテント取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "client_secret"
+                            ],
+                            "properties": {
+                                "client_secret": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "examples": {
+                            "example": {
+                                "summary": "決済インテント取得成功",
+                                "value": "pi_1J4J1v2eZvKYlo2C5J4J1v2eZvKYlo2C"
                             }
                         }
                     }

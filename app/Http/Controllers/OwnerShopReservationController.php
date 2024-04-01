@@ -30,7 +30,7 @@ class OwnerShopReservationController extends Controller
         Gate::allowIf(fn (User $authUser) => $authUser->is($owner) && $authUser->is($shop->owner));
 
         $reservations = $shop->reservations()
-            ->with('user')
+            ->with(['user', 'billing'])
             ->orderBy('reserved_at')
             ->paginate(10);
 
