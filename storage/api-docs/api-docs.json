@@ -1232,7 +1232,10 @@
                                 "type": "boolean"
                             }
                         },
-                        "type": "object"
+                        "type": [
+                            "object",
+                            "null"
+                        ]
                     }
                 },
                 "type": "object"
@@ -1363,7 +1366,10 @@
                                 "type": "boolean"
                             }
                         },
-                        "type": "object"
+                        "type": [
+                            "object",
+                            "null"
+                        ]
                     }
                 },
                 "type": "object"

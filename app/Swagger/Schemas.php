@@ -335,6 +335,7 @@ use OpenApi\Attributes as OA;
             property: 'billing',
             description: '請求情報',
             type: 'object',
+            nullable: true,
             properties: [
                 new OA\Property(
                     property: 'amount',
@@ -486,6 +487,7 @@ use OpenApi\Attributes as OA;
             property: 'billing',
             description: '請求情報',
             type: 'object',
+            nullable: true,
             properties: [
                 new OA\Property(
                     property: 'amount',
