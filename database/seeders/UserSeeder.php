@@ -89,6 +89,7 @@ class UserSeeder extends Seeder
             'edit reservations',
             'create reservations',
             'delete reservations',
+            'create payments',
         ];
 
         foreach ($names as $name) {

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthenticationStatusController;
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerFavoriteController;
 use App\Http\Controllers\CustomerReservationController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\NotificationEmailController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\OwnerShopController;
 use App\Http\Controllers\OwnerShopReservationController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationCheckinController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -108,4 +110,9 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:view reservations for owners')
         ->middleware('signed')
         ->name('reservation.checkin');
+
+    Route::post('/reservations/{reservation}/billing', [BillingController::class, 'store'])
+        ->middleware('permission:create billings');
+    Route::post('/reservations/{reservation}/payment', [PaymentController::class, 'store'])
+        ->middleware('permission:create payments');
 });
