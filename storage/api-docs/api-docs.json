@@ -786,6 +786,61 @@
                 }
             }
         },
+        "/shops/{shop}/rating": {
+            "post": {
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "5段階評価登録",
+                "description": "店舗に対して5段階評価を登録する",
+                "operationId": "post-shop-rating",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/shop-id"
+                    }
+                ],
+                "requestBody": {
+                    "description": "評価情報",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "rating"
+                                ],
+                                "properties": {
+                                    "rating": {
+                                        "description": "評価",
+                                        "type": "integer",
+                                        "maximum": 5,
+                                        "minimum": 1,
+                                        "example": 3
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/created"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/unprocessable-entity"
+                    }
+                }
+            }
+        },
         "/sanctum/csrf-cookie": {
             "get": {
                 "tags": [
@@ -1141,6 +1196,15 @@
                             "marked",
                             "unmarked"
                         ]
+                    },
+                    "rating": {
+                        "description": "評価情報",
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "maximum": 5,
+                        "minimum": 1
                     }
                 },
                 "type": "object"

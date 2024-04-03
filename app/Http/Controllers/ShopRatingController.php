@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ShopRatingRequest;
+use App\Models\Rating;
+use App\Models\Shop;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
 
@@ -37,8 +40,20 @@ class ShopRatingController extends Controller
     #[OA\Response(response: 403, ref: '#/components/responses/forbidden')]
     #[OA\Response(response: 404, ref: '#/components/responses/not-found')]
     #[OA\Response(response: 422, ref: '#/components/responses/unprocessable-entity')]
-    public function store(): JsonResponse
+    public function store(ShopRatingRequest $request, Shop $shop): JsonResponse
     {
-        throw new \Exception('Not implemented');
+        assert($request->user() !== null);
+
+        Rating::updateOrCreate(
+            [
+                'shop_id' => $shop->id,
+                'user_id' => $request->user()->id,
+            ],
+            [
+                'number_of_stars' => $request->input('rating'),
+            ]
+        );
+
+        return response()->json('', 201);
     }
 }

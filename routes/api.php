@@ -16,6 +16,7 @@ use App\Http\Controllers\OwnerShopReservationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationCheckinController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ShopRatingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -115,4 +116,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:create billings');
     Route::post('/reservations/{reservation}/payment', [PaymentController::class, 'store'])
         ->middleware('permission:create payments');
+
+    Route::post('/shops/{shop}/rating', [ShopRatingController::class, 'store'])
+        ->middleware('permission:create ratings');
 });
