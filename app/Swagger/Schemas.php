@@ -243,6 +243,14 @@ use OpenApi\Attributes as OA;
             type: 'string',
             enum: FavoriteStatus::class,
         ),
+        new OA\Property(
+            property: 'rating',
+            description: '評価情報',
+            type: 'integer',
+            nullable: true,
+            minimum: 1,
+            maximum: 5,
+        ),
     ]
 )]
 
