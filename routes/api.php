@@ -122,4 +122,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/shops/{shop}/rating', [ShopRatingController::class, 'store'])
         ->middleware('permission:create ratings');
+
+    Route::post('/shops/{shop}/reviews', [ShopReviewController::class, 'store'])
+        ->middleware('permission:create reviews');
 });

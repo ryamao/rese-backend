@@ -521,6 +521,41 @@ use OpenApi\Attributes as OA;
     ),
 )]
 
+#[OA\Response(
+    response: 'post-shop-reviews-422',
+    description: 'レビュー投稿のバリデーションエラー',
+    content: new OA\JsonContent(
+        type: 'object',
+        required: ['message', 'errors'],
+        properties: [
+            new OA\Property(
+                property: 'message',
+                type: 'string'
+            ),
+            new OA\Property(
+                property: 'errors',
+                type: 'object',
+                properties: [
+                    new OA\Property(
+                        property: 'rating',
+                        type: 'array',
+                        items: new OA\Items(
+                            type: 'string'
+                        )
+                    ),
+                    new OA\Property(
+                        property: 'comment',
+                        type: 'array',
+                        items: new OA\Items(
+                            type: 'string'
+                        )
+                    ),
+                ]
+            ),
+        ],
+    )
+)]
+
 class Responses
 {
 }

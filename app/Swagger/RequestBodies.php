@@ -290,6 +290,32 @@ use OpenApi\Attributes as OA;
     )
 )]
 
+#[OA\RequestBody(
+    request: 'post-shop-reviews',
+    description: 'レビュー投稿リクエスト',
+    required: true,
+    content: new OA\JsonContent(
+        required: ['rating'],
+        properties: [
+            new OA\Property(
+                property: 'rating',
+                description: '評価',
+                type: 'integer',
+                minimum: 1,
+                maximum: 5,
+                example: 5,
+            ),
+            new OA\Property(
+                property: 'comment',
+                description: 'コメント',
+                type: 'string',
+                nullable: true,
+                example: 'テストコメント',
+            ),
+        ]
+    )
+)]
+
 class RequestBodies
 {
 }
