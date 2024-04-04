@@ -841,6 +841,65 @@
                 }
             }
         },
+        "/shops/{shop}/reviews": {
+            "get": {
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "レビュー一覧取得",
+                "description": "指定した店舗のレビュー一覧を取得する",
+                "operationId": "get-shop-reviews",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/shop-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page-query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-shop-reviews-200"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "レビュー投稿",
+                "description": "指定した店舗にレビューを投稿する",
+                "operationId": "post-shop-reviews",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/shop-id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/post-shop-reviews"
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/created"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/post-shop-reviews-422"
+                    }
+                }
+            }
+        },
         "/sanctum/csrf-cookie": {
             "get": {
                 "tags": [
@@ -1434,6 +1493,37 @@
                             "object",
                             "null"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "shop-review-data": {
+                "description": "レビュー情報",
+                "required": [
+                    "id",
+                    "customer_name",
+                    "rating",
+                    "comment"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "レビューID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "customer_name": {
+                        "description": "顧客名",
+                        "type": "string"
+                    },
+                    "rating": {
+                        "description": "評価",
+                        "type": "integer",
+                        "maximum": 5,
+                        "minimum": 1
+                    },
+                    "comment": {
+                        "description": "コメント",
+                        "type": "string"
                     }
                 },
                 "type": "object"
@@ -2133,6 +2223,70 @@
                                 "summary": "決済インテント取得成功",
                                 "value": "pi_1J4J1v2eZvKYlo2C5J4J1v2eZvKYlo2C"
                             }
+                        }
+                    }
+                }
+            },
+            "get-shop-reviews-200": {
+                "description": "レビュー一覧取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/pagination"
+                                },
+                                {
+                                    "required": [
+                                        "data"
+                                    ],
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/shop-review-data"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post-shop-reviews-422": {
+                "description": "レビュー投稿のバリデーションエラー",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "message",
+                                "errors"
+                            ],
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "errors": {
+                                    "properties": {
+                                        "rating": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "comment": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 }
@@ -3277,6 +3431,37 @@
                             "image": {
                                 "contentType": "image/*"
                             }
+                        }
+                    }
+                }
+            },
+            "post-shop-reviews": {
+                "description": "レビュー投稿リクエスト",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "rating"
+                            ],
+                            "properties": {
+                                "rating": {
+                                    "description": "評価",
+                                    "type": "integer",
+                                    "maximum": 5,
+                                    "minimum": 1,
+                                    "example": 5
+                                },
+                                "comment": {
+                                    "description": "コメント",
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "example": "テストコメント"
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 }
