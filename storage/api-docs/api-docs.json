@@ -841,6 +841,32 @@
                 }
             }
         },
+        "/shops/{shop}/reviews": {
+            "get": {
+                "tags": [
+                    "Shop"
+                ],
+                "summary": "レビュー一覧取得",
+                "description": "指定した店舗のレビュー一覧を取得する",
+                "operationId": "get-shop-reviews",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/shop-id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page-query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/get-shop-reviews-200"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/not-found"
+                    }
+                }
+            }
+        },
         "/sanctum/csrf-cookie": {
             "get": {
                 "tags": [
@@ -1434,6 +1460,37 @@
                             "object",
                             "null"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "shop-review-data": {
+                "description": "レビュー情報",
+                "required": [
+                    "id",
+                    "customer_name",
+                    "rating",
+                    "comment"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "レビューID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "customer_name": {
+                        "description": "顧客名",
+                        "type": "string"
+                    },
+                    "rating": {
+                        "description": "評価",
+                        "type": "integer",
+                        "maximum": 5,
+                        "minimum": 1
+                    },
+                    "comment": {
+                        "description": "コメント",
+                        "type": "string"
                     }
                 },
                 "type": "object"
@@ -2133,6 +2190,34 @@
                                 "summary": "決済インテント取得成功",
                                 "value": "pi_1J4J1v2eZvKYlo2C5J4J1v2eZvKYlo2C"
                             }
+                        }
+                    }
+                }
+            },
+            "get-shop-reviews-200": {
+                "description": "レビュー一覧取得成功",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/pagination"
+                                },
+                                {
+                                    "required": [
+                                        "data"
+                                    ],
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/shop-review-data"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            ]
                         }
                     }
                 }

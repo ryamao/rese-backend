@@ -17,6 +17,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReservationCheckinController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShopRatingController;
+use App\Http\Controllers\ShopReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +38,8 @@ Route::get('/shops', [ShopController::class, 'index']);
 Route::get('/shops/{shop}', [ShopController::class, 'show']);
 
 Route::get('/auth/status', [AuthenticationStatusController::class, 'show']);
+
+Route::get('/shops/{shop}/reviews', [ShopReviewController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/owners', [OwnerController::class, 'store'])

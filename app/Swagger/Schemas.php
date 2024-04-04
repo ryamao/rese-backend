@@ -519,6 +519,43 @@ use OpenApi\Attributes as OA;
 )]
 
 #[OA\Schema(
+    schema: 'shop-review-data',
+    description: 'レビュー情報',
+    type: 'object',
+    required: [
+        'id',
+        'customer_name',
+        'rating',
+        'comment',
+    ],
+    properties: [
+        new OA\Property(
+            property: 'id',
+            description: 'レビューID',
+            type: 'integer',
+            format: 'int64'
+        ),
+        new OA\Property(
+            property: 'customer_name',
+            description: '顧客名',
+            type: 'string',
+        ),
+        new OA\Property(
+            property: 'rating',
+            description: '評価',
+            type: 'integer',
+            minimum: 1,
+            maximum: 5,
+        ),
+        new OA\Property(
+            property: 'comment',
+            description: 'コメント',
+            type: 'string',
+        ),
+    ]
+)]
+
+#[OA\Schema(
     schema: 'pagination',
     description: 'ページネーション',
     type: 'object',

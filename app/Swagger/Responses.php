@@ -500,6 +500,27 @@ use OpenApi\Attributes as OA;
     ),
 )]
 
+#[OA\Response(
+    response: 'get-shop-reviews-200',
+    description: 'レビュー一覧取得成功',
+    content: new OA\JsonContent(
+        allOf: [
+            new OA\Schema(ref: '#/components/schemas/pagination'),
+            new OA\Schema(
+                type: 'object',
+                required: ['data'],
+                properties: [
+                    new OA\Property(
+                        property: 'data',
+                        type: 'array',
+                        items: new OA\Items(ref: '#/components/schemas/shop-review-data')
+                    ),
+                ],
+            ),
+        ],
+    ),
+)]
+
 class Responses
 {
 }

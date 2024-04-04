@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\Area $area
  * @property-read \App\Models\Genre $genre
  * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Reservation> $reservations
+ * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Review> $reviews
  */
 class Shop extends Model
 {
@@ -47,5 +48,11 @@ class Shop extends Model
     public function reservations(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Review> */
+    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }
