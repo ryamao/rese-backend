@@ -12,7 +12,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('app:send-reminders')->dailyAt('9:00');
+    }
+
+    /**
+     * Define the application's command schedule timezone.
+     */
+    protected function scheduleTimezone(): string
+    {
+        return 'Asia/Tokyo';
     }
 
     /**
