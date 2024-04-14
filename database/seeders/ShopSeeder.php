@@ -31,13 +31,17 @@ class ShopSeeder extends Seeder
         $this->createAreas($csvRows);
         $this->createGenres($csvRows);
 
+        $owner = User::factory()->create([
+            'name' => 'テストオーナー',
+            'email' => 'owner@example.com',
+            'password' => bcrypt('password'),
+        ]);
+        $owner->assignRole('owner');
+
         foreach ($csvRows as $row) {
             $externalImagePath = $row[4];
             $storageImagePath = $this->storeImage($externalImagePath);
             if ($storageImagePath) {
-                $owner = User::factory()->create();
-                $owner->assignRole('owner');
-
                 Shop::create([
                     'name' => $row[0],
                     'owner_id' => $owner->id,
