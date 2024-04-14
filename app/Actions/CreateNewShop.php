@@ -36,10 +36,10 @@ class CreateNewShop
         ]);
 
         $imageName = $shop->id.'.'.$image->extension();
-        $imagePath = $image->storeAs('shop_images', $imageName, 'public');
+        $imagePath = $image->storeAs('shop_images', $imageName);
 
         if ($imagePath) {
-            $shop->update(['image_url' => env('APP_URL').Storage::url($imagePath)]);
+            $shop->update(['image_url' => Storage::url($imagePath)]);
 
             return $shop;
         } elseif (! $imagePath) {

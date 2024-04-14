@@ -34,9 +34,9 @@ class EditStoredShop
             /** @var \Illuminate\Http\UploadedFile $image */
             $image = $request->file('image');
             $imageName = $shop->id.'.'.$image->extension();
-            $imagePath = $image->storeAs('shop_images', $imageName, 'public');
+            $imagePath = $image->storeAs('shop_images', $imageName);
             if ($imagePath) {
-                $shop->image_url = env('APP_URL').Storage::url($imagePath);
+                $shop->image_url = Storage::url($imagePath);
             } else {
                 abort(500);
             }

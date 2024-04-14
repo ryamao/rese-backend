@@ -8,12 +8,15 @@ use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Http\File;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class ShopSeeder extends Seeder
 {
     use WithoutModelEvents;
+
+    const DIRECTORY_NAME = 'dummy_shop_images';
 
     /**
      * Run the database seeds.
@@ -23,9 +26,7 @@ class ShopSeeder extends Seeder
         $csvPath = resource_path('data/shops.csv');
         $csvRows = $this->readCsv($csvPath);
 
-        if (! file_exists($this->storagePath())) {
-            mkdir($this->storagePath(), 0755, true);
-        }
+        Storage::makeDirectory(self::DIRECTORY_NAME);
 
         $this->createAreas($csvRows);
         $this->createGenres($csvRows);
@@ -88,25 +89,15 @@ class ShopSeeder extends Seeder
     private function storeImage(string $externalImagePath): ?string
     {
         $imageName = basename($externalImagePath);
+        $storageImagePath = self::DIRECTORY_NAME.'/'.$imageName;
 
-        $storageImagePath = $this->storagePath($imageName);
-        if (file_exists($storageImagePath)) {
-            return $this->imageUrl($imageName);
+        if (Storage::exists($storageImagePath)) {
+            return Storage::url(self::DIRECTORY_NAME.'/'.$imageName);
         }
 
         $dataImagePath = resource_path('data/'.$imageName);
-        copy($dataImagePath, $storageImagePath);
+        Storage::putFileAs(self::DIRECTORY_NAME, new File($dataImagePath), $imageName);
 
-        return $this->imageUrl($imageName);
-    }
-
-    private function storagePath(string $path = ''): string
-    {
-        return storage_path('app/public/dummy_shop_images/').$path;
-    }
-
-    private function imageUrl(string $path): string
-    {
-        return env('APP_URL').Storage::url('dummy_shop_images/'.$path);
+        return Storage::url(self::DIRECTORY_NAME.'/'.$imageName);
     }
 }
