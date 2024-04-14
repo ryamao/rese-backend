@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('area_id')->constrained()->cascadeOnDelete();
             $table->foreignId('genre_id')->constrained()->cascadeOnDelete();
             $table->string('name', 100);
-            $table->string('image_url', 100);
+            $table->string('image_url', 2048);
             $table->text('detail');
             $table->timestamps();
         });
