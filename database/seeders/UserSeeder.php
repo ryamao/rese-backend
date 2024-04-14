@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
 
         $adminRole = $this->createAdminRole();
         $this->createOwnerRole();
-        $this->createCustomerRole();
+        $customerRole = $this->createCustomerRole();
 
         $admin = User::create([
             'name' => 'Administrator',
@@ -30,8 +30,15 @@ class UserSeeder extends Seeder
             'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
         ]);
         $admin->markEmailAsVerified();
-
         $admin->assignRole($adminRole);
+
+        $customer = User::create([
+            'name' => 'テストユーザー',
+            'email' => 'user@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        $customer->markEmailAsVerified();
+        $customer->assignRole($customerRole);
 
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
     }
