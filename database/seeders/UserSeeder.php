@@ -33,8 +33,8 @@ class UserSeeder extends Seeder
         $admin->assignRole($adminRole);
 
         $customer = User::create([
-            'name' => 'Test Customer',
-            'email' => 'test@example.com',
+            'name' => 'テストユーザー',
+            'email' => 'user@example.com',
             'password' => Hash::make('password'),
         ]);
         $customer->markEmailAsVerified();
