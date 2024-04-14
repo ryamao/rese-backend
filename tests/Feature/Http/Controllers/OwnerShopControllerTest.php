@@ -83,8 +83,6 @@ describe('GET /owners/{owner}/shops', function () {
 
 describe('POST /owners/{owner}/shops', function () {
     beforeEach(function () {
-        Storage::fake('public');
-
         Spectator::using('api-docs.json');
         $this->seed(UserSeeder::class);
 
@@ -229,7 +227,7 @@ describe('PUT /owners/{owner}/shops/{shop}', function () {
         expect($this->shop->area->name)->toBe('更新エリア');
         expect($this->shop->genre->name)->toBe('更新ジャンル');
         expect($this->shop->detail)->toBe('更新テキスト');
-        expect($this->shop->image_url)->toBe(env('APP_URL').Storage::url('shop_images/'.$this->shop->id.'.jpg'));
+        expect($this->shop->image_url)->toBe(Storage::url('shop_images/'.$this->shop->id.'.jpg'));
     });
 
     test('更新無し', function () {
