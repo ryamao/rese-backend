@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if (App::environment('production', 'staging')) {
             URL::forceScheme('https');
+            app('request')->server->set('HTTPS', true);
         }
 
         Cashier::calculateTaxes();
