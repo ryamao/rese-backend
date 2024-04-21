@@ -1,5 +1,5 @@
 {
-    "openapi": "3.0.0",
+    "openapi": "3.1.0",
     "info": {
         "title": "Rese",
         "description": "Rese API",
@@ -1203,10 +1203,12 @@
                     },
                     "rating": {
                         "description": "評価情報",
-                        "type": "integer",
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
                         "maximum": 5,
-                        "minimum": 1,
-                        "nullable": true
+                        "minimum": 1
                     }
                 },
                 "type": "object"
@@ -1298,8 +1300,10 @@
                                 "type": "boolean"
                             }
                         },
-                        "type": "object",
-                        "nullable": true
+                        "type": [
+                            "object",
+                            "null"
+                        ]
                     }
                 },
                 "type": "object"
@@ -1430,8 +1434,10 @@
                                 "type": "boolean"
                             }
                         },
-                        "type": "object",
-                        "nullable": true
+                        "type": [
+                            "object",
+                            "null"
+                        ]
                     }
                 },
                 "type": "object"
@@ -1503,9 +1509,11 @@
                     },
                     "from": {
                         "description": "現在のページの最初のレコード番号",
-                        "type": "integer",
-                        "minimum": 1,
-                        "nullable": true
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "minimum": 1
                     },
                     "last_page": {
                         "description": "最終ページ番号",
@@ -1524,9 +1532,11 @@
                             "properties": {
                                 "url": {
                                     "description": "リンクURL",
-                                    "type": "string",
-                                    "format": "uri",
-                                    "nullable": true
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "format": "uri"
                                 },
                                 "label": {
                                     "description": "リンクラベル",
@@ -1552,9 +1562,11 @@
                     },
                     "to": {
                         "description": "現在のページの最後のレコード番号",
-                        "type": "integer",
-                        "minimum": 1,
-                        "nullable": true
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "minimum": 1
                     },
                     "total": {
                         "description": "総件数",
@@ -1585,15 +1597,19 @@
                     },
                     "prev": {
                         "description": "前のページのURL",
-                        "type": "string",
-                        "format": "uri",
-                        "nullable": true
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "uri"
                     },
                     "next": {
                         "description": "次のページのURL",
-                        "type": "string",
-                        "format": "uri",
-                        "nullable": true
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "uri"
                     }
                 },
                 "type": "object"
@@ -3383,9 +3399,11 @@
                                 },
                                 "comment": {
                                     "description": "コメント",
-                                    "type": "string",
-                                    "example": "テストコメント",
-                                    "nullable": true
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "example": "テストコメント"
                                 }
                             },
                             "type": "object"
